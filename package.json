@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "ng build --aot -prod"
   },
   "private": true,
   "dependencies": {
@@ -28,10 +29,12 @@
     "core-js": "^2.5.4",
     "cytoscape": "^3.2.17",
     "d3": "^5.7.0",
+    "express": "^4.16.4",
     "jquery": "^3.3.1",
     "ng2-cytoscape": "^0.4.0",
     "ng2-semantic-ui": "^0.9.7",
     "ngx-bootstrap": "^3.0.1",
+    "path": "^0.12.7",
     "rxjs": "^6.2.2",
     "vis": "^4.21.0",
     "zone.js": "^0.8.26"
@@ -47,6 +50,7 @@
     "@types/node": "~8.9.4",
     "@types/vis": "^4.21.8",
     "codelyzer": "~4.3.0",
+    "enhanced-resolve": "^3.3.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.0.0",
@@ -58,5 +62,9 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "typescript": "~2.9.2"
+  },
+  "engines": {
+    "node": "8.10.0",
+    "npm": "5.6.0"
   }
 }
