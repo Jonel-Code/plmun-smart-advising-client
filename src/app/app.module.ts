@@ -107,8 +107,8 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
         CurriculumService,
         LoginService,
         UserAuthenticationGuard,
-        StudentLoginGuard,
-        {provide: LocationStrategy, useClass: HashLocationStrategy}
+        StudentLoginGuard
+        // {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent]
 })
