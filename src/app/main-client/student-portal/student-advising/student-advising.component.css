@@ -15,3 +15,11 @@
 .print-advising-button{
     margin-top: 10px;
 }
+
+/* th {
+    text-align: center !important;
+} */
+
+::ng-deep .mat-header-cell .mat-sort-header-container {
+    justify-content: center;   
+}

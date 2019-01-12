@@ -21,7 +21,7 @@
 
             <!-- Checkbox Column -->
             <ng-container matColumnDef="add">
-                <th mat-header-cell *matHeaderCellDef>
+                <th mat-header-cell *matHeaderCellDef style="text-align: center !important;">
                     <mat-checkbox (change)="$event ? masterToggle() : null"
                                   [checked]="selection.hasValue()"
                                   [indeterminate]="selection.hasValue()"

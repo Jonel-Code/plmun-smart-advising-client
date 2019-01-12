@@ -20,3 +20,6 @@
 .table-wrapper-main {
     border: 1px black dashed;
 }
+::ng-deep .mat-header-cell .mat-sort-header-container {
+    justify-content: center;   
+}
