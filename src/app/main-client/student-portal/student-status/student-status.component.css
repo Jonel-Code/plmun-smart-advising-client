@@ -1,0 +1,22 @@
+.untaken-subject{
+     background: rgba(131, 158, 235, 0.44);
+ }
+
+.passed-subject{
+    background: rgba(145, 235, 193, 0.44);
+}
+
+.main-table-header-bg{
+    background: rgba(255,252,186,0.91);
+    font-size: x-large;
+    color: black;
+}
+
+.content-wrapper{
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}
+.table-wrapper-main {
+    border: 1px black dashed;
+}

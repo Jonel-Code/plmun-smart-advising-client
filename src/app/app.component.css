@@ -1,0 +1,27 @@
+
+.full-percent {
+    height: 100%;
+    width: 100%;
+}
+
+.dotted {
+    /*background: linear-gradient(90deg,  #ffffffad 20px, transparent 100%) center, linear-gradient( #ffffffad 20px, transparent 100%) center, linear-gradient( #ffffffad 20px, transparent 1%);*/
+    /*background-size: 22px 22px;*/
+
+    /*padding: 2.25em 1.6875em;*/
+    padding: 5.25em 5.6875em;
+    background-image: -webkit-repeating-radial-gradient(center center, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2) 1px, transparent 1px, transparent 100%);
+    background-image: -moz-repeating-radial-gradient(center center, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2) 1px, transparent 1px, transparent 100%);
+    background-image: -ms-repeating-radial-gradient(center center, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2) 1px, transparent 1px, transparent 100%);
+    background-image: repeating-radial-gradient(center center, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2) 1px, transparent 1px, transparent 100%);
+    -webkit-background-size: 3px 3px;
+    -moz-background-size: 3px 3px;
+    background-size: 3px 3px;
+}
+.main-bg {
+    background: #193654;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    /*background-image: radial-gradient(circle closest-side, rgba(255, 255, 255, 0), #193654);*/
+}

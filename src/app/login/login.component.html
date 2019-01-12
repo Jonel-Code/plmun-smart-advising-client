@@ -1,0 +1,61 @@
+
+<div class="centerwrapper">
+    <div class="mat-card-wrapper">
+        <mat-card id="form-container">
+            <mat-card-title>
+                <div class="center-margin-auto">
+                    <div class="center-margin-auto logo-wrapper logo-wrapper-size" align="center"  matRipple [matRippleUnbounded]="false">
+                        <div class="icon-bg-wrapper logo-size mat-effect-shadow">
+                            <mat-progress-spinner class="logo-size" *ngIf="this.sending" [diameter]="153"
+                                                  mode="indeterminate">
+                            </mat-progress-spinner>
+                            <img class="main-icon logo-size center-margin-auto noselect" src="../../assets/plmun-logo.png"
+                                 alt="plmun_logo"
+                                 *ngIf="!this.sending">
+                        </div>
+                        <!--<mat-icon *ngIf="!this.sending" class="main-icon">face</mat-icon>-->
+                    </div>
+                </div>
+            </mat-card-title>
+            <mat-card-header>
+                <h2><b>STUDENT LOGIN</b></h2>
+            </mat-card-header>
+            <mat-card-content>
+                <form [formGroup]="form" (ngSubmit)="login()">
+                    <table cellspacing="0" style="width:100%;">
+                        <tr>
+                            <td>
+                                <mat-form-field class="mat-input-wrapper">
+                                    <input matInput
+                                           placeholder="Student Id" formControlName="studentId"
+                                           name="StudentId"
+                                           required>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-form-field class="mat-input-wrapper">
+                                    <input matInput
+                                           placeholder="Password" formControlName="password"
+                                           name="password"
+                                           type="password"
+                                           required>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </mat-card-content>
+            <!--<mat-progress-spinner *ngIf="this.sending" [diameter]="20"-->
+            <!--mode="indeterminate">-->
+            <!--</mat-progress-spinner>-->
+            <!--<mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>-->
+            <mat-card-actions>
+                <button mat-raised-button [disabled]="this.sending" (click)="login()" color="primary">
+                    LOGIN
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

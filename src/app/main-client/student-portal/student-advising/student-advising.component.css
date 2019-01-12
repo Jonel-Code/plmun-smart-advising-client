@@ -1,0 +1,17 @@
+.passed-subject {
+    background: rgba(131, 158, 235, 0.44);
+}
+
+.content-wrapper {
+    overflow: auto;
+    /*height: 100%;*/
+    width: 100%;
+}
+
+.header-wrapper-main {
+    /*border-bottom: 1px black dashed;*/
+}
+
+.print-advising-button{
+    margin-top: 10px;
+}

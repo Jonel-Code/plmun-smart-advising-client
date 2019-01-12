@@ -1,0 +1,25 @@
+.floating-close-button{
+    position: fixed;
+    top: 10%;
+    left: 90%;
+}
+
+.floating-print-button{
+    position: fixed;
+    top: 90%;
+    left: 90%;
+}
+
+
+.advising-form-main {
+    overflow: auto;
+    height: 70vh;
+    min-height: 600px;
+    width: 1028px;
+}
+
+.content-wrapper {
+    overflow: auto;
+    height: 70%;
+    width: 90%;
+}

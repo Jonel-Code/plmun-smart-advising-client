@@ -1,0 +1,11 @@
+#mynetwork {
+    display: inline-block;
+    width: 100%;
+    height: 75%;
+    border: 0.5px solid lightgray;
+}
+
+#centerwrapper {
+    /*background-color: green; !* for visualization purposes *!*/
+    text-align: center;
+}
