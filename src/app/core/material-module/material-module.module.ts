@@ -19,7 +19,7 @@ import {
     MatBadgeModule,
     MatGridListModule,
     MatSidenavModule,
-    MatListModule, MatSortModule, MatRippleModule
+    MatListModule, MatSortModule, MatRippleModule, MatPaginatorModule
 } from '@angular/material';
 import {LayoutModule} from '@angular/cdk/layout';
 
@@ -44,7 +44,8 @@ import {LayoutModule} from '@angular/cdk/layout';
         MatSidenavModule,
         MatListModule,
         MatSortModule,
-        MatRippleModule
+        MatRippleModule,
+        MatPaginatorModule
     ],
     exports: [
         CommonModule,
@@ -73,7 +74,8 @@ import {LayoutModule} from '@angular/cdk/layout';
         MatSidenavModule,
         MatListModule,
         MatSortModule,
-        MatRippleModule
+        MatRippleModule,
+        MatPaginatorModule
     ],
 })
 export class MaterialModuleModule {

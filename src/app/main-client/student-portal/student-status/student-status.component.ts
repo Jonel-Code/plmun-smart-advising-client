@@ -6,7 +6,7 @@ import {
     ISubjectGrade, ISubjectNodes,
     LoginService
 } from '../../../login/login.service';
-import {MatSort, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {CustomDTree, Edges, Leaf} from '../../../core/algorithms/CustomDTree';
 
 
@@ -38,9 +38,12 @@ export class StudentStatusComponent implements OnInit {
     passed_subjects: string[];
     student_years: string[] = ['first', 'second', 'third', 'fourth'];
     @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     subjectPaths: ISubjectEdgesDataset;
     shownPaths: ISubjectEdgesDataset;
+
+    resultsLength: number;
 
     constructor(private loginService: LoginService) {
         const _tableData: ICustonSubject[] = [];
@@ -69,7 +72,7 @@ export class StudentStatusComponent implements OnInit {
             }
         }
         console.log('passed_subjects', this.passed_subjects);
-        this.tableData = new MatTableDataSource(_tableData);
+        this.tableData = new MatTableDataSource(_tableData.slice());
 
         // test function call for new algo implementation
         this.test_new_algo();
@@ -77,11 +80,59 @@ export class StudentStatusComponent implements OnInit {
 
     ngOnInit() {
         this.tableData.sort = this.sort;
+        this.tableData.paginator = this.paginator;
+        this.sort.sortChange.subscribe(() => this.reset_paginator_index());
+        this.resultsLength = this.tableData.data.length;
     }
 
     isPassed(code: string) {
         // console.log('passing', code);
         return this.passed_subjects.includes(code);
+    }
+
+    reset_paginator_index() {
+        this.paginator.pageIndex = 0;
+    }
+
+    reset_filter_by_year() {
+        this.tableData.filter = '';
+    }
+
+    is_filter_value(x: string): boolean {
+        const index_of_year = this.get_index_of_year(x);
+        return this.tableData.filter.toString() === index_of_year.toString();
+    }
+
+    filter_by_year() {
+        this.tableData.filterPredicate = function (data, filter: string): boolean {
+            // console.log('data.year.toLowerCase().includes(filter)', data.year.toLowerCase().includes(filter));
+            // console.log('filter',filter);
+            // console.log('data.year.toLowerCase()',data.year.toLowerCase());
+            return data.year.toString().includes(filter.toString());
+        };
+    }
+
+    get_index_of_year(x: string): number {
+        return this.student_years.indexOf(x) + 1;
+    }
+
+    filter_by_year_wrapper(year: string) {
+        this.reset_paginator_index();
+        // toggle behaviour
+        if (this.is_filter_value(year)) {
+            this.reset_filter_by_year();
+        } else {
+            this.filter_by_year();
+            const index_of_year = this.get_index_of_year(year);
+            this.applyFilter(index_of_year.toString());
+        }
+    }
+
+    applyFilter(filterValue: string) {
+        // filterValue = filterValue.trim(); // Remove whitespace
+        // filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+        filterValue = filterValue.trim().toLowerCase();
+        this.tableData.filter = filterValue;
     }
 
     get_paths_for_code(code: string) {

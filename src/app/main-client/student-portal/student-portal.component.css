@@ -18,6 +18,10 @@
     min-height: 758px !important; */
 }
 
+/*::ng-deep .mat-card {*/
+    /*padding: 0 !important;*/
+/*}*/
+
 .centerwrapper {
     margin: 0 auto;
 }
@@ -50,8 +54,8 @@
 
 .card-content-wrapper-main {
     /*border: 1px black solid;*/
-    margin-top: 10px !important;
-    margin-bottom: 20px !important;;
+    padding: 0 !important;
+    padding-bottom: 20px !important;;
 }
 
 .content-card {
