@@ -7,7 +7,7 @@ import {environment} from '../environments/environment';
 @Injectable()
 export class CurriculumService {
 
-  private url = `${environment.base_url}/subject`;
+  private url = `${environment.base_api_url}/subject`;
   private subjectCurriculumTree = this.url + '/curriculumTree';
 
   constructor(private http: HttpClient) {

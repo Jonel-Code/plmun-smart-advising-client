@@ -70,9 +70,9 @@ export class LoginService {
     private userTypeToken = 'uType';
     private usernameToken = 'username';
     appRoutes = new RoutingPaths();
-    private login_url = `${environment.base_url}/login`;
-    // private user_url = `${environment.base_url}/users`;
-    // private register_url = `${environment.base_url}/registration`;
+    private login_url = `${environment.base_api_url}/login`;
+    // private user_url = `${environment.base_api_url}/users`;
+    // private register_url = `${environment.base_api_url}/registration`;
 
     constructor(private router: Router,
                 private http: HttpClient) {
