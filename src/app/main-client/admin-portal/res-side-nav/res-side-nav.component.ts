@@ -14,20 +14,14 @@ export interface NavLink {
 })
 export class ResSideNavComponent implements OnDestroy, OnInit {
 
-    // @ViewChild('snav') snav;
-
     mobileQuery: MediaQueryList;
-    main_title: string;
 
     nav_options: NavLink[] = [
         {title: 'Advising Statistics', link: 'advising_statistics'},
         {title: 'Opened Subjects', link: 'opened_subjects'}
     ];
-    // selected_options: NavLink;
 
     child_link_loading = false;
-
-    // load_admin_home = false;
 
 
     private _mobileQueryListener: () => void;
