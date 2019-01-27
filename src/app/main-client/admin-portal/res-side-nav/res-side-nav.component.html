@@ -1,0 +1,37 @@
+<div class="c-container" [class.c-is-mobile]="mobileQuery.matches">
+    <mat-toolbar class="c-toolbar">
+        <button mat-icon-button (click)="snav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <h1 (click)="snav.toggle()" class="example-app-name">{{main_title}}</h1>
+    </mat-toolbar>
+
+    <mat-sidenav-container class="c-sidenav-container"
+                           [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+                     [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+
+            <!-- Navigation Menus -->
+            <mat-nav-list>
+                <a mat-list-item
+                   *ngFor="let nav of nav_options"
+                   (click)="toggle_option(nav)"
+                   [routerLink]="['./' + nav.link]">
+                    {{nav.title}}
+                </a>
+            </mat-nav-list>
+
+        </mat-sidenav>
+
+        <!-- MAIN Content -->
+        <mat-sidenav-content style="padding: 27px !important;">
+            <!--<p *ngFor="let content of fillerContent">{{content}}</p>-->
+            <router-outlet></router-outlet>
+            <div class="ui active inverted dimmer" *ngIf="child_link_loading">
+                <div class="ui large text loader">Loading</div>
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
+
+

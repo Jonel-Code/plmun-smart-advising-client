@@ -53,6 +53,10 @@ import { AdvisingFormComponent } from './main-client/student-portal/main-compone
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import { AdminPortalComponent } from './main-client/admin-portal/admin-portal.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { ResSideNavComponent } from './main-client/admin-portal/res-side-nav/res-side-nav.component';
+import {LayoutModule} from '@angular/cdk/layout';
+import { StatisticsComponent } from './main-client/admin-portal/admin-comp/statistics/statistics.component';
+import { OpenedSubjComponent } from './main-client/admin-portal/admin-comp/opened-subj/opened-subj.component';
 
 
 @NgModule({
@@ -80,7 +84,10 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
         SPPopoverComponent,
         AdvisingFormComponent,
         AdminPortalComponent,
-        AdminLoginComponent
+        AdminLoginComponent,
+        ResSideNavComponent,
+        StatisticsComponent,
+        OpenedSubjComponent
     ],
     entryComponents: [
         // AddRequirementsModalComponent,
@@ -98,7 +105,8 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
         // MatButtonModule,
         MaterialModuleModule,
         AppRoutingModule,
-        SuiModule
+        SuiModule,
+        LayoutModule
     ],
     providers: [
         // SubjectService,

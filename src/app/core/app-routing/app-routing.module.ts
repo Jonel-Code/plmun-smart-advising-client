@@ -7,6 +7,8 @@ import {StudentPortalComponent} from '../../main-client/student-portal/student-p
 import {StudentLoginGuard} from '../../login/student-login.guard';
 import {AdminLoginComponent} from '../../admin-login/admin-login.component';
 import {AdminPortalComponent} from '../../main-client/admin-portal/admin-portal.component';
+import {StatisticsComponent} from '../../main-client/admin-portal/admin-comp/statistics/statistics.component';
+import {OpenedSubjComponent} from '../../main-client/admin-portal/admin-comp/opened-subj/opened-subj.component';
 // import {HomeComponent} from '../../home/home.component';
 // import {UserComponent} from '../user/user.component';
 // import {HomeComponent} from '../../home/home.component';
@@ -33,7 +35,15 @@ const routes: Routes = [
     {path: 'student-login', component: LoginComponent},
     {path: 'home', component: StudentPortalComponent, canActivate: [StudentLoginGuard]},
     {path: 'admin-login', component: AdminLoginComponent},
-    {path: 'admin/main', component: AdminPortalComponent},
+    {
+        path: 'admin/main',
+        component: AdminPortalComponent,
+        children: [
+            {path: '*', redirectTo: 'advising_statistics'},
+            {path: 'advising_statistics', component: StatisticsComponent},
+            {path: 'opened_subjects', component: OpenedSubjComponent}
+        ]
+    },
     {path: '**', redirectTo: RoutingPaths.login},
     // {path: 'experiment', component: HomeComponent},
     // {path: routePaths.home, component: HomeComponent, canActivate: [UserAuthenticationGuard]},

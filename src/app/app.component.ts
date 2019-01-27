@@ -33,8 +33,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             .subscribe((event) => {
                 if (event instanceof NavigationStart) {
                     this.routeLoading = true;
-                }
-                else if (
+                } else if (
                     event instanceof NavigationEnd ||
                     event instanceof NavigationCancel
                 ) {
