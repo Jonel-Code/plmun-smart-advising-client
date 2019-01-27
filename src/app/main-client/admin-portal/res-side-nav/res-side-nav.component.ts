@@ -27,6 +27,8 @@ export class ResSideNavComponent implements OnDestroy, OnInit {
 
     child_link_loading = false;
 
+    // load_admin_home = false;
+
 
     private _mobileQueryListener: () => void;
 
@@ -60,15 +62,29 @@ export class ResSideNavComponent implements OnDestroy, OnInit {
 
     ngOnInit(): void {
         this.child_link_loading = false;
-        this.toggle_option(this.nav_options[0]);
+    }
+
+    load_admin_home(): boolean {
+        return this.get_route_child().length === 0;
+    }
+
+    get_route_child(): string[] {
+        return this.router.url.split('/').slice(3);
+    }
+
+    search_title_of_link(link: string): string {
+        let x = null;
+        this.nav_options.forEach(z => {
+            if (z.link === link) {
+                x = z.title;
+            }
+        });
+        return x;
     }
 
 
-    toggle_option(nav_ops: NavLink) {
-        // const indx = this.nav_options.indexOf(nav_ops);
-        // this.selected_options = nav_ops;
-        this.main_title = nav_ops.title;
-        // this.snav.toggle();
+    current_dashboard(): string {
+        return this.search_title_of_link(this.get_route_child()[0]);
     }
 
     is_view_mobile() {
