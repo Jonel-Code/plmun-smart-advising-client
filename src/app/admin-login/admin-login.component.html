@@ -1,3 +1,34 @@
-<h1>
-  admin-login works!
-</h1>
+<div class="ui centered card" style="margin-top: 1%">
+    <div class="content">
+        <div class="ui center aligned">
+            <img class="ui centered small image" src="../../assets/plmun-logo.png">
+            <h1 class="ui header">
+                Admin Login
+            </h1>
+        </div>
+    </div>
+    <div class="content">
+        <div class="ui form">
+            <div class="field">
+                <label>Username</label>
+                <input type="text" placeholder="Username" #uname>
+            </div>
+            <div class="field">
+                <label>Password</label>
+                <input type="text" placeholder="Password" #pass>
+            </div>
+            <div class="ui fluid animated primary button"
+                 tabindex="0"
+                 (click)="admin_login()">
+                <div class="visible content">LOGIN</div>
+                <div class="hidden content">
+                    ADMIN LOGIN
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
