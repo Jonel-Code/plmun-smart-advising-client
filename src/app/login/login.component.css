@@ -1,18 +1,18 @@
-#form-container {
-    /*height: 50vh;*/
-    /*border: 0.5px solid #b3b3b336;*/
-    overflow: auto;
-    margin: 0 auto;
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    /*(vertical,horizontal)*/
-    -webkit-transform: translate(-50%, -40%);
-    transform: translate(-50%, -40%);
-    width: inherit;
-    box-shadow: 13px 13px 0px 6px rgba(0, 0, 0, 0.32), 6px 5px 9px 0px rgba(0, 0, 0, 0.77);
-    border-radius: 26px;
-}
+/*#form-container {*/
+    /*!*height: 50vh;*!*/
+    /*!*border: 0.5px solid #b3b3b336;*!*/
+    /*overflow: auto;*/
+    /*margin: 0 auto;*/
+    /*position: fixed;*/
+    /*top: 40%;*/
+    /*left: 50%;*/
+    /*!*(vertical,horizontal)*!*/
+    /*-webkit-transform: translate(-50%, -40%);*/
+    /*transform: translate(-50%, -40%);*/
+    /*width: inherit;*/
+    /*box-shadow: 13px 13px 0px 6px rgba(0, 0, 0, 0.32), 6px 5px 9px 0px rgba(0, 0, 0, 0.77);*/
+    /*border-radius: 26px;*/
+/*}*/
 
 /*.main-bg {*/
 /*background: #193654;*/
@@ -34,10 +34,10 @@
     margin: 0 auto;
 }
 
-.centerwrapper {
-    /*background-color: green; !* for visualization purposes *!*/
-    text-align: center;
-}
+/*.centerwrapper {*/
+    /*!*background-color: green; !* for visualization purposes *!*!*/
+    /*text-align: center;*/
+/*}*/
 
 .logo-size {
     width: 150px;
@@ -105,19 +105,19 @@
 }
 
 .mat-card-wrapper {
-    overflow: auto;
-    margin: 0 auto;
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    /*(vertical,horizontal)*/
-    -webkit-transform: translate(-50%, -40%);
-    transform: translate(-50%, -40%);
-    width: 80vw;
-    height: 85vh;
-    /* min-width: 700px;
-    min-height: 540px; */
-    background: rgba(255, 255, 255, 0.0);
+    /*overflow: auto;*/
+    /*margin: 0 auto;*/
+    /*position: fixed;*/
+    /*top: 40%;*/
+    /*left: 50%;*/
+    /*!*(vertical,horizontal)*!*/
+    /*-webkit-transform: translate(-50%, -40%);*/
+    /*transform: translate(-50%, -40%);*/
+    /*width: 80vw;*/
+    /*height: 85vh;*/
+    /*!* min-width: 700px;*/
+    /*min-height: 540px; *!*/
+    /*background: rgba(255, 255, 255, 0.0);*/
 }
 
 .raised-btn {
