@@ -24,7 +24,8 @@ export interface IAdvisingFormData {
 })
 export class AdvisingFormComponent implements OnInit {
 
-    displayedColumns: string[] = ['code', 'title', 'units', 'day', 'time', 'room', 'section'];
+    // displayedColumns: string[] = ['code', 'title', 'units', 'day', 'time', 'room', 'section'];
+    displayedColumns: string[] = ['code', 'title', 'units'];
     tableData: MatTableDataSource<ISubject>;
 
 
