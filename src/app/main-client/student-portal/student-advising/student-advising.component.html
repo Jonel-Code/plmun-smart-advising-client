@@ -13,9 +13,11 @@
         </div>
     </div>
     <div class="ui horizontal divider">Subjects</div>
-    <div style="overflow: auto; overflow-style: marquee-line; width: 100%;">
+    <div class="content center aligned">
+        <!--class="mat-elevation-z8 content-wrapper"-->
         <table mat-table
-               [dataSource]="tableData" class="mat-elevation-z8 content-wrapper"
+               [dataSource]="tableData"
+               class="ui celled table"
                matSort matSortActive="year"
                matSortDirection="asc">
 
@@ -50,7 +52,7 @@
 
             <ng-container matColumnDef="total_units">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Units</th>
-                <td mat-cell *matCellDef="let sub"> {{sub.total_units}}</td>
+                <td mat-cell *matCellDef="let sub"> {{sub.total_units}} units</td>
             </ng-container>
 
             <ng-container matColumnDef="pre_req">
@@ -68,7 +70,7 @@
 
             <ng-container matColumnDef="semester">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Semester</th>
-                <td mat-cell *matCellDef="let sub"> {{sub.semester | uppercase}}</td>
+                <td mat-cell *matCellDef="let sub"> {{sub.semester | uppercase}} semester</td>
             </ng-container>
 
 

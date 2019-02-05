@@ -119,6 +119,8 @@ export class StudentAdvisingComponent implements OnInit {
 
     openDialog() {
         this.dialog.open(AdvisingFormComponent, {
+            height: 'auto',
+            width: 'auto',
             data: {
                 subjects: this.selection.selected,
                 student: this.student_info,
