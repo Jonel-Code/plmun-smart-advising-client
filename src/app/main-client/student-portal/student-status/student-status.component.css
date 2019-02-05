@@ -29,3 +29,11 @@
 .ui.cards > .card {
     width: auto;
 }
+
+tr.mat-header-row ::ng-deep{
+    height: auto;
+}
+
+tr.mat-footer-row ::ng-deep, tr.mat-row ::ng-deep{
+    height: auto;
+}

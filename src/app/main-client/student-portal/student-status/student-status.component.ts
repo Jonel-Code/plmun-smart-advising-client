@@ -31,7 +31,7 @@ export class ICustonSubject implements ISubject {
     styleUrls: ['./student-status.component.css']
 })
 export class StudentStatusComponent implements OnInit {
-    displayedColumns: string[] = ['code', 'title', 'total_units', 'pre_req', 'year', 'semester', 'paths'];
+    displayedColumns: string[] = ['code', 'title', 'total_units', 'pre_req', 'year', 'semester'];
     // tableData: MatTableDataSource<ISubject>;
     // displayedColumns: string[] = ['code', 'title', 'total_units', 'pre_req', 'year', 'semester'];
     tableData: MatTableDataSource<ICustonSubject>;
@@ -133,6 +133,10 @@ export class StudentStatusComponent implements OnInit {
         // filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
         filterValue = filterValue.trim().toLowerCase();
         this.tableData.filter = filterValue;
+    }
+
+    str_to_num(str): Number {
+        return Number(str) - 1;
     }
 
     get_paths_for_code(code: string) {
