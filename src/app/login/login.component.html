@@ -1,61 +1,76 @@
-
-<div class="centerwrapper">
-    <div class="mat-card-wrapper">
-        <mat-card id="form-container">
-            <mat-card-title>
-                <div class="center-margin-auto">
-                    <div class="center-margin-auto logo-wrapper logo-wrapper-size" align="center"  matRipple [matRippleUnbounded]="false">
-                        <div class="icon-bg-wrapper logo-size mat-effect-shadow">
-                            <mat-progress-spinner class="logo-size" *ngIf="this.sending" [diameter]="153"
-                                                  mode="indeterminate">
-                            </mat-progress-spinner>
-                            <img class="main-icon logo-size center-margin-auto noselect" src="../../assets/plmun-logo.png"
-                                 alt="plmun_logo"
-                                 *ngIf="!this.sending">
-                        </div>
-                        <!--<mat-icon *ngIf="!this.sending" class="main-icon">face</mat-icon>-->
-                    </div>
+<div class="ui centered card"  style="margin-top: 1%; margin-bottom: 1%" >
+    <div class="content">
+        <div class="center-margin-auto">
+            <div class="center-margin-auto logo-wrapper logo-wrapper-size" align="center"  matRipple [matRippleUnbounded]="false">
+                <div class="icon-bg-wrapper logo-size mat-effect-shadow">
+                    <mat-progress-spinner class="logo-size" *ngIf="this.sending" [diameter]="153"
+                                          mode="indeterminate">
+                    </mat-progress-spinner>
+                    <img class="main-icon logo-size center-margin-auto noselect" src="../../assets/plmun-logo.png"
+                         alt="plmun_logo"
+                         *ngIf="!this.sending">
                 </div>
-            </mat-card-title>
-            <mat-card-header>
-                <h2><b>STUDENT LOGIN</b></h2>
-            </mat-card-header>
-            <mat-card-content>
-                <form [formGroup]="form" (ngSubmit)="login()">
-                    <table cellspacing="0" style="width:100%;">
-                        <tr>
-                            <td>
-                                <mat-form-field class="mat-input-wrapper">
-                                    <input matInput
-                                           placeholder="Student Id" formControlName="studentId"
-                                           name="StudentId"
-                                           required>
-                                </mat-form-field>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <mat-form-field class="mat-input-wrapper">
-                                    <input matInput
-                                           placeholder="Password" formControlName="password"
-                                           name="password"
-                                           type="password"
-                                           required>
-                                </mat-form-field>
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-            </mat-card-content>
-            <!--<mat-progress-spinner *ngIf="this.sending" [diameter]="20"-->
-            <!--mode="indeterminate">-->
-            <!--</mat-progress-spinner>-->
-            <!--<mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>-->
-            <mat-card-actions>
-                <button mat-raised-button [disabled]="this.sending" (click)="login()" color="primary">
-                    LOGIN
-                </button>
-            </mat-card-actions>
-        </mat-card>
+            </div>
+        </div>
+    </div>
+    <h1 class="ui header" style="text-align: center"><b>STUDENT LOGIN</b></h1>
+    <div class="content">
+        <form [formGroup]="form" (ngSubmit)="login()">
+            <div class="ui form">
+                <div class="field">
+                    <label>Student Id</label>
+                    <input type="text" placeholder="Student Id" formControlName="studentId" name="StudentId">
+                </div>
+                <div class="field">
+                    <label>Password</label>
+                    <input type="password" placeholder="Password" formControlName="password" name="password">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="content center aligned">
+        <button mat-raised-button [disabled]="this.sending" (click)="login()" color="primary">
+            LOGIN
+        </button>
     </div>
 </div>
+
+<!--<mat-icon *ngIf="!this.sending" class="main-icon">face</mat-icon>-->
+<!--<mat-progress-spinner *ngIf="this.sending" [diameter]="20"-->
+<!--mode="indeterminate">-->
+<!--</mat-progress-spinner>-->
+<!--<mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>-->
+
+<!--<div class="centerwrapper">-->
+    <!--<div class="mat-card-wrapper">-->
+        <!---->
+    <!--</div>-->
+<!--</div>-->
+
+<!--<table cellspacing="0" style="width:100%;">-->
+<!--&lt;!&ndash;<tr>&ndash;&gt;-->
+<!--&lt;!&ndash;<td>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="field">&ndash;&gt;-->
+<!--&lt;!&ndash;<label>Student Id</label>&ndash;&gt;-->
+<!--&lt;!&ndash;<input type="text" placeholder="Student Id" formControlName="studentId" name="StudentId">&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;<mat-form-field class="mat-input-wrapper">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;<input matInput&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;placeholder="Student Id" formControlName="studentId"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;name="StudentId"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;required>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;</mat-form-field>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;</td>&ndash;&gt;-->
+<!--&lt;!&ndash;</tr>&ndash;&gt;-->
+<!--&lt;!&ndash;<tr>&ndash;&gt;-->
+<!--&lt;!&ndash;<td>&ndash;&gt;-->
+<!--&lt;!&ndash;<mat-form-field class="mat-input-wrapper">&ndash;&gt;-->
+<!--&lt;!&ndash;<input matInput&ndash;&gt;-->
+<!--&lt;!&ndash;placeholder="Password" formControlName="password"&ndash;&gt;-->
+<!--&lt;!&ndash;name="password"&ndash;&gt;-->
+<!--&lt;!&ndash;type="password"&ndash;&gt;-->
+<!--&lt;!&ndash;required>&ndash;&gt;-->
+<!--&lt;!&ndash;</mat-form-field>&ndash;&gt;-->
+<!--&lt;!&ndash;</td>&ndash;&gt;-->
+<!--&lt;!&ndash;</tr>&ndash;&gt;-->
+<!--</table>-->

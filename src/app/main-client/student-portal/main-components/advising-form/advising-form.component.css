@@ -13,13 +13,27 @@
 
 .advising-form-main {
     overflow: auto;
-    height: 70vh;
-    min-height: 600px;
-    width: 1028px;
+    height: auto;
+    /*min-height: 600px;*/
+    width: auto;
 }
 
 .content-wrapper {
     overflow: auto;
     height: 70%;
     width: 90%;
+}
+
+tr.mat-header-row ::ng-deep {
+    height: auto;
+    text-align: center;
+}
+
+tr.mat-footer-row ::ng-deep, tr.mat-row ::ng-deep {
+    height: auto;
+    text-align: center;
+}
+
+::ng-deep .cdk-overlay-pane::ng-deep{
+    overflow: auto;
 }

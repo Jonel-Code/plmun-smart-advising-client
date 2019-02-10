@@ -1,8 +1,8 @@
 <!--<div class="portal-bg">-->
 
 <!--</div>-->
-<mat-card class="student-portal-card centerwrapper content-card">
-    <mat-card-title align="center" class="mat-card-title"><h3><b>Student Pre-Advising Portal</b></h3></mat-card-title>
+<div class="ui centered card student-portal-card content-card">
+    <div align="center"><h3><b>Student Pre-Advising Portal</b></h3></div>
 
     <!-- <mat-card-header class="row-blox"> -->
     <div>
@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <mat-card-content>
+    <div class="content">
         <div class="card-content-wrapper-main">
             <div *ngIf="mainMenu.toString().toLowerCase() === 'status'" class="table-container">
                     <app-student-status></app-student-status>
@@ -48,5 +48,5 @@
                     <app-student-advising></app-student-advising>
             </div>
         </div>
-    </mat-card-content>
-</mat-card>
+    </div>
+</div>

@@ -4,60 +4,103 @@
         Curriculum Checklist
     </div>
     <div style="overflow: auto; overflow-style: marquee-line; width: 100%;">
-        <table mat-table [dataSource]="tableData" class="mat-elevation-z8 content-wrapper" matSort matSortActive="year"
+        <!--<div>-->
+            <!--<table class="ui celled table" matSort matSortActive="year" matSortDirection="asc">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th>Subject Code</th>-->
+                    <!--<th>Subject Title</th>-->
+                    <!--<th>Units</th>-->
+                    <!--<th>Pre-requisite(s)</th>-->
+                    <!--<th>Year</th>-->
+                    <!--<th>Semester</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody>-->
+                <!--<tr *ngFor="let d of tableData.data">-->
+                    <!--<td data-label="Subject Code">{{d.code | uppercase}}</td>-->
+                    <!--<td data-label="Subject Title">{{d.title | titlecase}}</td>-->
+                    <!--<td data-label="Units">{{d.total_units}}</td>-->
+                    <!--<td data-label="Pre-requisite(s)">-->
+                        <!--{{ (!(student_years.includes(d.pre_req)) ? ((d.pre_req === '') ? 'none': d.pre_req ) :-->
+                        <!--d.pre_req-->
+                        <!--+ ' year standing') | uppercase }}-->
+                    <!--</td>-->
+                    <!--<td data-label="Year">{{student_years[str_to_num(d.year)] + ' year' | uppercase }}</td>-->
+                    <!--<td data-label="Semester">{{d.semester + 'semester' | uppercase}}</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td data-label="Name">Prog-2</td>-->
+                    <!--<td data-label="Age">Programming 2</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+            <!--<mat-paginator [length]="resultsLength" [pageSize]="10"></mat-paginator>-->
+        <!--</div>-->
+        <!--<table mat-table [dataSource]="tableData" class="mat-elevation-z8 content-wrapper" matSort matSortActive="year"-->
+        <!--matSortDirection="asc">-->
+        <table mat-table [dataSource]="tableData"  class="ui celled table"  matSort matSortActive="year"
                matSortDirection="asc">
 
             <ng-container matColumnDef="code">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Code</th>
-                <td mat-cell *matCellDef="let sub"> {{sub.code | uppercase}}</td>
+                <th  mat-header-cell mat-sort-header *matHeaderCellDef >Subject Code</th>
+                <td *matCellDef="let sub" data-label="Subject Code">
+                    <app-mobile-label [mobileLabel]="'subject code: '"></app-mobile-label> {{sub.code | uppercase}}
+                </td>
+                <!--<th mat-header-cell *matHeaderCellDef mat-sort-header> Code</th>-->
+                <!--<td mat-cell *matCellDef="let sub"> {{sub.code | uppercase}}</td>-->
             </ng-container>
 
             <ng-container matColumnDef="title">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Title</th>
-                <td mat-cell *matCellDef="let sub"> {{sub.title | titlecase}}</td>
+                <th mat-header-cell mat-sort-header  *matHeaderCellDef >Title</th>
+                <td *matCellDef="let sub" data-label="Title">
+                    <app-mobile-label [mobileLabel]="'subject title: '"></app-mobile-label> {{sub.title | titlecase}}</td>
             </ng-container>
 
             <ng-container matColumnDef="total_units">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Units</th>
-                <td mat-cell *matCellDef="let sub"> {{sub.total_units}}</td>
+                <th mat-header-cell mat-sort-header  *matHeaderCellDef >Total Units</th>
+                <td *matCellDef="let sub " data-label="Total Unit">
+                    <app-mobile-label [mobileLabel]="'Units: '"></app-mobile-label> {{sub.total_units + ' units'}}</td>
             </ng-container>
 
             <ng-container matColumnDef="pre_req">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Pre requisite</th>
-                <td mat-cell *matCellDef="let sub">
-                    {{ (!(student_years.includes(sub.pre_req)) ? ((sub.pre_req === '') ? 'none': sub.pre_req ) :
+                <th mat-header-cell mat-sort-header  *matHeaderCellDef >Pre requisite</th>
+                <td *matCellDef="let sub" data-label="Pre requisite">
+                    <app-mobile-label [mobileLabel]="'Pre-requisite(s): '"></app-mobile-label> {{ (!(student_years.includes(sub.pre_req)) ? ((sub.pre_req === '') ? 'none': sub.pre_req ) :
                     sub.pre_req
                     + ' year standing') | uppercase }}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="year">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Year</th>
-                <td mat-cell *matCellDef="let sub"> {{student_years[sub.year-1] + ' year' | uppercase }}</td>
+                <th mat-header-cell mat-sort-header  *matHeaderCellDef >Year</th>
+                <td *matCellDef="let sub"  data-label="Year">
+                    <app-mobile-label [mobileLabel]="'Student Year: '"></app-mobile-label> {{student_years[sub.year-1] + ' year' | uppercase }}</td>
             </ng-container>
 
             <ng-container matColumnDef="semester">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Semester</th>
-                <td mat-cell *matCellDef="let sub"> {{sub.semester | uppercase}}</td>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef >Semester</th>
+                <td *matCellDef="let sub" data-label="Semester">
+                    <app-mobile-label [mobileLabel]="'Semester: '"></app-mobile-label> {{sub.semester + ' semester' | uppercase}}</td>
             </ng-container>
 
-            <ng-container matColumnDef="paths">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Path</th>
-                <td mat-cell *matCellDef="let sub">
-                    <button mat-raised-button color="primary"
-                            (click)="get_paths_for_code(sub.code)"
-                    >
-                        <mat-icon>info</mat-icon>
-                    </button>
-                    <!--<ng-template #popOverTitle>-->
-                    <!--<b>Subject Path</b>-->
-                    <!--</ng-template>-->
-                    <!--<ng-template #popOver class="popover-content">-->
-                    <!--<h5>{{shownPaths.edges}}</h5>-->
-                    <!--</ng-template>-->
-                    <!---->
-                </td>
-            </ng-container>
+            <!--<ng-container matColumnDef="paths">-->
+                <!--<th mat-header-cell *matHeaderCellDef mat-sort-header> Path</th>-->
+                <!--<td mat-cell *matCellDef="let sub">-->
+                    <!--&lt;!&ndash;<button mat-raised-button color="primary"&ndash;&gt;-->
+                            <!--&lt;!&ndash;(click)="get_paths_for_code(sub.code)"&ndash;&gt;-->
+                    <!--&lt;!&ndash;&gt;&ndash;&gt;-->
+                        <!--&lt;!&ndash;<mat-icon>info</mat-icon>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<ng-template #popOverTitle>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<b>Subject Path</b>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</ng-template>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<ng-template #popOver class="popover-content">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<h5>{{shownPaths.edges}}</h5>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</ng-template>&ndash;&gt;-->
+                    <!--&lt;!&ndash;&ndash;&gt;-->
+                <!--</td>-->
+            <!--</ng-container>-->
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"
                 class="main-table-header-bg"></tr>
@@ -65,7 +108,7 @@
                 [ngStyle]="{'background-color': isPassed(row.code) ? 'rgba(145, 235, 193, 0.44' : 'rgba(131, 158, 235, 0.44' }"></tr>
         </table>
     </div>
-    <mat-paginator [length]="resultsLength" [pageSize]="10"></mat-paginator>
+    <mat-paginator [length]="resultsLength" [pageSize]="5"></mat-paginator>
     <div class="ui divider" style="margin: 20px"></div>
     <div class="ui middle aligned stackable grid" style="margin: 3px !important;">
         <h3 class="ui header">Filter by Year:</h3>
@@ -88,3 +131,4 @@
     </div>
 
 </div>
+

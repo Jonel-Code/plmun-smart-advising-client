@@ -1,8 +1,8 @@
 .student-portal-card {
     /*border: 0.5px solid lightgray;*/
-    overflow: auto;
-    position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
+    /*overflow: auto;*/
+    position: inherit;
+    /*top: 0; right: 0; bottom: 0; left: 0;*/
     /*border: 15px solid orange;*/
     /*margin: inherit;*/
     /*padding: inherit;*/
@@ -13,7 +13,7 @@
     /*-webkit-transform: translate(-50%, -40%);*/
     /*transform: translate(-50%, -40%);*/
     width: inherit;
-    height: 100vh;
+    height: inherit;
     /* min-width: 1440px !important;
     min-height: 758px !important; */
 }
@@ -54,8 +54,8 @@
 
 .card-content-wrapper-main {
     /*border: 1px black solid;*/
-    padding: 0 !important;
-    padding-bottom: 20px !important;;
+    /*padding: 0 !important;*/
+    /*padding-bottom: 20px !important;;*/
 }
 
 .content-card {
