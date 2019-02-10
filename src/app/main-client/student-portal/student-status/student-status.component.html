@@ -44,25 +44,29 @@
 
             <ng-container matColumnDef="code">
                 <th  mat-header-cell mat-sort-header *matHeaderCellDef >Subject Code</th>
-                <td *matCellDef="let sub" data-label="Subject Code">{{sub.code | uppercase}}</td>
+                <td *matCellDef="let sub" data-label="Subject Code">
+                    <app-mobile-label [mobileLabel]="'subject code: '"></app-mobile-label> {{sub.code | uppercase}}
+                </td>
                 <!--<th mat-header-cell *matHeaderCellDef mat-sort-header> Code</th>-->
                 <!--<td mat-cell *matCellDef="let sub"> {{sub.code | uppercase}}</td>-->
             </ng-container>
 
             <ng-container matColumnDef="title">
                 <th mat-header-cell mat-sort-header  *matHeaderCellDef >Title</th>
-                <td *matCellDef="let sub" data-label="Title"> {{sub.title | titlecase}}</td>
+                <td *matCellDef="let sub" data-label="Title">
+                    <app-mobile-label [mobileLabel]="'subject title: '"></app-mobile-label> {{sub.title | titlecase}}</td>
             </ng-container>
 
             <ng-container matColumnDef="total_units">
                 <th mat-header-cell mat-sort-header  *matHeaderCellDef >Total Units</th>
-                <td *matCellDef="let sub " data-label="Total Unit"> {{sub.total_units + ' units'}}</td>
+                <td *matCellDef="let sub " data-label="Total Unit">
+                    <app-mobile-label [mobileLabel]="'Units: '"></app-mobile-label> {{sub.total_units + ' units'}}</td>
             </ng-container>
 
             <ng-container matColumnDef="pre_req">
                 <th mat-header-cell mat-sort-header  *matHeaderCellDef >Pre requisite</th>
                 <td *matCellDef="let sub" data-label="Pre requisite">
-                    {{ (!(student_years.includes(sub.pre_req)) ? ((sub.pre_req === '') ? 'none': sub.pre_req ) :
+                    <app-mobile-label [mobileLabel]="'Pre-requisite(s): '"></app-mobile-label> {{ (!(student_years.includes(sub.pre_req)) ? ((sub.pre_req === '') ? 'none': sub.pre_req ) :
                     sub.pre_req
                     + ' year standing') | uppercase }}
                 </td>
@@ -70,12 +74,14 @@
 
             <ng-container matColumnDef="year">
                 <th mat-header-cell mat-sort-header  *matHeaderCellDef >Year</th>
-                <td *matCellDef="let sub"  data-label="Year"> {{student_years[sub.year-1] + ' year' | uppercase }}</td>
+                <td *matCellDef="let sub"  data-label="Year">
+                    <app-mobile-label [mobileLabel]="'Student Year: '"></app-mobile-label> {{student_years[sub.year-1] + ' year' | uppercase }}</td>
             </ng-container>
 
             <ng-container matColumnDef="semester">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef >Semester</th>
-                <td *matCellDef="let sub" data-label="Semester"> {{sub.semester + ' semester' | uppercase}}</td>
+                <td *matCellDef="let sub" data-label="Semester">
+                    <app-mobile-label [mobileLabel]="'Semester: '"></app-mobile-label> {{sub.semester + ' semester' | uppercase}}</td>
             </ng-container>
 
             <!--<ng-container matColumnDef="paths">-->

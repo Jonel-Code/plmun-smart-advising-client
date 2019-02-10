@@ -3,9 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  // base_api_url: 'http://127.0.0.1:5000'
-  base_api_url: 'http://127.0.0.1:5000'
+    production: false,
+    // base_api_url: 'http://127.0.0.1:5000'
+    base_api_url: 'http://127.0.0.1:5000',
+    min_desktop_width: 769
+
 };
 
 /*

@@ -57,6 +57,7 @@ import { ResSideNavComponent } from './main-client/admin-portal/res-side-nav/res
 import {LayoutModule} from '@angular/cdk/layout';
 import { StatisticsComponent } from './main-client/admin-portal/admin-comp/statistics/statistics.component';
 import { OpenedSubjComponent } from './main-client/admin-portal/admin-comp/opened-subj/opened-subj.component';
+import { MobileLabelComponent } from './helper-comps/mobile-label/mobile-label.component';
 
 
 @NgModule({
@@ -87,7 +88,8 @@ import { OpenedSubjComponent } from './main-client/admin-portal/admin-comp/opene
         AdminLoginComponent,
         ResSideNavComponent,
         StatisticsComponent,
-        OpenedSubjComponent
+        OpenedSubjComponent,
+        MobileLabelComponent
     ],
     entryComponents: [
         // AddRequirementsModalComponent,
