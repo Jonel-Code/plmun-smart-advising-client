@@ -9,6 +9,8 @@ import {AdminLoginComponent} from '../../admin-login/admin-login.component';
 import {AdminPortalComponent} from '../../main-client/admin-portal/admin-portal.component';
 import {StatisticsComponent} from '../../main-client/admin-portal/admin-comp/statistics/statistics.component';
 import {OpenedSubjComponent} from '../../main-client/admin-portal/admin-comp/opened-subj/opened-subj.component';
+import {AdminCurComponent} from '../../main-client/admin-portal/admin-comp/admin-cur/admin-cur.component';
+import {FacultyAccComponent} from '../../main-client/admin-portal/admin-comp/faculty-acc/faculty-acc.component';
 // import {HomeComponent} from '../../home/home.component';
 // import {UserComponent} from '../user/user.component';
 // import {HomeComponent} from '../../home/home.component';
@@ -41,7 +43,9 @@ const routes: Routes = [
         children: [
             {path: '*', redirectTo: 'advising_statistics'},
             {path: 'advising_statistics', component: StatisticsComponent},
-            {path: 'opened_subjects', component: OpenedSubjComponent}
+            {path: 'opened_subjects', component: OpenedSubjComponent},
+            {path: 'admin_curriculum', component: AdminCurComponent},
+            {path: 'faculty_accounts', component: FacultyAccComponent}
         ]
     },
     {path: '**', redirectTo: RoutingPaths.login},

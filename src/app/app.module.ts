@@ -58,6 +58,8 @@ import {LayoutModule} from '@angular/cdk/layout';
 import { StatisticsComponent } from './main-client/admin-portal/admin-comp/statistics/statistics.component';
 import { OpenedSubjComponent } from './main-client/admin-portal/admin-comp/opened-subj/opened-subj.component';
 import { MobileLabelComponent } from './helper-comps/mobile-label/mobile-label.component';
+import { AdminCurComponent } from './main-client/admin-portal/admin-comp/admin-cur/admin-cur.component';
+import { FacultyAccComponent } from './main-client/admin-portal/admin-comp/faculty-acc/faculty-acc.component';
 
 
 @NgModule({
@@ -89,7 +91,9 @@ import { MobileLabelComponent } from './helper-comps/mobile-label/mobile-label.c
         ResSideNavComponent,
         StatisticsComponent,
         OpenedSubjComponent,
-        MobileLabelComponent
+        MobileLabelComponent,
+        AdminCurComponent,
+        FacultyAccComponent
     ],
     entryComponents: [
         // AddRequirementsModalComponent,

@@ -18,7 +18,9 @@ export class ResSideNavComponent implements OnDestroy, OnInit {
 
     nav_options: NavLink[] = [
         {title: 'Advising Statistics', link: 'advising_statistics'},
-        {title: 'Opened Subjects', link: 'opened_subjects'}
+        {title: 'Opened Subjects', link: 'opened_subjects'},
+        {title: 'Curriculum', link: 'admin_curriculum'},
+        {title: 'Faculty Accounts', link: 'faculty_accounts'}
     ];
 
     child_link_loading = false;
