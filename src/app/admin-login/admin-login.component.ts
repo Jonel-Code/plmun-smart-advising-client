@@ -1,5 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
+import {ALoginService} from '../main-client/admin-portal/a-services/a-login.service';
 
 @Component({
     selector: 'app-admin-login',
@@ -19,7 +20,8 @@ export class AdminLoginComponent implements OnInit {
         return this.pass.nativeElement.value.toString().trim();
     }
 
-    constructor(private router: Router) {
+    constructor(private router: Router,
+                private aLoginService: ALoginService) {
     }
 
     ngOnInit() {
@@ -29,8 +31,17 @@ export class AdminLoginComponent implements OnInit {
         if (!this.has_valid_inputs()) {
             return;
         }
+
+        this.aLoginService.adminLogin(this.uname_value, this.pass_value)
+            .then(d => {
+                const a_data = d['account_data'];
+                if (typeof a_data !== 'undefined') {
+                    this.redirect_to_dashboard();
+                } else {
+                    alert('Wrong Username and Password');
+                }
+            });
         // call login then render login authentication result
-        this.redirect_to_dashboard();
     }
 
     redirect_to_dashboard() {

@@ -63,6 +63,7 @@ import {FacultyAccComponent} from './main-client/admin-portal/admin-comp/faculty
 import {MakeAdminComponent} from './main-client/admin-portal/admin-comp/admin-parts/make-admin/make-admin.component';
 import {DeptListingService} from './main-client/admin-portal/a-services/dept-listing.service';
 import {NewFAccService} from './main-client/admin-portal/a-services/new-f-acc.service';
+import {ALoginService} from './main-client/admin-portal/a-services/a-login.service';
 
 
 @NgModule({
@@ -127,7 +128,8 @@ import {NewFAccService} from './main-client/admin-portal/a-services/new-f-acc.se
         UserAuthenticationGuard,
         StudentLoginGuard,
         DeptListingService,
-        NewFAccService
+        NewFAccService,
+        ALoginService
         // {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent]
