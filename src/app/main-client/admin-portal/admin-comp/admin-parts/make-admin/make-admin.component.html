@@ -1,0 +1,38 @@
+<div class="ui form">
+    <div class="field">
+        <label>Faculty ID</label>
+        <div class="ui {{loadingDisableSemantic()}} input {{semanticErrorNullString(f_id)}}">
+            <input type="text" placeholder="Enter Faculty ID" value="" [(ngModel)]="f_id">
+        </div>
+    </div>
+    <div class="field">
+        <label>Password</label>
+        <div class="ui {{loadingDisableSemantic()}} input {{semanticErrorNullString(pass)}}">
+            <input type="password" placeholder="Password" value="" [(ngModel)]="pass">
+        </div>
+    </div>
+    <div class="field">
+        <label>Verify Password</label>
+        <div class="ui {{loadingDisableSemantic()}} input">
+            <input type="password" placeholder="Retype Password" value="" [(ngModel)]="v_pass">
+        </div>
+        <div *ngIf="!isPasswordVerified()"
+             class="ui pointing red basic label">
+            {{v_message}}
+        </div>
+    </div>
+    <div class="field">
+        <label>Department</label>
+        <select class="ui {{loadingDisableSemantic()}} selection dropdown {{semanticErrorNullString(selectedDept)}} " [(ngModel)]="selectedDeptTitle">
+            <option *ngFor="let d of deptItems"
+                    [value]="d.title">
+                {{d.title.toUpperCase()}}
+            </option>
+        </select>
+    </div>
+    <button class="ui {{ loading ? 'disabled' : ''}} button"
+            type="submit"
+            (click)="createNewFacultyAccount()">
+        Create Account
+    </button>
+</div>

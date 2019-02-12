@@ -42,24 +42,27 @@ import {MaterialModuleModule} from './core/material-module/material-module.modul
 import {AppRoutingModule} from './core/app-routing/app-routing.module';
 import {LoginService} from './login/login.service';
 import {UserAuthenticationGuard} from './user-authentication.guard';
-import { StudentPortalComponent } from './main-client/student-portal/student-portal.component';
-import { StudentStatusComponent } from './main-client/student-portal/student-status/student-status.component';
-import { StudentAdvisingComponent } from './main-client/student-portal/student-advising/student-advising.component';
+import {StudentPortalComponent} from './main-client/student-portal/student-portal.component';
+import {StudentStatusComponent} from './main-client/student-portal/student-status/student-status.component';
+import {StudentAdvisingComponent} from './main-client/student-portal/student-advising/student-advising.component';
 import {StudentLoginGuard} from './login/student-login.guard';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { SubjectPathsComponent } from './main-client/student-portal/main-components/subject-paths/subject-paths.component';
-import { SPPopoverComponent } from './main-client/student-portal/main-components/subject-paths-popover/app-s-p-popover.component';
-import { AdvisingFormComponent } from './main-client/student-portal/main-components/advising-form/advising-form.component';
+import {SubjectPathsComponent} from './main-client/student-portal/main-components/subject-paths/subject-paths.component';
+import {SPPopoverComponent} from './main-client/student-portal/main-components/subject-paths-popover/app-s-p-popover.component';
+import {AdvisingFormComponent} from './main-client/student-portal/main-components/advising-form/advising-form.component';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
-import { AdminPortalComponent } from './main-client/admin-portal/admin-portal.component';
-import { AdminLoginComponent } from './admin-login/admin-login.component';
-import { ResSideNavComponent } from './main-client/admin-portal/res-side-nav/res-side-nav.component';
+import {AdminPortalComponent} from './main-client/admin-portal/admin-portal.component';
+import {AdminLoginComponent} from './admin-login/admin-login.component';
+import {ResSideNavComponent} from './main-client/admin-portal/res-side-nav/res-side-nav.component';
 import {LayoutModule} from '@angular/cdk/layout';
-import { StatisticsComponent } from './main-client/admin-portal/admin-comp/statistics/statistics.component';
-import { OpenedSubjComponent } from './main-client/admin-portal/admin-comp/opened-subj/opened-subj.component';
-import { MobileLabelComponent } from './helper-comps/mobile-label/mobile-label.component';
-import { AdminCurComponent } from './main-client/admin-portal/admin-comp/admin-cur/admin-cur.component';
-import { FacultyAccComponent } from './main-client/admin-portal/admin-comp/faculty-acc/faculty-acc.component';
+import {StatisticsComponent} from './main-client/admin-portal/admin-comp/statistics/statistics.component';
+import {OpenedSubjComponent} from './main-client/admin-portal/admin-comp/opened-subj/opened-subj.component';
+import {MobileLabelComponent} from './helper-comps/mobile-label/mobile-label.component';
+import {AdminCurComponent} from './main-client/admin-portal/admin-comp/admin-cur/admin-cur.component';
+import {FacultyAccComponent} from './main-client/admin-portal/admin-comp/faculty-acc/faculty-acc.component';
+import {MakeAdminComponent} from './main-client/admin-portal/admin-comp/admin-parts/make-admin/make-admin.component';
+import {DeptListingService} from './main-client/admin-portal/a-services/dept-listing.service';
+import {NewFAccService} from './main-client/admin-portal/a-services/new-f-acc.service';
 
 
 @NgModule({
@@ -93,7 +96,8 @@ import { FacultyAccComponent } from './main-client/admin-portal/admin-comp/facul
         OpenedSubjComponent,
         MobileLabelComponent,
         AdminCurComponent,
-        FacultyAccComponent
+        FacultyAccComponent,
+        MakeAdminComponent
     ],
     entryComponents: [
         // AddRequirementsModalComponent,
@@ -121,7 +125,9 @@ import { FacultyAccComponent } from './main-client/admin-portal/admin-comp/facul
         CurriculumService,
         LoginService,
         UserAuthenticationGuard,
-        StudentLoginGuard
+        StudentLoginGuard,
+        DeptListingService,
+        NewFAccService
         // {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent]
