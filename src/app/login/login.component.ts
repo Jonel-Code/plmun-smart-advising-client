@@ -5,6 +5,7 @@ import {ICourseCurriculum, IStudentInformation, ISubject, ISubjectGrade, LoginSe
 // import {Routings} from '../core/app-routing/app-routing.module';
 // import {routePaths} from '../core/app-routing/app-routing.module';
 import {RoutingPaths} from '../core/app-routing/routingPaths';
+import swal from 'sweetalert';
 
 @Component({
     selector: 'app-login',
@@ -38,89 +39,124 @@ export class LoginComponent implements OnInit {
         // console.log(this.appRouting.RoutingPaths.home);
         this.loginService.logout();
         this.sending = true;
+
+        const p = new Promise((resolve, reject) => {
+            this.loginService.login(this.form.value.studentId, this.form.value.password)
+                .subscribe(data => {
+                    console.log('response data', data);
+                    resolve(data);
+                    this.sending = false;
+                }, (e) => {
+                    console.log('LOGIN error', e);
+                    reject(e);
+                    this.sending = false;
+                    if (e['status'] === 404) {
+                        swal({
+                            text: 'Account not found',
+                            icon: 'warning',
+                            buttons: {
+                                'Return': true
+                            }
+                        });
+                    }
+                });
+        });
         const self = this;
-        const x = setInterval(function () {
-            console.log(`student_id: ${self.form.value.studentId} password: ${self.form.value.password}`);
-            if (self.form.valid) {
-                self.loginService.login(self.form.value.studentId, self.form.value.password)
-                    .subscribe(
-                        data => {
-                            console.log(data);
-                            const status: StudentStatusEnum = (data['status'] === 'regular')
-                                ? StudentStatusEnum.regular : StudentStatusEnum.irregular;
-                            const subjs: ISubject[] = [];
-                            const raw_course_cur = data['course_curriculum'];
-                            const subject_paths = raw_course_cur['paths'];
-                            console.log('subject_paths:', subject_paths );
-                            for (const i of raw_course_cur['subjects']) {
-                                console.log(i);
-                                subjs.push({
-                                    code: i['code'],
-                                    title: i['title'],
-                                    total_units: Number(i['total_units']),
-                                    pre_req: i['pre_req'],
-                                    year: i['year'],
-                                    semester: i['semester']
-                                });
-                            }
-                            const course_curriculum: ICourseCurriculum = {
-                                course: raw_course_cur['course'],
-                                year: raw_course_cur['year'],
-                                subjects: subjs,
-                                paths: subject_paths
-                            };
-                            const subjects_taken: ISubjectGrade[] = [];
-                            for (const i of data['subjects_taken']) {
-                                console.log(i);
-                                subjects_taken.push({
-                                    code: i['code'],
-                                    grade: Number(i['grade'])
-                                });
-                            }
-                            const studInfo: IStudentInformation = {
-                                name: data['name'],
-                                id: data['id'],
-                                course: data['course'],
-                                year: data['year'],
-                                status: status,
-                                course_curriculum: course_curriculum,
-                                subjects_taken: subjects_taken,
-                                can_take: data['can_take'],
-                                back_subjects: data['back_subjects'],
-                                incoming_semester: data['incoming_semester']
-                            };
-                            self.loginService.setStudentToken(studInfo);
-                            console.log('student info', self.loginService.getStudentToken());
-                            const req_token = atob(self.loginService.getStudentToken());
-                            const req_json = JSON.parse(req_token);
-                            alert(`data received: \nname: ${req_json.name}\nstudent ID: ${req_json.id}\ncourse: ${req_json.course}`);
-                            self.router.navigate([self.routePaths.RoutingPaths.home]);
-                            // self.loginService.sendToken(data['access_token']);
-                            // self.loginService.sendUTypeToken(data['type']);
-                            // self.loginService.sendUsernameToken(data['username']);
-                            // if (data['type'] === 0) {
-                            //     self.router.navigate([self.routePaths.RoutingPaths.adminDashboard]);
-                            // } else {
-                            //     self.router.navigate([self.routePaths.RoutingPaths.home]);
-                            // }
-                            // console.log(self.loginService.getToken());
-                        }, err => {
-                            console.log(err);
-                            alert(err['error']['message']);
-                        }
-                    );
-                // const get_users = self.loginService.getUsers()
-                //   .subscribe(
-                //     data => {
-                //       console.log(data);
-                //     }
-                //   );
-            } else {
-                alert('INVALID AUTHENTICATIONS');
+        p.then((data) => {
+            console.log(data);
+            const status: StudentStatusEnum = (data['status'] === 'regular')
+                ? StudentStatusEnum.regular : StudentStatusEnum.irregular;
+            const subjs: ISubject[] = [];
+            const raw_course_cur = data['course_curriculum'];
+            const subject_paths = raw_course_cur['paths'];
+            console.log('subject_paths:', subject_paths);
+            for (const i of raw_course_cur['subjects']) {
+                console.log(i);
+                subjs.push({
+                    code: i['code'],
+                    title: i['title'],
+                    total_units: Number(i['total_units']),
+                    pre_req: i['pre_req'],
+                    year: i['year'],
+                    semester: i['semester']
+                });
             }
-            self.sending = false;
-            clearInterval(x);
-        }, 1500);
+            const course_curriculum: ICourseCurriculum = {
+                course: raw_course_cur['course'],
+                year: raw_course_cur['year'],
+                subjects: subjs,
+                paths: subject_paths
+            };
+            const subjects_taken: ISubjectGrade[] = [];
+            for (const i of data['subjects_taken']) {
+                console.log(i);
+                subjects_taken.push({
+                    code: i['code'],
+                    grade: Number(i['grade'])
+                });
+            }
+            const studInfo: IStudentInformation = {
+                name: data['name'],
+                id: data['id'],
+                course: data['course'],
+                year: data['year'],
+                status: status,
+                course_curriculum: course_curriculum,
+                subjects_taken: subjects_taken,
+                can_take: data['can_take'],
+                back_subjects: data['back_subjects'],
+                incoming_semester: data['incoming_semester']
+            };
+            self.loginService.setStudentToken(studInfo);
+            console.log('student info', self.loginService.getStudentToken());
+            const req_token = atob(self.loginService.getStudentToken());
+            const req_json = JSON.parse(req_token);
+            const r_message = `name: ${req_json.name}\nstudent ID: ${req_json.id}\ncourse: ${req_json.course}`;
+            swal({
+                title: 'Data received',
+                text: r_message,
+                buttons: {
+                    OKAY: true
+                }
+            }).then(d => {
+                self.router.navigate([self.routePaths.RoutingPaths.home]);
+            });
+        });
+
+        // const self = this;
+        // const x = setInterval(function () {
+        //     console.log(`student_id: ${self.form.value.studentId} password: ${self.form.value.password}`);
+        //     if (self.form.valid) {
+        //         self.loginService.login(self.form.value.studentId, self.form.value.password)
+        //             .subscribe(
+        //                 data => {
+        //
+        //                     // self.loginService.sendToken(data['access_token']);
+        //                     // self.loginService.sendUTypeToken(data['type']);
+        //                     // self.loginService.sendUsernameToken(data['username']);
+        //                     // if (data['type'] === 0) {
+        //                     //     self.router.navigate([self.routePaths.RoutingPaths.adminDashboard]);
+        //                     // } else {
+        //                     //     self.router.navigate([self.routePaths.RoutingPaths.home]);
+        //                     // }
+        //                     // console.log(self.loginService.getToken());
+        //                 }, err => {
+        //                     console.log(err);
+        //                     alert(err['error']['message']);
+        //                 }
+        //             );
+        //         // const get_users = self.loginService.getUsers()
+        //         //   .subscribe(
+        //         //     data => {
+        //         //       console.log(data);
+        //         //     }
+        //         //   );
+        //     } else {
+        //         alert('INVALID AUTHENTICATIONS');
+        //     }
+        //     self.sending = false;
+        //     clearInterval(x);
+        // }, 1500);
         return false;
     }
 

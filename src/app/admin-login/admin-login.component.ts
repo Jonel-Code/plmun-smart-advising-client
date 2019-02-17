@@ -56,16 +56,13 @@ export class AdminLoginComponent implements OnInit {
             } else {
                 swal({
                     title: 'Wrong Username and Password',
+                    icon: 'error',
                     buttons: {
                         Return: true
-                    },
-                    icon: 'error',
+                    }
                 });
             }
         });
-
-
-        // call login then render login authentication result
     }
 
     login_user() {
