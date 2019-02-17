@@ -1,0 +1,48 @@
+<div class="raised card ex-card" (click)="addSubject()">
+    <h4 class="ui center aligned icon header ex-card-content">
+        <i class="circular plus icon"></i>
+        New Curriculum
+    </h4>
+</div>
+
+<ng-template let-context let-modal="modal" #modalTemplate>
+    <div class="header">Upload New Curriculum</div>
+    <div class="content">
+        <form class="ui form">
+            <div class="field">
+                <div class="ui labeled fluid input">
+                    <div class="ui teal label">
+                        COURSE
+                    </div>
+                    <input type="text" placeholder="Course">
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui labeled fluid input">
+                    <div class="ui teal label">
+                        Year
+                    </div>
+                    <input type="text" placeholder="Year">
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui labeled fluid input">
+                    <div class="ui teal label">
+                        Description
+                    </div>
+                    <input type="text" placeholder="Description">
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui left action input">
+                    <button class="ui teal labeled icon button">
+                        <i class="file icon"></i>
+                        Subjects
+                    </button>
+                    <input type="text">
+                </div>
+            </div>
+            <button class="ui right floated positive button" type="submit">Submit</button>
+        </form>
+    </div>
+</ng-template>

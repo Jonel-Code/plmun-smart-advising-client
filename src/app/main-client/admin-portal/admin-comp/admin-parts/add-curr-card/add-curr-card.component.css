@@ -1,0 +1,7 @@
+.ex-card {
+    border: 1px rgba(3,6,5,0.31);
+    margin: 10px;
+}
+.ex-card-content {
+    padding: 7px;
+}

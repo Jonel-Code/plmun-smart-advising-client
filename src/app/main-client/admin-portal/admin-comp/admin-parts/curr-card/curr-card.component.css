@@ -1,0 +1,18 @@
+.ex-card-content {
+    padding: 7px;
+}
+
+.ex-card {
+    border: 1px solid darkgray;
+    margin: 10px;
+}
+
+.center-modal {
+    position: fixed;
+    top: 10%;
+    left: 18.5%;
+    z-index: 1050;
+    width: 80%;
+    height: 80%;
+    margin-left: -10%;
+}

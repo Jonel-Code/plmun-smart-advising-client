@@ -3,10 +3,17 @@
 @import "../node_modules/vis/dist/vis.css";
 @import "assets/rules.css";
 
-html, body { 
-    margin : 0;
-    height: 100%; 
+html, body {
+    margin: 0;
+    height: 100%;
     padding: 0;
 }
-body { font-family: 'Roboto', sans-serif;}
 
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.ui.modal.transition.active.visible.normal {
+    position: static !important;
+    margin: 0 auto !important;
+}

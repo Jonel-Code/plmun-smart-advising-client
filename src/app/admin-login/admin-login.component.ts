@@ -26,6 +26,7 @@ export class AdminLoginComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.aLoginService.clearLoginData();
     }
 
     admin_login() {

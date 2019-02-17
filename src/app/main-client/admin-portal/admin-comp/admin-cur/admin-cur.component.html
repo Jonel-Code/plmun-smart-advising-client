@@ -1,3 +1,4 @@
-<p>
-  admin-cur works!
-</p>
+<div class="ui cards">
+    <app-curr-card *ngFor="let d of dataSet" [curriculumData]="d"></app-curr-card>
+    <app-add-curr-card></app-add-curr-card>
+</div>

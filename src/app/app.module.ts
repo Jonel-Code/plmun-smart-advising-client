@@ -64,6 +64,10 @@ import {MakeAdminComponent} from './main-client/admin-portal/admin-comp/admin-pa
 import {DeptListingService} from './main-client/admin-portal/a-services/dept-listing.service';
 import {NewFAccService} from './main-client/admin-portal/a-services/new-f-acc.service';
 import {ALoginService} from './main-client/admin-portal/a-services/a-login.service';
+import { CurrCardComponent } from './main-client/admin-portal/admin-comp/admin-parts/curr-card/curr-card.component';
+import {CurrListingService} from './main-client/admin-portal/a-services/curr-listing.service';
+import { CurrSubjListModalComponent } from './main-client/admin-portal/admin-comp/admin-parts/curr-subj-list/curr-subj-list-modal.component';
+import { AddCurrCardComponent } from './main-client/admin-portal/admin-comp/admin-parts/add-curr-card/add-curr-card.component';
 
 
 @NgModule({
@@ -98,13 +102,15 @@ import {ALoginService} from './main-client/admin-portal/a-services/a-login.servi
         MobileLabelComponent,
         AdminCurComponent,
         FacultyAccComponent,
-        MakeAdminComponent
+        MakeAdminComponent,
+        CurrCardComponent,
+        AddCurrCardComponent
     ],
     entryComponents: [
         // AddRequirementsModalComponent,
         // AddSubjectsComponent,
         // ModifySubjectModalComponent,
-        AdvisingFormComponent,
+        AdvisingFormComponent
     ],
     imports: [
         NgbModule,
@@ -117,7 +123,8 @@ import {ALoginService} from './main-client/admin-portal/a-services/a-login.servi
         MaterialModuleModule,
         AppRoutingModule,
         SuiModule,
-        LayoutModule
+        LayoutModule,
+        SuiModule
     ],
     providers: [
         // SubjectService,
@@ -129,7 +136,8 @@ import {ALoginService} from './main-client/admin-portal/a-services/a-login.servi
         StudentLoginGuard,
         DeptListingService,
         NewFAccService,
-        ALoginService
+        ALoginService,
+        CurrListingService
         // {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent]
