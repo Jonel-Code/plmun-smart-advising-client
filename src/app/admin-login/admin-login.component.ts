@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {ALoginService} from '../main-client/admin-portal/a-services/a-login.service';
+import swal from 'sweetalert';
 
 @Component({
     selector: 'app-admin-login',
@@ -32,16 +33,43 @@ export class AdminLoginComponent implements OnInit {
             return;
         }
 
-        this.aLoginService.adminLogin(this.uname_value, this.pass_value)
-            .then(d => {
-                const a_data = d['account_data'];
-                if (typeof a_data !== 'undefined') {
-                    this.redirect_to_dashboard();
-                } else {
-                    alert('Wrong Username and Password');
-                }
-            });
+        swal({
+            text: 'Login using this account?',
+            icon: 'info',
+            buttons: {
+                Yes: true,
+                Cancel: true,
+            }
+        }).then(x => {
+            switch (x) {
+                case 'Yes':
+                    return this.login_user();
+                case 'Cancel':
+                    break;
+                default:
+
+            }
+        }).then(d => {
+            const a_data = d['account_data'];
+            if (typeof a_data !== 'undefined') {
+                this.redirect_to_dashboard();
+            } else {
+                swal({
+                    title: 'Wrong Username and Password',
+                    buttons: {
+                        Return: true
+                    },
+                    icon: 'error',
+                });
+            }
+        });
+
+
         // call login then render login authentication result
+    }
+
+    login_user() {
+        return this.aLoginService.adminLogin(this.uname_value, this.pass_value);
     }
 
     redirect_to_dashboard() {

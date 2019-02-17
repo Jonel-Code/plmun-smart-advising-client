@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
 import {ALoginService} from './a-login.service';
+import swal from 'sweetalert';
 
 @Injectable({
     providedIn: 'root'
@@ -22,7 +23,13 @@ export class AdminAccessGuard implements CanActivate {
                 const a_data = d['account_data'];
                 const r = (typeof a_data !== 'undefined');
                 if (!r) {
-                    this.aLoginService.toLogin();
+                    swal({
+                        title: 'Cannot Access',
+                        text: 'Please re-login',
+                        icon: 'error'
+                    }).then(x => {
+                        this.aLoginService.toLogin();
+                    });
                 }
                 return r;
             });
