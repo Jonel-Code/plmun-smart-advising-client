@@ -11,6 +11,7 @@ import {StatisticsComponent} from '../../main-client/admin-portal/admin-comp/sta
 import {OpenedSubjComponent} from '../../main-client/admin-portal/admin-comp/opened-subj/opened-subj.component';
 import {AdminCurComponent} from '../../main-client/admin-portal/admin-comp/admin-cur/admin-cur.component';
 import {FacultyAccComponent} from '../../main-client/admin-portal/admin-comp/faculty-acc/faculty-acc.component';
+import {AdminAccessGuard} from '../../main-client/admin-portal/a-services/admin-access.guard';
 // import {HomeComponent} from '../../home/home.component';
 // import {UserComponent} from '../user/user.component';
 // import {HomeComponent} from '../../home/home.component';
@@ -40,24 +41,25 @@ const routes: Routes = [
     {
         path: 'admin/main',
         component: AdminPortalComponent,
+        canActivate: [AdminAccessGuard],
         children: [
             {path: '*', redirectTo: 'advising_statistics'},
-            {path: 'advising_statistics', component: StatisticsComponent},
-            {path: 'opened_subjects', component: OpenedSubjComponent},
-            {path: 'admin_curriculum', component: AdminCurComponent},
-            {path: 'faculty_accounts', component: FacultyAccComponent}
+            {path: 'advising_statistics', component: StatisticsComponent, canActivate: [AdminAccessGuard]},
+            {path: 'opened_subjects', component: OpenedSubjComponent, canActivate: [AdminAccessGuard]},
+            {path: 'admin_curriculum', component: AdminCurComponent, canActivate: [AdminAccessGuard]},
+            {path: 'faculty_accounts', component: FacultyAccComponent, canActivate: [AdminAccessGuard]}
         ]
     },
     {path: '**', redirectTo: RoutingPaths.login},
-    // {path: 'experiment', component: HomeComponent},
-    // {path: routePaths.home, component: HomeComponent, canActivate: [UserAuthenticationGuard]},
-    // {path: routePaths.mainMenu, component: MainMenuComponent, canActivate: [UserAuthenticationGuard]},
-    // {path: routePaths.studentInfo, component: StudentInfoComponent, canActivate: [UserAuthenticationGuard]},
-    // {path: routePaths.adminDashboard, component: AdministratorComponent},
-    // {path: routePaths.adminDashboard, component: AdministratorComponent, canActivate: [AdminVerificationGuard]},
-    // {path: routePaths.adminDashboard, component: AdministratorComponent, canActivate: [UserAuthenticationGuard]},
-    // {path: RoutingPaths.home, component: UserComponent},
-    // {path: '**', redirectTo: RoutingPaths.login}
+// {path: 'experiment', component: HomeComponent},
+// {path: routePaths.home, component: HomeComponent, canActivate: [UserAuthenticationGuard]},
+// {path: routePaths.mainMenu, component: MainMenuComponent, canActivate: [UserAuthenticationGuard]},
+// {path: routePaths.studentInfo, component: StudentInfoComponent, canActivate: [UserAuthenticationGuard]},
+// {path: routePaths.adminDashboard, component: AdministratorComponent},
+// {path: routePaths.adminDashboard, component: AdministratorComponent, canActivate: [AdminVerificationGuard]},
+// {path: routePaths.adminDashboard, component: AdministratorComponent, canActivate: [UserAuthenticationGuard]},
+// {path: RoutingPaths.home, component: UserComponent},
+// {path: '**', redirectTo: RoutingPaths.login}
 ];
 
 @NgModule({
