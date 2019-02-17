@@ -66,7 +66,7 @@ import {NewFAccService} from './main-client/admin-portal/a-services/new-f-acc.se
 import {ALoginService} from './main-client/admin-portal/a-services/a-login.service';
 import { CurrCardComponent } from './main-client/admin-portal/admin-comp/admin-parts/curr-card/curr-card.component';
 import {CurrListingService} from './main-client/admin-portal/a-services/curr-listing.service';
-import { CurrSubjListModalComponent } from './main-client/admin-portal/admin-comp/admin-parts/curr-subj-list/curr-subj-list-modal.component';
+// import { CurrSubjListModalComponent } from './main-client/admin-portal/admin-comp/admin-parts/curr-subj-list/curr-subj-list-modal.component';
 import { AddCurrCardComponent } from './main-client/admin-portal/admin-comp/admin-parts/add-curr-card/add-curr-card.component';
 
 
