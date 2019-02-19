@@ -6,6 +6,15 @@
         <h1 (click)="snav.toggle()" class="example-app-name">
             {{load_admin_home() ? 'Admin Portal' :current_dashboard()}}
         </h1>
+        <span class="fill-space"></span>
+        <button class="blue circular big ui icon button"
+                suiPopup
+                popupHeader="Logout"
+                popupText="Click to logout"
+                [popupPlacement]="'left'"
+                (click)="logout()">
+            <i class="icon power off"></i>
+        </button>
     </mat-toolbar>
 
     <mat-sidenav-container class="c-sidenav-container"
@@ -18,10 +27,9 @@
                 <a mat-list-item
                    *ngFor="let nav of nav_options"
                    [routerLink]="['./' + nav.link]">
-                {{nav.title}}
+                    {{nav.title}}
                 </a>
             </mat-nav-list>
-
         </mat-sidenav>
 
         <!-- MAIN Content -->

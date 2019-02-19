@@ -11,6 +11,7 @@ import {ALoginService} from '../../a-services/a-login.service';
 export class AdminCurComponent implements OnInit {
 
     dataSet: CurriculumCardData[];
+    curr_is_loading: boolean;
 
     constructor(private currListingService: CurrListingService,
                 private aLoginService: ALoginService) {
@@ -22,6 +23,7 @@ export class AdminCurComponent implements OnInit {
     }
 
     loadCurrListing() {
+        this.curr_is_loading = true;
         const d = this.aLoginService.getUserData();
         const dept = d['department'];
         this.currListingService.getCurriculumOfDepartment(dept)
@@ -44,7 +46,13 @@ export class AdminCurComponent implements OnInit {
                         }
                     }
                 }
-            });
+            }).then(() => {
+            this.curr_is_loading = false;
+        });
+    }
+
+    reloadCurrListing(e) {
+        this.loadCurrListing();
     }
 
 }

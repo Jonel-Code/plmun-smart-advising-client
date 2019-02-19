@@ -39,6 +39,7 @@ import { CurrCardComponent } from './main-client/admin-portal/admin-comp/admin-p
 import {CurrListingService} from './main-client/admin-portal/a-services/curr-listing.service';
 import { AddCurrCardComponent } from './main-client/admin-portal/admin-comp/admin-parts/add-curr-card/add-curr-card.component';
 import {NewCurrService} from './main-client/admin-portal/a-services/new-curr.service';
+import {DelCurrService} from './main-client/admin-portal/a-services/del-curr.service';
 
 
 @NgModule({
@@ -89,7 +90,8 @@ import {NewCurrService} from './main-client/admin-portal/a-services/new-curr.ser
         NewFAccService,
         ALoginService,
         CurrListingService,
-        NewCurrService
+        NewCurrService,
+        DelCurrService
         // {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent]

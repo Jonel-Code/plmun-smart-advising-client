@@ -86,6 +86,29 @@ export class AddCurrCardComponent implements OnInit {
             this.new_cur_data.department.length === 0;
     }
 
+    excelTemplateDownload() {
+        const data = [
+            {
+                'subject code': '',
+                'title': '',
+                'units': '',
+                'pre-requisite': '',
+                'semester': '',
+                'year': ''
+            }
+        ];
+
+        /* make the worksheet */
+        const ws = XLSX.utils.json_to_sheet(data);
+
+        /* add to workbook */
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Subjects');
+
+        /* generate an XLSX file */
+        XLSX.writeFile(wb, 'Subject Upload Template.xlsx');
+    }
+
     upload_file(event) {
         this.reset_file_progress();
         this.file = event.target.files[0];

@@ -13,25 +13,63 @@
 </div>
 
 <ng-template let-context let-modal="modal" #modalTemplate>
-    <div class="header">Subject List</div>
+    <div class="iu large header">
+        {{curriculumData.course| uppercase}} - {{curriculumData.year| uppercase}}
+        <h5 class="sub header">Description: {{curriculumData.description| uppercase}}</h5>
+        <button class="negative ui tiny button" (click)="deleteCurriculum()">
+            Delete Curriculum
+        </button>
+    </div>
     <div class="content">
+        <div class="ui medium header">Subject List:</div>
         <table class="ui celled table">
             <thead>
             <tr>
                 <th>Subject ID</th>
                 <th>Subject Code</th>
                 <th>Title</th>
+                <th>Units</th>
                 <th>Pre-requisites</th>
+                <th>Semester</th>
+                <th>Year</th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let s of cur_data">
-                <td data-label="Subject ID">{{s.subject_id}}</td>
-                <td data-label="Subject Code">{{s.subject_code | uppercase}}</td>
-                <td data-label="Title">{{s.title}}</td>
-                <td data-label="Pre-requisites">{{s.pre_req.join(',') | uppercase}}</td>
+                <td data-label="Subject ID">
+                    <app-mobile-label [mobileLabel]="'Subject ID: '"></app-mobile-label>
+                    {{s.subject_id}}
+                </td>
+                <td data-label="Subject Code">
+                    <app-mobile-label [mobileLabel]="'Subject Code: '"></app-mobile-label>
+                    {{s.subject_code | uppercase}}
+                </td>
+                <td data-label="Title">
+                    <app-mobile-label [mobileLabel]="'Title: '"></app-mobile-label>
+                    {{s.title}}
+                </td>
+                <td data-label="Units">
+                    <app-mobile-label [mobileLabel]="'Units: '"></app-mobile-label>
+                    {{s.units | uppercase}}
+                </td>
+                <td data-label="Pre-requisites">
+                    <app-mobile-label [mobileLabel]="'Pre-requisites: '"></app-mobile-label>
+                    {{s.pre_req.length > 0 ? s.pre_req.join(',') : 'none' | uppercase}}
+                </td>
+                <td data-label="Semester">
+                    <app-mobile-label [mobileLabel]="'Semester: '"></app-mobile-label>
+                    {{s.semester | uppercase}}
+                </td>
+                <td data-label="Year">
+                    <app-mobile-label [mobileLabel]="'Year: '"></app-mobile-label>
+                    {{s.year | uppercase}}
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
+    <button class="right floated ui blue labeled icon button" (click)="downloadCurriculum()">
+        Download Curriculum Subjects
+        <i class="download icon"></i>
+    </button>
 </ng-template>

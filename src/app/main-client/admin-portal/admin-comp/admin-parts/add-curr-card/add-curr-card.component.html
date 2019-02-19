@@ -37,7 +37,7 @@
             <div class="field">
                 <div class="ui left action input">
                     <button class="ui teal labeled icon button" (click)="fileupload.click()">
-                        <i class="file icon"></i>
+                        <i class="file excel icon"></i>
                         Subjects
                     </button>
                     <input type="text" value="{{fileupload.value}}" readonly (click)="fileupload.click()"
@@ -49,6 +49,10 @@
                            accept=".xlsx">
                 </div>
             </div>
+            <button class="right aligned ui blue labeled icon button" (click)="excelTemplateDownload()">
+                Download Subjects Excel Template
+                <i class="download icon"></i>
+            </button>
             <sui-progress class="active" [value]="file_process_progress" [maximum]="fp_progress_max">
                 {{FILE_UPLOADING ? 'Readying File' : 'Finished'}}
             </sui-progress>

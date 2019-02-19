@@ -87,4 +87,10 @@ export class ResSideNavComponent implements OnDestroy, OnInit {
         return window.innerWidth <= 800 && window.innerHeight <= 600;
     }
 
+    logout() {
+        localStorage.clear();
+        // location.reload();
+        this.router.navigate(['admin-login']);
+    }
+
 }
