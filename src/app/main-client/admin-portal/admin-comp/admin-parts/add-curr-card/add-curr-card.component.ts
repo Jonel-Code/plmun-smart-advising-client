@@ -4,6 +4,7 @@ import {ALoginService} from '../../../a-services/a-login.service';
 import * as XLSX from 'xlsx';
 import {IBasicSubjectData, ICurriculumInstance, NewCurrService} from '../../../a-services/new-curr.service';
 import swal from 'sweetalert';
+import {HttpResponse} from '@angular/common/http';
 
 
 export interface NewCurrData {
@@ -162,29 +163,24 @@ export class AddCurrCardComponent implements OnInit {
         this.uploading_in_progress = true;
         this.newCurrService.createCurriculum(this.new_cur_data)
             .then((data: any) => {
+                console.log('data res', data);
                 const _cid: string = data['curriculum_id'];
                 if (typeof _cid !== 'undefined') {
                     return _cid;
                 }
-                this.uploading_in_progress = true;
                 return null;
             }, (rej) => {
                 this.uploading_in_progress = false;
+                return rej;
             }).then((_data: any) => {
-            if (typeof _data !== null) {
+            this.uploading_in_progress = false;
+            if (_data !== null) {
                 this.newCurrService.addSubjectToCurriculum(_data, this.data)
                     .then((resp) => {
                         const _r = resp['response'];
-                        let err_msg = 'No additional notes';
-                        if (typeof _r['errors'] !== 'undefined') {
-                            err_msg = 'There are some notes in the process\n';
-                            for (const item of _r['errors']) {
-                                err_msg += `\nsubject code: ${item['code']}, note: ${item['error']['note']}`;
-                            }
-                        }
                         swal({
                             title: 'Upload Finished',
-                            text: err_msg,
+                            text: 'Upload Successful',
                             buttons: {
                                 Back: true
                             }

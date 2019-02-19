@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../../../environments/environment';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {map} from 'rxjs/operators';
 import swal from 'sweetalert';
+import {swal_load} from '../../../helper-scripts/swal-loading';
 
 export interface ICurriculumInstance {
     year: string;
@@ -33,10 +33,11 @@ export class NewCurrService {
     }
 
     createCurriculum(curriculum: ICurriculumInstance) {
+        swal_load();
         const params = new HttpParams()
             .set('year', curriculum.year)
             .set('description', curriculum.description)
-            .set('course', curriculum.department)
+            .set('course', curriculum.course)
             .set('department', curriculum.department);
         const httpOptions = {
             headers: new HttpHeaders({
@@ -47,20 +48,26 @@ export class NewCurrService {
         return new Promise(((resolve, reject) => {
             this.http.post(this._new_curriculum_url, params.toString(), httpOptions)
                 .subscribe((result) => {
-                    resolve(result);
+                    resolve(result['body']);
                 }, (err: HttpResponse<any>) => {
                     console.log('createCurriculum err', err);
                     swal({
                         title: `HTTP error ${err.status} ${err.statusText}`,
                         text: `message: ${err['error']['message']}`
-                    }).then(() => {
-                        reject(err);
                     });
+                    reject(err);
                 });
-        }));
+        })).then((r) => {
+            swal.close();
+            return r;
+        }, (j) => {
+            swal.close();
+            return j;
+        });
     }
 
     addSubjectToCurriculum(curriculum_id: string, content: IBasicSubjectData[]) {
+        swal_load();
         const data = JSON.stringify(content);
         const params = new HttpParams()
             .set('curriculum_id', curriculum_id)
@@ -68,13 +75,27 @@ export class NewCurrService {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/x-www-form-urlencoded'
-            })
+            }),
+            observe: 'response' as 'body'
         };
-        return this.http.post(this._bulk_subject_url, params.toString(), httpOptions)
-            .pipe(map(result => {
-                return result;
-            }))
-            .toPromise();
+        return new Promise(((resolve, reject) => {
+            this.http.post(this._bulk_subject_url, params.toString(), httpOptions)
+                .subscribe((response) => {
+                    resolve(response['body']);
+                }, (err: HttpResponse<any>) => {
+                    swal({
+                        title: `ERROR: ${err.status} ${err.statusText}`,
+                        text: `message: ${err['error']['message']}`
+                    });
+                    reject(err);
+                });
+        })).then((r) => {
+            swal.close();
+            return r;
+        }, (rej: HttpResponse<any>) => {
+            swal.close();
+            return rej;
+        });
     }
 
 }
