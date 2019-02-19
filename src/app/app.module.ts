@@ -2,40 +2,11 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {SuiModule} from 'ng2-semantic-ui';
-
 import {AppComponent} from './app.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HomeComponent} from './home/home.component';
 import {CurriculumService} from './curriculum.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-
-// import {
-//   MatButtonModule,
-//   MatGridListModule,
-//   MatCardModule,
-//   MatMenuModule,
-//   MatIconModule,
-//   MatToolbarModule,
-//   MatSidenavModule,
-//   MatListModule
-// } from '@angular/material';
-// import {LayoutModule} from '@angular/cdk/layout';
-// import {UserComponent} from './core/user/user.component';
-// import {MainMenuComponent} from './main-menu/main-menu.component';
-// import {SubjectsComponent} from './administrator/subjects/subjects.component';
-// import {StudentsComponent} from './administrator/students/students.component';
-// import {PetitionComponent} from './administrator/petition/petition.component';
-// import {StudentInfoComponent} from './student-info/student-info.component';
-// import {AdministratorComponent} from './administrator/administrator.component';
-// import {ViewSubjectsComponent} from './administrator/subjects/view-subjects/view-subjects.component';
-// import {AddSubjectsComponent} from './administrator/subjects/add-subjects/add-subjects.component';
-// import {AdminVerificationGuard} from './administrator/admin-verification.guard';
-// import {SubjectService} from './administrator/subjects/subject.service';
-// import {AddRequirementsModalComponent} from './administrator/subjects/add-requirements-modal/add-requirements-modal.component';
-// import {AddStudentComponent} from './administrator/students/add-student/add-student.component';
-// import {StudentService} from './administrator/students/student.service';
-// import { ModifyStudentSubjectsComponent } from './administrator/students/modify-student-subjects/modify-student-subjects.component';
-// import { ModifySubjectModalComponent } from './administrator/students/modify-subject-modal/modify-subject-modal.component';
 
 import {LoginComponent} from './login/login.component';
 import {MaterialModuleModule} from './core/material-module/material-module.module';
@@ -66,8 +37,8 @@ import {NewFAccService} from './main-client/admin-portal/a-services/new-f-acc.se
 import {ALoginService} from './main-client/admin-portal/a-services/a-login.service';
 import { CurrCardComponent } from './main-client/admin-portal/admin-comp/admin-parts/curr-card/curr-card.component';
 import {CurrListingService} from './main-client/admin-portal/a-services/curr-listing.service';
-// import { CurrSubjListModalComponent } from './main-client/admin-portal/admin-comp/admin-parts/curr-subj-list/curr-subj-list-modal.component';
 import { AddCurrCardComponent } from './main-client/admin-portal/admin-comp/admin-parts/add-curr-card/add-curr-card.component';
+import {NewCurrService} from './main-client/admin-portal/a-services/new-curr.service';
 
 
 @NgModule({
@@ -75,19 +46,6 @@ import { AddCurrCardComponent } from './main-client/admin-portal/admin-comp/admi
         AppComponent,
         HomeComponent,
         LoginComponent,
-        // UserComponent,
-        // MainMenuComponent,
-        // StudentInfoComponent,
-        // AdministratorComponent,
-        // SubjectsComponent,
-        // StudentsComponent,
-        // PetitionComponent,
-        // ViewSubjectsComponent,
-        // AddSubjectsComponent,
-        // AddRequirementsModalComponent,
-        // AddStudentComponent,
-        // ModifyStudentSubjectsComponent,
-        // ModifySubjectModalComponent,
         StudentPortalComponent,
         StudentStatusComponent,
         StudentAdvisingComponent,
@@ -107,9 +65,6 @@ import { AddCurrCardComponent } from './main-client/admin-portal/admin-comp/admi
         AddCurrCardComponent
     ],
     entryComponents: [
-        // AddRequirementsModalComponent,
-        // AddSubjectsComponent,
-        // ModifySubjectModalComponent,
         AdvisingFormComponent
     ],
     imports: [
@@ -119,7 +74,6 @@ import { AddCurrCardComponent } from './main-client/admin-portal/admin-comp/admi
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        // MatButtonModule,
         MaterialModuleModule,
         AppRoutingModule,
         SuiModule,
@@ -127,9 +81,6 @@ import { AddCurrCardComponent } from './main-client/admin-portal/admin-comp/admi
         SuiModule
     ],
     providers: [
-        // SubjectService,
-        // AdminVerificationGuard,
-        // StudentService,
         CurriculumService,
         LoginService,
         UserAuthenticationGuard,
@@ -137,7 +88,8 @@ import { AddCurrCardComponent } from './main-client/admin-portal/admin-comp/admi
         DeptListingService,
         NewFAccService,
         ALoginService,
-        CurrListingService
+        CurrListingService,
+        NewCurrService
         // {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent]

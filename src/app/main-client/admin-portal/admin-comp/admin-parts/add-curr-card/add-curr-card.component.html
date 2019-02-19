@@ -14,7 +14,7 @@
                     <div class="ui teal label">
                         COURSE
                     </div>
-                    <input type="text" placeholder="Course">
+                    <input type="text" placeholder="Course" [(ngModel)]="new_cur_data.course" name="course" required>
                 </div>
             </div>
             <div class="field">
@@ -22,7 +22,7 @@
                     <div class="ui teal label">
                         Year
                     </div>
-                    <input type="text" placeholder="Year">
+                    <input type="text" placeholder="Year" [(ngModel)]="new_cur_data.year" name="year" required>
                 </div>
             </div>
             <div class="field">
@@ -30,19 +30,33 @@
                     <div class="ui teal label">
                         Description
                     </div>
-                    <input type="text" placeholder="Description">
+                    <input type="text" placeholder="Description" [(ngModel)]="new_cur_data.description"
+                           name="description" required>
                 </div>
             </div>
             <div class="field">
                 <div class="ui left action input">
-                    <button class="ui teal labeled icon button">
+                    <button class="ui teal labeled icon button" (click)="fileupload.click()">
                         <i class="file icon"></i>
                         Subjects
                     </button>
-                    <input type="text">
+                    <input type="text" value="{{fileupload.value}}" readonly (click)="fileupload.click()"
+                           placeholder="Click To Upload File" required/>
+                    <input #fileupload
+                           type="file"
+                           style="display:none"
+                           (change)="upload_file($event)"
+                           accept=".xlsx">
                 </div>
             </div>
-            <button class="ui right floated positive button" type="submit">Submit</button>
+            <sui-progress class="active" [value]="file_process_progress" [maximum]="fp_progress_max">
+                {{FILE_UPLOADING ? 'Readying File' : 'Finished'}}
+            </sui-progress>
+            <button class="ui right floated positive button"
+                    type="submit"
+                    [disabled]="FILE_UPLOADING || uploading_in_progress || required_unfilled()"
+                    (click)="createNewCurriculum()">Submit
+            </button>
         </form>
     </div>
 </ng-template>
