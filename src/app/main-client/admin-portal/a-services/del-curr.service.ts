@@ -24,7 +24,7 @@ export class DelCurrService {
             }),
             observe: 'response' as 'body'
         };
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             this.http.post(this._del_cur_url, params.toString(), httpOptions)
                 .subscribe((response) => {
                     resolve(response['body']);
@@ -35,7 +35,7 @@ export class DelCurrService {
                     });
                     reject(err);
                 });
-        })).then((r) => {
+        }).then((r) => {
             swal.close();
             return r;
         }, (rej: HttpResponse<any>) => {

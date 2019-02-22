@@ -45,7 +45,7 @@ export class NewCurrService {
             }),
             observe: 'response' as 'body'
         };
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             this.http.post(this._new_curriculum_url, params.toString(), httpOptions)
                 .subscribe((result) => {
                     resolve(result['body']);
@@ -57,7 +57,7 @@ export class NewCurrService {
                     });
                     reject(err);
                 });
-        })).then((r) => {
+        }).then((r) => {
             swal.close();
             return r;
         }, (j) => {
@@ -78,7 +78,7 @@ export class NewCurrService {
             }),
             observe: 'response' as 'body'
         };
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             this.http.post(this._bulk_subject_url, params.toString(), httpOptions)
                 .subscribe((response) => {
                     resolve(response['body']);
@@ -89,7 +89,7 @@ export class NewCurrService {
                     });
                     reject(err);
                 });
-        })).then((r) => {
+        }).then((r) => {
             swal.close();
             return r;
         }, (rej: HttpResponse<any>) => {

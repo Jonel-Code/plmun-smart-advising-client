@@ -1,0 +1,26 @@
+<div class="ui medium header">{{inputTitle | uppercase}}:</div>
+    <div class="ui fluid left action input">
+    <button class="ui teal labeled icon button" (click)="fileupload.click()">
+        <i class="file excel icon"></i>
+        {{inputTitle}}
+    </button>
+    <input type="text" value="{{fileupload.value}}" readonly (click)="fileupload.click()"
+           placeholder="Click To Upload File" required/>
+    <input #fileupload
+           type="file"
+           style="display:none"
+           (change)="load_excel_data($event)"
+           accept=".xlsx">
+</div>
+<sui-progress class="active" [value]="file_process_progress" [maximum]="fp_progress_max">
+    {{!file_is_ready() ? 'Readying File' : 'Finished'}}
+</sui-progress>
+<div style="text-align: right">
+    <button class="ui positive button"
+            type="submit"
+            (click)="upload_data()">
+        Upload
+    </button>
+</div>
+
+<!-- [disabled]="file_is_ready()" -->

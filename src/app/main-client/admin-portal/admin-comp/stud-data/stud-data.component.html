@@ -1,0 +1,12 @@
+<app-stud-uploader #sdata
+                   [inputTitle]="'Upload Student Data'"
+                   (invokeMap)="mapData($event)"
+                   [postStudentData]="sDataUpService"
+                   style="margin: 20px auto;">
+</app-stud-uploader>
+<app-stud-uploader #sgrade
+                   [inputTitle]="'Upload Student Grade'"
+                   (invokeMap)="mapGrade($event)"
+                   [postStudentData]="sGradeUpService"
+                   style="margin: 20px auto;">
+</app-stud-uploader>

@@ -122,7 +122,7 @@ export class AddCurrCardComponent implements OnInit {
         fileReader.onload = (e) => {
             this.file_process_progress = e.loaded;
             this.fp_progress_max = e.total;
-            const read_promise = new Promise(((resolve, reject) => {
+            const read_promise = new Promise((resolve, reject) => {
                 try {
                     console.log('e', e);
                     this.arrayBuffer = fileReader.result;
@@ -140,7 +140,7 @@ export class AddCurrCardComponent implements OnInit {
                 } catch (z) {
                     reject(z);
                 }
-            }));
+            });
             read_promise.then((args: any[]) => {
                 this.data = args.map((x) => {
                     // return {question: x['question'], choices: x['choices'], answer: x['answer']}

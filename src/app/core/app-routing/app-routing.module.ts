@@ -12,6 +12,7 @@ import {OpenedSubjComponent} from '../../main-client/admin-portal/admin-comp/ope
 import {AdminCurComponent} from '../../main-client/admin-portal/admin-comp/admin-cur/admin-cur.component';
 import {FacultyAccComponent} from '../../main-client/admin-portal/admin-comp/faculty-acc/faculty-acc.component';
 import {AdminAccessGuard} from '../../main-client/admin-portal/a-services/admin-access.guard';
+import {StudDataComponent} from '../../main-client/admin-portal/admin-comp/stud-data/stud-data.component';
 // import {HomeComponent} from '../../home/home.component';
 // import {UserComponent} from '../user/user.component';
 // import {HomeComponent} from '../../home/home.component';
@@ -47,7 +48,8 @@ const routes: Routes = [
             {path: 'advising_statistics', component: StatisticsComponent, canActivate: [AdminAccessGuard]},
             {path: 'opened_subjects', component: OpenedSubjComponent, canActivate: [AdminAccessGuard]},
             {path: 'admin_curriculum', component: AdminCurComponent, canActivate: [AdminAccessGuard]},
-            {path: 'faculty_accounts', component: FacultyAccComponent, canActivate: [AdminAccessGuard]}
+            {path: 'faculty_accounts', component: FacultyAccComponent, canActivate: [AdminAccessGuard]},
+            {path: 'student_data', component: StudDataComponent, canActivate: [AdminAccessGuard]}
         ]
     },
     {path: '**', redirectTo: RoutingPaths.login},

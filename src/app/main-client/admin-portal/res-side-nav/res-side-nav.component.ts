@@ -1,6 +1,7 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
+import {environment} from '../../../../environments/environment';
 
 export interface NavLink {
     title: string;
@@ -16,12 +17,7 @@ export class ResSideNavComponent implements OnDestroy, OnInit {
 
     mobileQuery: MediaQueryList;
 
-    nav_options: NavLink[] = [
-        {title: 'Advising Statistics', link: 'advising_statistics'},
-        {title: 'Opened Subjects', link: 'opened_subjects'},
-        {title: 'Curriculum', link: 'admin_curriculum'},
-        {title: 'Faculty Accounts', link: 'faculty_accounts'}
-    ];
+    nav_options: NavLink[] = environment.routes;
 
     child_link_loading = false;
 

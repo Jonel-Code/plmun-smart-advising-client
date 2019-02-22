@@ -35,11 +35,14 @@ import {MakeAdminComponent} from './main-client/admin-portal/admin-comp/admin-pa
 import {DeptListingService} from './main-client/admin-portal/a-services/dept-listing.service';
 import {NewFAccService} from './main-client/admin-portal/a-services/new-f-acc.service';
 import {ALoginService} from './main-client/admin-portal/a-services/a-login.service';
-import { CurrCardComponent } from './main-client/admin-portal/admin-comp/admin-parts/curr-card/curr-card.component';
+import {CurrCardComponent} from './main-client/admin-portal/admin-comp/admin-parts/curr-card/curr-card.component';
 import {CurrListingService} from './main-client/admin-portal/a-services/curr-listing.service';
-import { AddCurrCardComponent } from './main-client/admin-portal/admin-comp/admin-parts/add-curr-card/add-curr-card.component';
+import {AddCurrCardComponent} from './main-client/admin-portal/admin-comp/admin-parts/add-curr-card/add-curr-card.component';
 import {NewCurrService} from './main-client/admin-portal/a-services/new-curr.service';
 import {DelCurrService} from './main-client/admin-portal/a-services/del-curr.service';
+import {StudDataComponent} from './main-client/admin-portal/admin-comp/stud-data/stud-data.component';
+import {SDataUpService, SGradeUpService} from './main-client/admin-portal/a-services/s-data-up.service';
+import { StudUploaderComponent } from './main-client/admin-portal/admin-comp/admin-parts/stud-uploader/stud-uploader.component';
 
 
 @NgModule({
@@ -63,7 +66,9 @@ import {DelCurrService} from './main-client/admin-portal/a-services/del-curr.ser
         FacultyAccComponent,
         MakeAdminComponent,
         CurrCardComponent,
-        AddCurrCardComponent
+        AddCurrCardComponent,
+        StudDataComponent,
+        StudUploaderComponent
     ],
     entryComponents: [
         AdvisingFormComponent
@@ -91,7 +96,9 @@ import {DelCurrService} from './main-client/admin-portal/a-services/del-curr.ser
         ALoginService,
         CurrListingService,
         NewCurrService,
-        DelCurrService
+        DelCurrService,
+        SDataUpService,
+        SGradeUpService
         // {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent]
