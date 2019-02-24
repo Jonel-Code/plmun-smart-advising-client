@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {PostStudentData} from '../../../a-services/PostStudentData';
 import * as XLSX from 'xlsx';
 import swal from 'sweetalert';
@@ -11,9 +11,12 @@ import swal from 'sweetalert';
 export class StudUploaderComponent<T> implements OnInit {
 
     @Input() postStudentData: PostStudentData<T>;
-
     @Input() inputTitle: string;
-    @Output() invokeMap: EventEmitter<any> = new EventEmitter<any>();
+    @Input() template_title: string;
+    @Output() excelLoaded: EventEmitter<any> = new EventEmitter<any>();
+    @Output() startTemplateDownload: EventEmitter<any> = new EventEmitter<any>();
+    @Output() excelLoadError: EventEmitter<any> = new EventEmitter<any>();
+    private template_data: any[];
 
     private excel_data: any[];
     private arrayBuffer: any;
@@ -24,6 +27,7 @@ export class StudUploaderComponent<T> implements OnInit {
 
     constructor() {
         this.load_props();
+        this.load_template_props();
     }
 
     ngOnInit() {
@@ -33,6 +37,11 @@ export class StudUploaderComponent<T> implements OnInit {
         if (this.inputTitle === null) {
             throw new Error('inputTitle input is required');
         }
+    }
+
+    load_template_props() {
+        this.template_data = [];
+        this.template_title = '';
     }
 
     load_props() {
@@ -51,18 +60,53 @@ export class StudUploaderComponent<T> implements OnInit {
         });
     }
 
+    get HaveTemplateTitle(): boolean {
+        return this.template_title.length > 0;
+    }
+
+    setExcelTemplate<t>(template: t[], title: string = '') {
+        this.template_data = template;
+        this.template_title = title.length > 0 ? title : this.template_title;
+        console.log('this.excel_data ', this.template_data);
+    }
+
+    download_template() {
+        this.startTemplateDownload.emit();
+
+        /* make the worksheet */
+        const ws = XLSX.utils.json_to_sheet(this.template_data);
+
+        /* add to workbook */
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, this.template_title);
+
+        /* generate an XLSX file */
+        XLSX.writeFile(wb, `${this.template_title}.xlsx`);
+    }
+
+    mapExcelData<i, o = T>(cb: (data: i[]) => o[]) {
+        try {
+            this.excel_data = cb(this.excel_data);
+        } catch (e) {
+            console.log('err', e);
+            this.excelLoadError.emit(e);
+            this.load_props();
+        }
+
+        console.log('this.excel_data ', this.excel_data);
+    }
+
     upload_data() {
         if (this.file_is_ready()) {
             const p = new Promise((resolve, reject) => {
                 try {
-                    this.invokeMap.emit(this.excel_data);
+                    // this.invokeMap.emit(this.excel_data);
                     resolve(this.excel_data);
                 } catch (e) {
                     reject(e);
                 }
             }).then((r) => {
-                console.log('data', r);
-                return null;
+                console.log('studComponent data', r);
                 this.postStudentData
                     .uploadData(this.excel_data)
                     .then((r_body: any[]) => {
@@ -77,10 +121,18 @@ export class StudUploaderComponent<T> implements OnInit {
     }
 
     file_is_ready(): boolean {
-        return this.fp_progress_max <= this.file_process_progress && this.excel_data.length > 0;
+        return this.fp_progress_max === this.file_process_progress && this.excel_data.length > 0;
     }
 
+
     load_excel_data(event) {
+        this.load_props();
+        if (event.target.files.length === 0) {
+            return;
+        }
+        console.log('ev', event);
+        // this.file_path = event.target.files[0].toString();
+
         this.file = event.target.files[0];
         const fileReader = new FileReader();
 
@@ -90,7 +142,12 @@ export class StudUploaderComponent<T> implements OnInit {
                 this.file_process_progress = e.loaded;
             }
         };
+
+        fileReader.onloadend = (e) => {
+            console.log('load end');
+        };
         fileReader.onload = (e) => {
+            console.log('load start');
             this.file_process_progress = e.loaded;
             this.fp_progress_max = e.total;
             const read_promise = new Promise((resolve, reject) => {
@@ -114,9 +171,12 @@ export class StudUploaderComponent<T> implements OnInit {
             });
 
             read_promise.then((args: any[]) => {
-                this.excel_data = args.map(x => {
-                    return x;
-                });
+                this.excel_data = args;
+                this.excelLoaded.emit();
+                return args;
+                // this.excel_data = args.map(x => {
+                //     return x;
+                // });
             });
         };
 

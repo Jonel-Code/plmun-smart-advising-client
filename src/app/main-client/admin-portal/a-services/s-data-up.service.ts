@@ -14,7 +14,7 @@ export interface IDataUpContext {
 export interface IGradeUpContext {
     student_id: string;
     subject_code: string;
-    grade: string;
+    grade: number;
 }
 
 @Injectable({

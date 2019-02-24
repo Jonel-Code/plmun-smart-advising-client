@@ -1,12 +1,22 @@
 <app-stud-uploader #sdata
                    [inputTitle]="'Upload Student Data'"
-                   (invokeMap)="mapData($event)"
                    [postStudentData]="sDataUpService"
+                   [template_title]="'Student Data'"
+                   (excelLoaded)="reMapData()"
+                   (startTemplateDownload)="mapDataTemplate()"
+                   (excelLoadError)="loadError($event)"
                    style="margin: 20px auto;">
 </app-stud-uploader>
 <app-stud-uploader #sgrade
                    [inputTitle]="'Upload Student Grade'"
-                   (invokeMap)="mapGrade($event)"
                    [postStudentData]="sGradeUpService"
+                   [template_title]="'Student Grade'"
+                   (excelLoaded)="reMapGrade()"
+                   (startTemplateDownload)="mapGradeTemplate()"
+                   (excelLoadError)="loadError($event)"
                    style="margin: 20px auto;">
 </app-stud-uploader>
+
+<!--(invokeMap)="mapData($event)"-->
+
+<!--(invokeMap)="mapGrade($event)"-->

@@ -1,5 +1,5 @@
 <div class="ui medium header">{{inputTitle | uppercase}}:</div>
-    <div class="ui fluid left action input">
+<div class="ui fluid left action input">
     <button class="ui teal labeled icon button" (click)="fileupload.click()">
         <i class="file excel icon"></i>
         {{inputTitle}}
@@ -15,12 +15,25 @@
 <sui-progress class="active" [value]="file_process_progress" [maximum]="fp_progress_max">
     {{!file_is_ready() ? 'Readying File' : 'Finished'}}
 </sui-progress>
-<div style="text-align: right">
-    <button class="ui positive button"
-            type="submit"
-            (click)="upload_data()">
-        Upload
-    </button>
+<div class="ui grid" style="margin-bottom: 20px;">
+    <div class="row">
+        <div class="left floated column" *ngIf="HaveTemplateTitle">
+            <button class="blue ui labeled icon button"
+                    type="submit"
+                    (click)="download_template()">
+                <i class="download icon"></i>
+                Download {{template_title}} Template
+            </button>
+        </div>
+        <div class="right floated column">
+            <button class="ui right floated positive button"
+                    type="submit"
+                    [disabled]="!file_is_ready()"
+                    (click)="upload_data()">
+                Upload
+            </button>
+        </div>
+    </div>
 </div>
 
 <!-- [disabled]="file_is_ready()" -->
