@@ -57,13 +57,17 @@ export class StudUploaderComponent<T> implements OnInit {
     }
 
 
-    swal_finish() {
-        swal({
+    swal_finish(message: string = '') {
+        const p = {
             title: 'Process Finished',
             buttons: {
                 Return: true
             }
-        });
+        };
+        if (message.length > 0) {
+            p['text'] = 'Message: ' + message;
+        }
+        swal(p);
     }
 
     get HaveTemplateTitle(): boolean {
@@ -116,11 +120,12 @@ export class StudUploaderComponent<T> implements OnInit {
                 this.postStudentData
                     .uploadData(this.excel_data)
                     .then((r_body: any[]) => {
-                        console.log('response', r_body['response']);
+                        const rb = r_body['response'];
+                        console.log('response', rb);
                         this.load_props();
-                        this.swal_finish();
+                        const mg = `errors in: ${rb['errors'].toString()}`;
+                        this.swal_finish(rb['errors'].length > 0 ? mg : '');
                         this.reset_file_upload();
-                        // location.reload();
                     }, (rej) => {
                         console.log('rejected', rej);
                     });
