@@ -37,6 +37,7 @@
     "path": "^0.12.7",
     "rxjs": "^6.2.2",
     "sweetalert": "^2.1.2",
+    "ts-transformer-keys": "^0.3.4",
     "vis": "^4.21.0",
     "xlsx": "^0.14.1",
     "zone.js": "^0.8.26"

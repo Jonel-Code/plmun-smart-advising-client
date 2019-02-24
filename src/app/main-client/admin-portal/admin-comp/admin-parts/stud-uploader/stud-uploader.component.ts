@@ -16,6 +16,8 @@ export class StudUploaderComponent<T> implements OnInit {
     @Output() excelLoaded: EventEmitter<any> = new EventEmitter<any>();
     @Output() startTemplateDownload: EventEmitter<any> = new EventEmitter<any>();
     @Output() excelLoadError: EventEmitter<any> = new EventEmitter<any>();
+
+    @ViewChild('fileupload') fileupload: ElementRef;
     private template_data: any[];
 
     private excel_data: any[];
@@ -48,6 +50,10 @@ export class StudUploaderComponent<T> implements OnInit {
         this.excel_data = [];
         this.fp_progress_max = 100;
         this.file_process_progress = 0;
+    }
+
+    reset_file_upload() {
+        this.fileupload.nativeElement.value = '';
     }
 
 
@@ -111,7 +117,10 @@ export class StudUploaderComponent<T> implements OnInit {
                     .uploadData(this.excel_data)
                     .then((r_body: any[]) => {
                         console.log('response', r_body['response']);
+                        this.load_props();
                         this.swal_finish();
+                        this.reset_file_upload();
+                        // location.reload();
                     }, (rej) => {
                         console.log('rejected', rej);
                     });

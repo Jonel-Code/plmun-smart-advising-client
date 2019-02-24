@@ -42,21 +42,16 @@ export class PostStudentData<T> implements PostStudentData<T> {
             this.http.post(this._url, params.toString(), httpOptions)
                 .subscribe((result) => {
                     resolve(result['body']);
+                    swal.close();
                 }, (err: HttpResponse<any>) => {
-                    console.log('createCurriculum err', err);
+                    console.log('err', err);
+                    swal.close();
                     swal({
                         title: `HTTP error ${err.status} ${err.statusText}`,
                         text: `message: ${err['error']['message']}`
                     });
                     reject(err);
                 });
-        })
-            .then((r) => {
-                swal.close();
-                return r;
-            }, (j) => {
-                swal.close();
-                return j;
-            });
+        });
     }
 }

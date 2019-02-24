@@ -37,6 +37,9 @@ export class StudDataComponent implements OnInit {
     reMapData() {
         this.sdata.mapExcelData<IStudentDataTemplate>((d: IStudentDataTemplate[]) => {
             console.log('data_ remap', d);
+            if (this.unfilled_required(d, ['Student id', 'Name', 'Course', 'Year'])) {
+                throw new Error('something is wrong with mapping the data');
+            }
             return d.map<IDataUpContext>((x) => {
                 return {
                     student_id: String(x['Student id']).replace(/\s+/g, ''),
@@ -50,6 +53,9 @@ export class StudDataComponent implements OnInit {
 
     reMapGrade() {
         this.sgrade.mapExcelData<IStudentGradeTemplate>((data: IStudentGradeTemplate[]) => {
+            if (this.unfilled_required(data, ['Student id', 'Subject Code', 'Grade'])) {
+                throw new Error('something is wrong with mapping the data');
+            }
             return data.map<IGradeUpContext>((x) => {
                 return {
                     student_id: String(x['Student id']).replace(/\s+/g, ''),
@@ -58,6 +64,17 @@ export class StudDataComponent implements OnInit {
                 };
             });
         });
+    }
+
+    unfilled_required(args: any[], ky: string[]): boolean {
+        for (const x of args) {
+            for (const k of ky) {
+                if (typeof x[k] === 'undefined') {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     mapDataTemplate() {
