@@ -42,7 +42,9 @@ import {NewCurrService} from './main-client/admin-portal/a-services/new-curr.ser
 import {DelCurrService} from './main-client/admin-portal/a-services/del-curr.service';
 import {StudDataComponent} from './main-client/admin-portal/admin-comp/stud-data/stud-data.component';
 import {SDataUpService, SGradeUpService} from './main-client/admin-portal/a-services/s-data-up.service';
-import { StudUploaderComponent } from './main-client/admin-portal/admin-comp/admin-parts/stud-uploader/stud-uploader.component';
+import {StudUploaderComponent} from './main-client/admin-portal/admin-comp/admin-parts/stud-uploader/stud-uploader.component';
+import {IncomingSemService} from './main-client/student-portal/s-services/incoming-sem.service';
+import {SLoginService} from './main-client/student-portal/s-services/s-login.service';
 
 
 @NgModule({
@@ -98,7 +100,9 @@ import { StudUploaderComponent } from './main-client/admin-portal/admin-comp/adm
         NewCurrService,
         DelCurrService,
         SDataUpService,
-        SGradeUpService
+        SGradeUpService,
+        IncomingSemService,
+        SLoginService
         // {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent]

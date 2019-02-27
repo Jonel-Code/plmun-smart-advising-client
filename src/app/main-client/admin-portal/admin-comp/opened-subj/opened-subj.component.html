@@ -1,19 +1,114 @@
-<h2>Opened Subjects</h2>
-<table class="ui celled table">
-    <thead>
-    <tr>
-        <th>Subject Code</th>
-        <th>Subject Title</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td data-label="Name">Prog-1</td>
-        <td data-label="Age">Programming 1</td>
-    </tr>
-    <tr>
-        <td data-label="Name">Prog-2</td>
-        <td data-label="Age">Programming 2</td>
-    </tr>
-    </tbody>
-</table>
+<div class="ui huge centered header" *ngIf="activated_semester_data">
+    Current Used Semester Data: ID: {{activated_semester_data.id}}
+</div>
+
+<div *ngIf="semester_data.length > 0">
+    <div class="ui large header">Semesters List</div>
+    <div class="ui cards">
+        <div class="card" *ngFor="let x of semester_data">
+            <div class="content">
+                <div class="ui grid">
+                    <div class=" four column row">
+                        <div class="left floated column">
+                            <div class="ui medium header">ID: {{x.id}}</div>
+                        </div>
+                        <div class="right floated column">
+                            <div class="negative ui icon button"
+                                 (click)="delete_sem_data(x.id)">
+                                <i class="icon close"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="description">
+                    <div>
+                        Year: {{x.year}}
+                    </div>
+                    <div>
+                        Semester: {{x.semester}}
+                    </div>
+                    <div class="blue ui fluid button {{current_semester_data===x ? 'disabled':''}}"
+                         (click)="load_latest_opened(x.id)">
+                        View subjects
+                    </div>
+                    <div class="green ui fluid button {{activated_semester_data===x ? 'disabled':''}}"
+                         (click)="activate_sem_data(x.id)">
+                        {{activated_semester_data===x ? 'Current Used Semester Data':'Use as Current Semester'}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="current_semester_data" style="margin-top: 10px;">
+    <div class="ui medium header">
+        Selected Semester: Id: {{current_semester_data.id}}
+    </div>
+</div>
+
+<div *ngIf="table_content.length === 0" class="ui medium header">NO Uploaded Opened Semester</div>
+
+<div *ngIf="table_content.length > 0">
+    <div class="ui medium header">Subjects List</div>
+    <table mat-table
+           [dataSource]="latest_opened_sub"
+           class="ui celled table"
+           matSort
+           matSortDirection="asc">
+        <ng-container matColumnDef="code">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Subject Code</th>
+            <td *matCellDef="let sub">
+                {{sub.code | uppercase}}
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+
+<div style="margin-top: 40px;">
+    <div class="ui huge header">Upload Opened Subjects</div>
+    <div class="ui fluid labeled input input-space">
+        <div class="ui blue label">School Year</div>
+        <input type="text" placeholder="School Year" [(ngModel)]="selected_year" required/>
+    </div>
+    <div class="ui fluid labeled input input-space">
+        <div class="ui blue label">Semester</div>
+        <select class="ui fluid selection dropdown" [(ngModel)]="selected_semester" required>
+            <option *ngFor="let d of sem_selection"
+                    [value]="d">
+                {{d}}
+            </option>
+        </select>
+    </div>
+    <div class="ui fluid left action input input-space">
+        <button class="ui blue labeled icon button" (click)="fileupload.click()">
+            <i class="file excel icon"></i>
+            Select Opened Subject file
+        </button>
+        <input type="text" value="{{fileupload.value}}" readonly (click)="fileupload.click()"
+               placeholder="Click To Upload File" required/>
+        <input #fileupload
+               type="file"
+               style="display:none"
+               (change)="load_excel_data($event)"
+               accept=".xlsx">
+    </div>
+    <button class="ui blue left floated labeled icon button"
+            type="submit"
+            (click)="dl_template()">
+        <i class="icon download"></i>
+        Download Template File
+    </button>
+    <button class="ui right floated positive button"
+            type="submit"
+            [disabled]="!file_is_ready()"
+            (click)="upload_data()">
+        Upload
+    </button>
+</div>
+
+<!--dl_template()-->

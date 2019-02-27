@@ -6,6 +6,8 @@ export function swal_load(message = 'currently sending data please wait.') {
         text: message,
         closeOnEsc: false,
         closeOnClickOutside: false,
-        buttons: [false]
+        buttons: {
+            Okay: true
+        }
     });
 }
