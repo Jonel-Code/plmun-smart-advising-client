@@ -52,13 +52,13 @@ export class StudentStatusComponent implements OnInit {
     }
 
     load_main_data() {
-        const _tableData: ICustonSubject[] = [];
-        const data_source: MatTableDataSource<IStudentInformation> = JSON.parse(atob(this.loginService.getStudentToken()));
-        const course_curriculum = data_source['course_curriculum'];
-        const subjects = course_curriculum['subjects'];
-        this.subjectPaths = course_curriculum['paths'];
-        console.log('this.subjectPaths value', this.subjectPaths);
-        console.log('statusData', this.sStore);
+        // const _tableData: ICustonSubject[] = [];
+        // const data_source: MatTableDataSource<IStudentInformation> = JSON.parse(atob(this.loginService.getStudentToken()));
+        // const course_curriculum = data_source['course_curriculum'];
+        // const subjects = course_curriculum['subjects'];
+        // this.subjectPaths = course_curriculum['paths'];
+        // console.log('this.subjectPaths value', this.subjectPaths);
+        // console.log('statusData', this.sStore);
         // for (const i of subjects) {
         //     console.log(i.title);
         //     _tableData.push({

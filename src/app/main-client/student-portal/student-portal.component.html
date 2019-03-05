@@ -47,7 +47,7 @@
                 <div class="item">
                     <div>
                         <p>{{data.name | uppercase}} - {{id}}</p>
-                        <p>{{data.course| uppercase}} - {{year + ' year'| uppercase}}</p>
+                        <p>{{data.course| uppercase}} - {{data.year + ' year'| uppercase}}</p>
                         <p *ngIf="data.status">{{data.status.toString().toUpperCase()}}</p>
                         <p *ngIf="data.incoming_semester">ENROLMENT FOR SEMESTER: <b>{{data.incoming_semester.semester | uppercase}} semester</b></p>
                     </div>

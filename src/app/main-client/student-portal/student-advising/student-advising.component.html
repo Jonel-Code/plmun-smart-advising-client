@@ -8,7 +8,7 @@
         <div class="sub tiny header">
             REMAINING UNITS:
             <div [ngStyle]="{'background-color': isUnitExceed() ? 'salmon' : 'rgba(0, 0, 0, 0.0' }">
-                {{this.status.toLowerCase() === 'regular' ? 0 : remainigUnits()}} unit(s)
+                {{is_student_regular() ? 0 : remainigUnits()}} unit(s)
             </div>
         </div>
     </div>

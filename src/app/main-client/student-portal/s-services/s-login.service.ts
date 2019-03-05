@@ -43,13 +43,13 @@ export class SLoginService {
                 return x;
             }, (z: HttpResponse<any>) => {
                 swal_close();
-                swal({
-                    title: 'Error ' + z.status,
-                    text: z.body,
-                    buttons: {
-                        RETURN: true
-                    }
-                });
+                // swal({
+                //     title: 'Error ' + z.status,
+                //     text: z.body,
+                //     buttons: {
+                //         RETURN: true
+                //     }
+                // });
                 return z;
             });
     }

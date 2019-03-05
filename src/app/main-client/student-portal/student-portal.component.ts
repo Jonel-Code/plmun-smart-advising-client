@@ -32,16 +32,17 @@ export class StudentPortalComponent implements OnInit {
 
     ngOnInit() {
         this.changeMenu(0);
-        const data_source = JSON.parse(atob(this.loginService.getStudentToken()));
-        this.name = data_source.name;
-        this.id = data_source.id;
-        this.course = data_source.course;
-        this.year = data_source.year;
-        this.status = data_source.status;
-        this.incoming_semester = data_source.incoming_semester;
+        // const data_source = JSON.parse(atob(this.loginService.getStudentToken()));
+        // this.name = data_source.name;
+        // this.id = data_source.id;
+        // this.course = data_source.course;
+        // this.year = data_source.year;
+        // this.status = data_source.status;
+        // this.incoming_semester = data_source.incoming_semester;
+
 
         this.load_student_data();
-        console.log('data_source', data_source);
+        // console.log('data_source', data_source);
     }
 
     load_student_data() {

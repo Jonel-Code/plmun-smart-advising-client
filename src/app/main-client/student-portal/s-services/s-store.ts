@@ -112,33 +112,58 @@ export class SStore {
         return this._student_data.getValue();
     }
 
+    private save_auth_vals(u, p) {
+        localStorage.setItem('au', JSON.stringify({u: u, p: p}));
+    }
+
+    private load_auth_vals() {
+        return JSON.parse(localStorage.getItem('au'));
+    }
+
     load_student_data(u, p) {
+        this.save_auth_vals(u, p);
         return new Promise((resolve, reject) => {
             try {
                 this.sLoginService.login(u, p)
                     .then((x: HttpResponse<any>) => {
                         console.log('fetched data', x);
                         if (x['body'] === undefined) {
+                            reject(x);
                             throw new Error('error in http');
                         }
                         const content = x['body']['content'];
                         console.log('new login', x);
                         this.set_general_data(content);
+                        return x;
                     })
-                    .then(() => {
+                    .then((x) => {
                         this.set_subject_data();
                         console.log('updated_data', this._student_data.getValue());
+                        return x;
                     })
-                    .then(() => {
+                    .then((x) => {
                         this.set_semester_data()
                             .then(() => {
-                                resolve(this.student_data_values);
+                                resolve(x);
                             });
                     });
             } catch (e) {
-                reject(e);
+                // reject(e);
             }
         });
+    }
+
+    is_authenticated(): Promise<boolean> {
+        if (this.load_auth_vals() === undefined) {
+            return new Promise((resolve, reject) => {
+                resolve(false);
+            });
+        }
+        const au = this.load_auth_vals();
+        return this.sLoginService.login(au.u, au.p)
+            .then(x => {
+                return x['body'] !== undefined;
+            });
     }
 
     private is_pass_or_taken(grade: number) {
