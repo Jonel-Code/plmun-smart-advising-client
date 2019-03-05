@@ -1,0 +1,355 @@
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {SLoginService} from './s-login.service';
+import {CustomDTree, Edges, Leaf} from '../../../core/algorithms/CustomDTree';
+import {IncomingSemService} from './incoming-sem.service';
+
+export enum EStudentStatus {
+    IRREGULAR = 'IRREGULAR',
+    REGULAR = 'REGULAR'
+}
+
+export enum ESemester {
+    FIRST = 'FIRST', SECOND = 'SECOND', SUMMER = 'SUMMER'
+}
+
+export enum EYear {
+    FIRST = 'FIRST', SECOND = 'SECOND', THIRD = 'THIRD', FOURTH = 'FOURTH'
+}
+
+export interface ICourseCurriculum {
+    curriculum_id: number;
+    description: string;
+    course: string;
+    year: string;
+    subjects: ICurriculumSubject[];
+}
+
+export interface ISubjectGrade {
+    code: string;
+    grade: number;
+}
+
+export interface ICurriculumSubject {
+    code: string;
+    title: string;
+    total_units: string;
+    pre_req: string[];
+    year: EYear;
+    semester: ESemester;
+}
+
+export interface IStudentStore {
+    name: string;
+    id: string;
+    course: string;
+    year: EYear;
+    status: EStudentStatus;
+    incoming_semester: IIncomingDataContext;
+    course_curriculum: ICourseCurriculum;
+    subjects_taken: ISubjectGrade[];
+    can_take: string[];
+    back_subjects: string[];
+    can_take_this_semester: string[];
+    not_taken_subj?: ICurriculumSubject[];
+}
+
+export interface IIncomingDataContext {
+    year: string;
+    semester: ESemester;
+    subjects: string[];
+}
+
+class StudentStoreData implements IStudentStore {
+    id: string;
+    name: string;
+    course: string;
+    year: EYear;
+    status: EStudentStatus;
+    course_curriculum: ICourseCurriculum;
+    subjects_taken: ISubjectGrade[];
+    back_subjects: string[];
+    can_take: string[];
+    incoming_semester: IIncomingDataContext;
+    can_take_this_semester: string[];
+    not_taken_subj?: ICurriculumSubject[];
+
+    constructor() {
+        this.name = '';
+        this.id = '';
+        this.course = '';
+        this.year = EYear.FIRST;
+        this.status = EStudentStatus.REGULAR;
+        this.course_curriculum = null;
+        this.subjects_taken = [];
+        this.back_subjects = [];
+        this.can_take = [];
+        this.incoming_semester = null;
+        this.can_take_this_semester = [];
+        this.not_taken_subj = [];
+    }
+}
+
+@Injectable()
+export class SStore {
+    private _student_data: BehaviorSubject<IStudentStore> = new BehaviorSubject<IStudentStore>(new StudentStoreData());
+
+    readonly student_data: Observable<IStudentStore> = this._student_data.asObservable();
+
+
+    constructor(private sLoginService: SLoginService,
+                private incomingSemService: IncomingSemService) {
+    }
+
+    get student_data_values() {
+        return this._student_data.getValue();
+    }
+
+    load_student_data(u, p) {
+        this.sLoginService.login(u, p)
+            .then(x => {
+                console.log('fetched data', x);
+                const content = x['body']['content'];
+                if (!content) {
+                    return;
+                }
+                console.log('new login', x);
+                this.set_general_data(content);
+            })
+            .then(() => {
+                this.set_subject_data();
+                console.log('updated_data', this._student_data.getValue());
+            })
+            .then(() => {
+                this.set_semester_data();
+            });
+    }
+
+    private is_pass_or_taken(grade: number) {
+        return grade >= 0 && grade <= 3.0;
+    }
+
+    set_can_take_this_sem() {
+        const sd = this._student_data.getValue();
+        if (!(sd.incoming_semester && sd.course_curriculum && sd.can_take)) {
+            return;
+        }
+        const ix = [];
+        for (const ct of sd.can_take) {
+            if (sd.incoming_semester.subjects.includes(ct)) {
+                ix.push(ct);
+            }
+        }
+        sd.can_take_this_semester = ix;
+        this._student_data.next(sd);
+        console.log('with can_take_this_sem', this._student_data.getValue());
+    }
+
+    set_semester_data() {
+        this.incomingSemService.get_available_subjects()
+            .then(x => {
+                console.log('sem_data', x);
+                const content = x['body']['data'];
+                if (!content) {
+                    return;
+                }
+                const sd = this._student_data.getValue();
+                const sb = [];
+                if (Array.isArray(content['subjects'])) {
+                    for (const s of content['subjects']) {
+                        sb.push(String(s).toLowerCase());
+                    }
+                }
+                sd.incoming_semester = {
+                    year: content['year'],
+                    semester: ESemester[String(content['semester']).toUpperCase()],
+                    subjects: sb
+                };
+                this._student_data.next(sd);
+                console.log('with_semester_data', this._student_data.getValue());
+            })
+            .then(() => {
+                this.set_can_take_this_sem();
+            })
+            .then(() => {
+                this.set_back_subjects();
+                console.log('with_back_subjects', this._student_data.getValue());
+            })
+            .then(() => {
+                this.set_status();
+                console.log('with_back_subjects', this._student_data.getValue());
+            });
+    }
+
+
+    private set_general_data(content: any) {
+        const sd = this._student_data.getValue();
+        sd.name = content['name'];
+        sd.id = content['id'];
+        sd.course = content['course'];
+        sd.year = EYear[String(content['year']).toUpperCase()];
+
+        const cd = content['course_curriculum'];
+        const cd_s = cd['subjects'];
+        let cd_ss = [];
+        if (Array.isArray(cd_s)) {
+            cd_ss = cd_s.map(c => {
+                return {
+                    code: c['subject_code'],
+                    title: c['title'],
+                    total_units: c['units'],
+                    pre_req: c['pre_req'],
+                    year: EYear[String(c['year']).toUpperCase()],
+                    semester: ESemester[String(c['semester']).toUpperCase()],
+                };
+            });
+        }
+
+        sd.course_curriculum = {
+            curriculum_id: cd['curriculum_id'],
+            year: cd['year'],
+            description: cd['description'],
+            course: cd['course'],
+            subjects: cd_ss
+        };
+
+        const gs = content['grades'];
+        let gss = [];
+        if (Array.isArray(gs)) {
+            gss = gs.map(z => {
+                return {
+                    code: z['code'],
+                    grade: Number(z['grade'])
+                };
+            });
+        }
+        sd.subjects_taken = gss;
+
+        this._student_data.next(sd);
+    }
+
+    private set_subject_data() {
+        console.log('fetched_data', this._student_data.getValue());
+        const sd = this._student_data.getValue();
+        if (!Array.isArray(sd.course_curriculum.subjects)) {
+            return;
+        }
+        const ds: { code: string, pre_req: string[] }[] = sd.course_curriculum.subjects.map(q => {
+            return {
+                code: q.code,
+                pre_req: q.pre_req
+            };
+        });
+        const ps = [];
+        sd.subjects_taken.forEach(q => {
+            if (this.is_pass_or_taken(q.grade)) {
+                ps.push(q.code);
+            }
+        });
+        const ct = this.get_can_take_subjects(ds, sd.year, ps);
+        sd.can_take = ct.map(q => {
+            return q.identifier;
+        });
+        const not_taken: ICurriculumSubject[] = [];
+        sd.course_curriculum.subjects.forEach((x: ICurriculumSubject) => {
+            if (!ps.includes(x.code.toLowerCase())) {
+                not_taken.push(x);
+            }
+        });
+        sd.not_taken_subj = not_taken;
+        this._student_data.next(sd);
+    }
+
+    private get_can_take_subjects(data: { code: string, pre_req: string[] }[],
+                                  year: EYear,
+                                  passed_subjects: string[]): Leaf[] {
+        const d_setz = [];
+        console.log('use_d', data);
+        data.slice().forEach(x => {
+            const p: Leaf = {identifier: x.code.toLowerCase()};
+            // console.log('x.code', x.code);
+            if (typeof p !== 'undefined') {
+                const c: Leaf[] = [];
+                if (x.pre_req.length > 0) {
+                    x.pre_req.forEach(z => {
+                        const n = {identifier: z.toLowerCase()};
+                        if (typeof z === 'string') {
+                            c.push(n);
+                        }
+                    });
+                } else {
+                    const n = {identifier: ''};
+                    c.push(n);
+                }
+                if (c.length > 0 && typeof p !== 'undefined') {
+                    for (const ch of c) {
+                        if (typeof ch.identifier === 'string' && typeof p.identifier === 'string') {
+                            const new_e: Edges = {
+                                parent: p,
+                                child: ch
+                            };
+                            d_setz.push(new_e);
+                        }
+                    }
+                }
+            }
+        });
+
+        const yi = [];
+        for (const i of Object.keys(EYear)) {
+            yi.push(EYear[i].toString().toLowerCase());
+            if (EYear[i] === year) {
+                break;
+            }
+        }
+        console.log('yi', yi);
+        console.log('d_setz', d_setz);
+        const new_3 = new CustomDTree(d_setz);
+        console.log('d3 es:', new_3);
+        new_3.pruneLeaf({identifier: ''});
+        for (const y of yi) {
+            new_3.pruneLeaf({identifier: y});
+        }
+        for (const s of passed_subjects) {
+            new_3.pruneLeaf({identifier: s});
+        }
+        console.log('pruned_3', new_3);
+        console.log('leaf_nodes()', new_3.leaf_nodes);
+        return new_3.leaf_nodes;
+    }
+
+    private set_back_subjects() {
+        const years = Object.keys(EYear);
+        const semesters = Object.keys(ESemester);
+        const sd = this.student_data_values;
+        const yi = years.indexOf(sd.year);
+        const si = semesters.indexOf(sd.incoming_semester.semester);
+        console.log('incoming sem', si);
+        const back_subjects = [];
+        for (let x = 0; x <= yi; x++) {
+            const ys = EYear[years[x]];
+            for (let y = 0; y < si; y++) {
+                const ss = ESemester[semesters[y]];
+                sd.not_taken_subj.forEach((s: ICurriculumSubject) => {
+                    if (s.year === ys && s.semester === ss) {
+                        back_subjects.push(s);
+                    }
+                });
+            }
+        }
+        sd.back_subjects = back_subjects;
+        this._student_data.next(sd);
+    }
+
+    private set_status() {
+        const sd = this.student_data_values;
+        if (sd.back_subjects.length > 0) {
+            sd.status = EStudentStatus.IRREGULAR;
+        } else {
+            sd.status = EStudentStatus.REGULAR;
+        }
+        this._student_data.next(sd);
+    }
+
+}
+

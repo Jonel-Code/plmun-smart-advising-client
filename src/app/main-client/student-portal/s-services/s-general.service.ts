@@ -1,7 +1,7 @@
 import {environment} from '../../../../environments/environment';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {map} from 'rxjs/operators';
-import {swal_load} from '../../../helper-scripts/swal-loading';
+import {swal_load, swal_close} from '../../../helper-scripts/swal-loading';
 
 
 export class SGeneralService {
@@ -45,9 +45,11 @@ export class SGeneralService {
             .toPromise()
             .then((x) => {
                 // this.close_swal();
+                swal_close();
                 return x;
             }, (z) => {
                 // this.close_swal();
+                swal_close();
                 return z;
             });
     }

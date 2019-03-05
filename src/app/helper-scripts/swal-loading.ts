@@ -11,3 +11,10 @@ export function swal_load(message = 'currently sending data please wait.') {
         }
     });
 }
+
+export function swal_close() {
+    setTimeout(() => {
+        swal.close();
+    });
+
+}
