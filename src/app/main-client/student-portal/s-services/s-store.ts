@@ -3,6 +3,9 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {SLoginService} from './s-login.service';
 import {CustomDTree, Edges, Leaf} from '../../../core/algorithms/CustomDTree';
 import {IncomingSemService} from './incoming-sem.service';
+import {HttpResponse} from '@angular/common/http';
+import swal from 'sweetalert';
+
 
 export enum EStudentStatus {
     IRREGULAR = 'IRREGULAR',
@@ -60,7 +63,7 @@ export interface IIncomingDataContext {
     subjects: string[];
 }
 
-class StudentStoreData implements IStudentStore {
+export class StudentStoreData implements IStudentStore {
     id: string;
     name: string;
     course: string;
@@ -88,6 +91,10 @@ class StudentStoreData implements IStudentStore {
         this.can_take_this_semester = [];
         this.not_taken_subj = [];
     }
+
+    public static is_pass_or_taken(grade: number) {
+        return grade >= 0 && grade <= 3.0;
+    }
 }
 
 @Injectable()
@@ -106,23 +113,32 @@ export class SStore {
     }
 
     load_student_data(u, p) {
-        this.sLoginService.login(u, p)
-            .then(x => {
-                console.log('fetched data', x);
-                const content = x['body']['content'];
-                if (!content) {
-                    return;
-                }
-                console.log('new login', x);
-                this.set_general_data(content);
-            })
-            .then(() => {
-                this.set_subject_data();
-                console.log('updated_data', this._student_data.getValue());
-            })
-            .then(() => {
-                this.set_semester_data();
-            });
+        return new Promise((resolve, reject) => {
+            try {
+                this.sLoginService.login(u, p)
+                    .then((x: HttpResponse<any>) => {
+                        console.log('fetched data', x);
+                        if (x['body'] === undefined) {
+                            throw new Error('error in http');
+                        }
+                        const content = x['body']['content'];
+                        console.log('new login', x);
+                        this.set_general_data(content);
+                    })
+                    .then(() => {
+                        this.set_subject_data();
+                        console.log('updated_data', this._student_data.getValue());
+                    })
+                    .then(() => {
+                        this.set_semester_data()
+                            .then(() => {
+                                resolve(this.student_data_values);
+                            });
+                    });
+            } catch (e) {
+                reject(e);
+            }
+        });
     }
 
     private is_pass_or_taken(grade: number) {
@@ -146,7 +162,7 @@ export class SStore {
     }
 
     set_semester_data() {
-        this.incomingSemService.get_available_subjects()
+        return this.incomingSemService.get_available_subjects()
             .then(x => {
                 console.log('sem_data', x);
                 const content = x['body']['data'];

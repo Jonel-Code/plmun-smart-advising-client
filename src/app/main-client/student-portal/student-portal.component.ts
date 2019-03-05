@@ -9,8 +9,7 @@ export enum StudentPortalMenuEnum {
 @Component({
     selector: 'app-student-portal',
     templateUrl: './student-portal.component.html',
-    styleUrls: ['./student-portal.component.css'],
-    providers: [SStore]
+    styleUrls: ['./student-portal.component.css']
 })
 export class StudentPortalComponent implements OnInit {
     name: string;
@@ -42,6 +41,7 @@ export class StudentPortalComponent implements OnInit {
         this.incoming_semester = data_source.incoming_semester;
 
         this.load_student_data();
+        console.log('data_source', data_source);
     }
 
     load_student_data() {

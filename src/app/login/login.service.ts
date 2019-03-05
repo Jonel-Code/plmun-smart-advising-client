@@ -4,6 +4,8 @@ import {RoutingPaths} from '../core/app-routing/routingPaths';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {map} from 'rxjs/operators';
+import {SStore} from '../main-client/student-portal/s-services/s-store';
+import swal from 'sweetalert';
 
 export interface ISubjectEdgesDataset {
     edges: ISubjectEdge[];
@@ -46,7 +48,7 @@ export interface ICourseCurriculum {
     course: string;
     year: string;
     subjects: ISubject[];
-    paths: ISubjectEdgesDataset;
+    // paths: ISubjectEdgesDataset;
 }
 
 export interface IStudentInformation {
@@ -75,7 +77,8 @@ export class LoginService {
     // private register_url = `${environment.base_api_url}/registration`;
 
     constructor(private router: Router,
-                private http: HttpClient) {
+                private http: HttpClient,
+                public sStore: SStore) {
     }
 
     getUsernameToken() {
@@ -106,7 +109,8 @@ export class LoginService {
         return localStorage.getItem(this.studentToken);
     }
 
-    setStudentToken(val: IStudentInformation) {
+    setStudentToken(val: any) {
+        console.log('set student token', val);
         localStorage.setItem(this.studentToken, btoa(JSON.stringify(val)));
     }
 
@@ -121,21 +125,43 @@ export class LoginService {
         this.router.navigate([this.appRoutes.RoutingPaths.login]);
     }
 
+    loginErrorMessage() {
+        setTimeout(() => {
+            swal({
+                title: 'Error in Http',
+                buttons: {Return: true}
+            });
+        });
+    }
+
+    close_swal_messages() {
+        setTimeout(() => {
+            swal.close();
+        });
+    }
+
     login(username: string, password: string) {
-        const params = new HttpParams()
-            .set('student_id', username)
-            .set('password', password);
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/x-www-form-urlencoded'
-            })
-        };
-        console.log(params);
-        console.log(httpOptions);
-        return this.http.post(this.login_url, params.toString(), httpOptions)
-            .pipe(map(result => {
-                return result;
-            }));
+        return this.sStore.load_student_data(username, password)
+            .then(x => {
+                return x;
+            }, x => {
+                this.loginErrorMessage();
+                return x;
+            });
+        // const params = new HttpParams()
+        //     .set('student_id', username)
+        //     .set('password', password);
+        // const httpOptions = {
+        //     headers: new HttpHeaders({
+        //         'Content-Type': 'application/x-www-form-urlencoded'
+        //     })
+        // };
+        // console.log(params);
+        // console.log(httpOptions);
+        // return this.http.post(this.login_url, params.toString(), httpOptions)
+        //     .pipe(map(result => {
+        //         return result;
+        //     }));
     }
 
     isStudentLoggedIn() {

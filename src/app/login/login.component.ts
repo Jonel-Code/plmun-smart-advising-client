@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
 
         const p = new Promise((resolve, reject) => {
             this.loginService.login(this.form.value.studentId, this.form.value.password)
-                .subscribe(data => {
+                .then(data => {
                     console.log('response data', data);
                     resolve(data);
                     this.sending = false;
@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
         const self = this;
         p.then((data) => {
             console.log(data);
-            const status: StudentStatusEnum = (data['status'] === 'regular')
+            const status: StudentStatusEnum = (String(data['status']).toLowerCase() === 'regular')
                 ? StudentStatusEnum.regular : StudentStatusEnum.irregular;
             const subjs: ISubject[] = [];
             const raw_course_cur = data['course_curriculum'];
@@ -72,20 +72,26 @@ export class LoginComponent implements OnInit {
             console.log('subject_paths:', subject_paths);
             for (const i of raw_course_cur['subjects']) {
                 console.log(i);
+                let pre_req_arr = i['pre_req'];
+                if (Array.isArray(pre_req_arr)) {
+                    pre_req_arr = pre_req_arr.join(',');
+                }
                 subjs.push({
                     code: i['code'],
                     title: i['title'],
                     total_units: Number(i['total_units']),
-                    pre_req: i['pre_req'],
+                    pre_req: pre_req_arr,
                     year: i['year'],
                     semester: i['semester']
                 });
             }
+            console.log('subjs', subjs);
+            console.log('status', status);
             const course_curriculum: ICourseCurriculum = {
                 course: raw_course_cur['course'],
                 year: raw_course_cur['year'],
                 subjects: subjs,
-                paths: subject_paths
+                // paths: subject_paths
             };
             const subjects_taken: ISubjectGrade[] = [];
             for (const i of data['subjects_taken']) {

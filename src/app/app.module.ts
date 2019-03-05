@@ -45,6 +45,7 @@ import {SDataUpService, SGradeUpService} from './main-client/admin-portal/a-serv
 import {StudUploaderComponent} from './main-client/admin-portal/admin-comp/admin-parts/stud-uploader/stud-uploader.component';
 import {IncomingSemService} from './main-client/student-portal/s-services/incoming-sem.service';
 import {SLoginService} from './main-client/student-portal/s-services/s-login.service';
+import {SStore} from './main-client/student-portal/s-services/s-store';
 
 
 @NgModule({
@@ -102,7 +103,8 @@ import {SLoginService} from './main-client/student-portal/s-services/s-login.ser
         SDataUpService,
         SGradeUpService,
         IncomingSemService,
-        SLoginService
+        SLoginService,
+        SStore
         // {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent]

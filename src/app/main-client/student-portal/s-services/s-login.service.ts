@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../../../environments/environment';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import swal from 'sweetalert';
-import {swal_load} from '../../../helper-scripts/swal-loading';
+import {swal_load, swal_close} from '../../../helper-scripts/swal-loading';
 
 @Injectable({
     providedIn: 'root'
@@ -39,10 +39,17 @@ export class SLoginService {
             }))
             .toPromise()
             .then((x) => {
-                this.close_swal();
+                swal_close();
                 return x;
-            }, (z) => {
-                this.close_swal();
+            }, (z: HttpResponse<any>) => {
+                swal_close();
+                swal({
+                    title: 'Error ' + z.status,
+                    text: z.body,
+                    buttons: {
+                        RETURN: true
+                    }
+                });
                 return z;
             });
     }

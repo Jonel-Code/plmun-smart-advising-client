@@ -1,21 +1,55 @@
 <!--<div class="portal-bg">-->
 
 <!--</div>-->
+
 <div class="ui centered card student-portal-card content-card">
     <div align="center">
         <h3><b>Student Pre-Advising Portal</b></h3>
     </div>
 
     <!-- <mat-card-header class="row-blox"> -->
-    <div>
+    <!--<div>-->
+    <!--<div class="ui attached stackable menu" style="margin: 0 !important;">-->
+    <!--<div class="ui container" style="margin: 0 !important;">-->
+    <!--<div class="item">-->
+    <!--<div>-->
+    <!--<p>{{name | uppercase}} - {{id}}</p>-->
+    <!--<p>{{course| uppercase}} - {{year + ' year'| uppercase}}</p>-->
+    <!--<p>{{status.toString().toUpperCase()}}</p>-->
+    <!--<p>ENROLMENT FOR SEMESTER: <b>{{incoming_semester | uppercase}} semester</b></p>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="right item" style="margin: 0 !important;">-->
+    <!--<h3>View Mode:-->
+    <!--<button mat-stroked-button color="primary"-->
+    <!--[matMenuTriggerFor]="menu">-->
+    <!--{{mainMenu.toString()}}-->
+    <!--<mat-icon *ngIf="mainMenu.toString().toLowerCase() === 'status'">face</mat-icon>-->
+    <!--<mat-icon *ngIf="mainMenu.toString().toLowerCase() === 'advising'">edit</mat-icon>-->
+    <!--</button>-->
+    <!--</h3>-->
+
+    <!--<mat-menu #menu="matMenu">-->
+    <!--<button mat-menu-item (click)="changeMenu(0)">Student Status-->
+    <!--<mat-icon>face</mat-icon>-->
+    <!--</button>-->
+    <!--<button mat-menu-item (click)="changeMenu(1)">Advising-->
+    <!--<mat-icon>edit</mat-icon>-->
+    <!--</button>-->
+    <!--</mat-menu>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <ng-container *ngIf="sStore.student_data | async as data">
         <div class="ui attached stackable menu" style="margin: 0 !important;">
             <div class="ui container" style="margin: 0 !important;">
                 <div class="item">
                     <div>
-                        <p>{{name | uppercase}} - {{id}}</p>
-                        <p>{{course| uppercase}} - {{year + ' year'| uppercase}}</p>
-                        <p>{{status.toString()| uppercase}}</p>
-                        <p>ENROLMENT FOR SEMESTER: <b>{{incoming_semester | uppercase}} semester</b></p>
+                        <p>{{data.name | uppercase}} - {{id}}</p>
+                        <p>{{data.course| uppercase}} - {{year + ' year'| uppercase}}</p>
+                        <p *ngIf="data.status">{{data.status.toString().toUpperCase()}}</p>
+                        <p *ngIf="data.incoming_semester">ENROLMENT FOR SEMESTER: <b>{{data.incoming_semester.semester | uppercase}} semester</b></p>
                     </div>
                 </div>
             </div>
@@ -39,16 +73,16 @@
                 </mat-menu>
             </div>
         </div>
-    </div>
-
-    <div class="content">
-        <div class="card-content-wrapper-main">
-            <div *ngIf="mainMenu.toString().toLowerCase() === 'status'" class="table-container">
-                <app-student-status></app-student-status>
-            </div>
-            <div *ngIf="mainMenu.toString().toLowerCase() === 'advising'" class="table-container">
-                <app-student-advising></app-student-advising>
+        <div class="content">
+            <div class="card-content-wrapper-main">
+                <div *ngIf="mainMenu.toString().toLowerCase() === 'status'" class="table-container">
+                    <app-student-status></app-student-status>
+                </div>
+                <div *ngIf="mainMenu.toString().toLowerCase() === 'advising'" class="table-container">
+                    <app-student-advising></app-student-advising>
+                </div>
             </div>
         </div>
-    </div>
+    </ng-container>
+
 </div>

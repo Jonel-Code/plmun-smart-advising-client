@@ -75,7 +75,7 @@
             <ng-container matColumnDef="year">
                 <th mat-header-cell mat-sort-header  *matHeaderCellDef >Year</th>
                 <td *matCellDef="let sub"  data-label="Year">
-                    <app-mobile-label [mobileLabel]="'Student Year: '"></app-mobile-label> {{student_years[sub.year-1] + ' year' | uppercase }}</td>
+                    <app-mobile-label [mobileLabel]="'Student Year: '"></app-mobile-label> {{year_index_2_string(sub.year) + ' year' | uppercase }}</td>
             </ng-container>
 
             <ng-container matColumnDef="semester">

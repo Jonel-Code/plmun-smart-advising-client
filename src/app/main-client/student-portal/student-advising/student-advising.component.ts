@@ -3,6 +3,7 @@ import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {IStudentInformation, ISubject, LoginService, StudentStatusEnum} from '../../../login/login.service';
 import {SelectionModel} from '@angular/cdk/collections';
 import {AdvisingFormComponent, IBasicStudentInformation} from '../main-components/advising-form/advising-form.component';
+import {SStore} from '../s-services/s-store';
 
 @Component({
     selector: 'app-student-advising',
@@ -25,36 +26,73 @@ export class StudentAdvisingComponent implements OnInit {
     maxUnits: number;
 
     constructor(private loginService: LoginService,
-                public dialog: MatDialog) {
-        const _tableData: ISubject[] = [];
+                public dialog: MatDialog,
+                private sStore: SStore) {
+        // const _tableData: ISubject[] = [];
         const data_source: MatTableDataSource<IStudentInformation> = JSON.parse(atob(this.loginService.getStudentToken()));
         const course_curriculum = data_source['course_curriculum'];
         const subjects = course_curriculum['subjects'];
         const can_take: string[] = data_source['can_take'];
         this.status = data_source['status'];
-        console.log('can_take', can_take);
-        for (const i of subjects) {
-            if (can_take.includes(i.code)) {
-                console.log(i.title);
-                _tableData.push({
-                    code: i.code,
-                    title: i.title,
-                    total_units: i.total_units,
-                    pre_req: i.pre_req,
-                    year: (this.student_years.indexOf(i.year) + 1).toString(),
-                    semester: i.semester
-                });
-            }
-        }
-        this.tableData = new MatTableDataSource(_tableData);
-        this.student_info = {
-            name: data_source['name'],
-            id: data_source['id'],
-            course: data_source['course'],
-            status: data_source['status'],
-            year: data_source['year']
-        };
-        this.incoming_semester = data_source['incoming_semester'];
+        // console.log('can_take', can_take);
+        // for (const i of subjects) {
+        //     if (can_take.includes(i.code)) {
+        //         console.log(i.title);
+        //         _tableData.push({
+        //             code: i.code,
+        //             title: i.title,
+        //             total_units: i.total_units,
+        //             pre_req: i.pre_req,
+        //             year: (this.student_years.indexOf(i.year) + 1).toString(),
+        //             semester: i.semester
+        //         });
+        //     }
+        // }
+        this.tableData = new MatTableDataSource([]);
+        // this.student_info = {
+        //     name: data_source['name'],
+        //     id: data_source['id'],
+        //     course: data_source['course'],
+        //     status: data_source['status'],
+        //     year: data_source['year']
+        // };
+        // this.incoming_semester = data_source['incoming_semester'];
+        this.load_main_content();
+    }
+
+    load_main_content() {
+        this.sStore.student_data
+            .subscribe(value => {
+                console.log('value', value);
+                if (!value.can_take_this_semester || !value.course_curriculum.subjects) {
+                    return;
+                }
+                const _tableData: ISubject[] = [];
+                for (const i of value.course_curriculum.subjects) {
+                    if (value.can_take_this_semester.includes(i.code.toLowerCase())) {
+                        _tableData.push({
+                            code: i.code.toLowerCase(),
+                            title: i.title,
+                            total_units: Number(i.total_units),
+                            pre_req: i.pre_req.join(','),
+                            year: (this.student_years.indexOf(i.year.toString().toLowerCase())).toString(),
+                            semester: i.semester
+                        });
+                    }
+                }
+                this.tableData.data = _tableData;
+                this.student_info = {
+                    name: value.name,
+                    id: value.id,
+                    course: value.course,
+                    status: StudentStatusEnum[value.status.toString().toLowerCase()],
+                    year: value.year.toString()
+                };
+            });
+    }
+
+    year_index_2_string(i_x: string) {
+        return this.student_years[Number(i_x)];
     }
 
     isAllSelected() {
@@ -113,9 +151,6 @@ export class StudentAdvisingComponent implements OnInit {
         return this.remainigUnits() - unit_val < 0;
     }
 
-    nullFunction() {
-        console.log('null function is fired');
-    }
 
     openDialog() {
         this.dialog.open(AdvisingFormComponent, {

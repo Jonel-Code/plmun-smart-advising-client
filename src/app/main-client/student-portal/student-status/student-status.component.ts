@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {
     IStudentInformation,
     ISubject, ISubjectEdge,
@@ -8,6 +8,7 @@ import {
 } from '../../../login/login.service';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {CustomDTree, Edges, Leaf} from '../../../core/algorithms/CustomDTree';
+import {SStore, StudentStoreData} from '../s-services/s-store';
 
 
 const curriculum_data: ISubject[] = [
@@ -31,6 +32,7 @@ export class ICustonSubject implements ISubject {
     styleUrls: ['./student-status.component.css']
 })
 export class StudentStatusComponent implements OnInit {
+
     displayedColumns: string[] = ['code', 'title', 'total_units', 'pre_req', 'year', 'semester'];
     // tableData: MatTableDataSource<ISubject>;
     // displayedColumns: string[] = ['code', 'title', 'total_units', 'pre_req', 'year', 'semester'];
@@ -45,40 +47,88 @@ export class StudentStatusComponent implements OnInit {
 
     resultsLength: number;
 
-    constructor(private loginService: LoginService) {
+    constructor(private loginService: LoginService, private sStore: SStore) {
+        this.load_main_data();
+    }
+
+    load_main_data() {
         const _tableData: ICustonSubject[] = [];
         const data_source: MatTableDataSource<IStudentInformation> = JSON.parse(atob(this.loginService.getStudentToken()));
         const course_curriculum = data_source['course_curriculum'];
         const subjects = course_curriculum['subjects'];
         this.subjectPaths = course_curriculum['paths'];
         console.log('this.subjectPaths value', this.subjectPaths);
-        for (const i of subjects) {
-            console.log(i.title);
-            _tableData.push({
-                code: i.code,
-                title: i.title,
-                total_units: i.total_units,
-                pre_req: i.pre_req,
-                year: (this.student_years.indexOf(i.year) + 1).toString(),
-                semester: i.semester,
-                paths: i.code
-            });
-        }
-        const subject_taken: ISubjectGrade[] = data_source['subjects_taken'];
+        console.log('statusData', this.sStore);
+        // for (const i of subjects) {
+        //     console.log(i.title);
+        //     _tableData.push({
+        //         code: i.code,
+        //         title: i.title,
+        //         total_units: i.total_units,
+        //         pre_req: i.pre_req,
+        //         year: (this.student_years.indexOf(i.year) + 1).toString(),
+        //         semester: i.semester,
+        //         paths: i.code
+        //     });
+        // }
+        // const subject_taken: ISubjectGrade[] = data_source['subjects_taken'];
+        // this.passed_subjects = [];
+        // for (const i of subject_taken) {
+        //     if (i.grade > 0 && i.grade <= 3) {
+        //         this.passed_subjects.push(i.code);
+        //     }
+        // }
+        // console.log('passed_subjects', this.passed_subjects);
+        this.tableData = new MatTableDataSource([]);
+
+        // test function call for new algo implementation
+        // this.test_new_algo();
+    }
+
+    set_passed_subjects(subject_taken: ISubjectGrade[]) {
         this.passed_subjects = [];
         for (const i of subject_taken) {
-            if (i.grade > 0 && i.grade <= 3) {
+            if (StudentStoreData.is_pass_or_taken(i.grade)) {
                 this.passed_subjects.push(i.code);
             }
         }
         console.log('passed_subjects', this.passed_subjects);
-        this.tableData = new MatTableDataSource(_tableData.slice());
+    }
 
-        // test function call for new algo implementation
-        this.test_new_algo();
+    year_index_2_string(i_x: string) {
+        return this.student_years[Number(i_x)];
+    }
+
+    main_data() {
+        this.sStore.student_data
+            .subscribe((val) => {
+                if (!val.course_curriculum) {
+                    return;
+                }
+                console.log('val', val);
+                const _v2_tableData: ICustonSubject[] = [];
+                for (const x of val.course_curriculum.subjects) {
+                    _v2_tableData.push({
+                        code: x.code,
+                        title: x.title,
+                        total_units: Number(x.total_units),
+                        pre_req: x.pre_req.join(','),
+                        year: this.student_years.indexOf(x.year.toString().toLowerCase()).toString(),
+                        semester: x.semester,
+                        paths: x.code
+                    });
+                }
+                console.log('_v2_tableData', _v2_tableData);
+                this.tableData = new MatTableDataSource(_v2_tableData.slice());
+                if (val.subjects_taken) {
+                    this.set_passed_subjects(val.subjects_taken);
+                }
+
+            });
     }
 
     ngOnInit() {
+        this.main_data();
         this.tableData.sort = this.sort;
         this.tableData.paginator = this.paginator;
         this.sort.sortChange.subscribe(() => this.reset_paginator_index());
@@ -106,14 +156,14 @@ export class StudentStatusComponent implements OnInit {
     filter_by_year() {
         this.tableData.filterPredicate = function (data, filter: string): boolean {
             // console.log('data.year.toLowerCase().includes(filter)', data.year.toLowerCase().includes(filter));
-            // console.log('filter',filter);
+            console.log('filter', filter);
             // console.log('data.year.toLowerCase()',data.year.toLowerCase());
             return data.year.toString().includes(filter.toString());
         };
     }
 
     get_index_of_year(x: string): number {
-        return this.student_years.indexOf(x) + 1;
+        return this.student_years.indexOf(x);
     }
 
     filter_by_year_wrapper(year: string) {
