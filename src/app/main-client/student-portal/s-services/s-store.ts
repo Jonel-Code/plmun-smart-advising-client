@@ -61,6 +61,8 @@ export interface IIncomingDataContext {
     year: string;
     semester: ESemester;
     subjects: string[];
+    subjects_items?: { id: number, code: string }[];
+    semester_id?: number;
 }
 
 export class StudentStoreData implements IStudentStore {
@@ -76,6 +78,7 @@ export class StudentStoreData implements IStudentStore {
     incoming_semester: IIncomingDataContext;
     can_take_this_semester: string[];
     not_taken_subj?: ICurriculumSubject[];
+    subjects_items?: { id: number, code: string }[];
 
     constructor() {
         this.name = '';
@@ -90,6 +93,7 @@ export class StudentStoreData implements IStudentStore {
         this.incoming_semester = null;
         this.can_take_this_semester = [];
         this.not_taken_subj = [];
+        this.subjects_items = [];
     }
 
     public static is_pass_or_taken(grade: number) {
@@ -196,15 +200,19 @@ export class SStore {
                 }
                 const sd = this._student_data.getValue();
                 const sb = [];
+                const sb_data_items: { id: number, code: string }[] = [];
                 if (Array.isArray(content['subjects'])) {
                     for (const s of content['subjects']) {
-                        sb.push(String(s).toLowerCase());
+                        sb.push(String(s['code']).toLowerCase());
+                        sb_data_items.push({id: Number(s['id']), code: String(s['code']).toLowerCase()});
                     }
                 }
                 sd.incoming_semester = {
                     year: content['year'],
                     semester: ESemester[String(content['semester']).toUpperCase()],
-                    subjects: sb
+                    subjects: sb,
+                    subjects_items: sb_data_items,
+                    semester_id: content['semester_id']
                 };
                 this._student_data.next(sd);
                 console.log('with_semester_data', this._student_data.getValue());

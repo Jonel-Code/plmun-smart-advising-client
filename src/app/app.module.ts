@@ -46,6 +46,7 @@ import {StudUploaderComponent} from './main-client/admin-portal/admin-comp/admin
 import {IncomingSemService} from './main-client/student-portal/s-services/incoming-sem.service';
 import {SLoginService} from './main-client/student-portal/s-services/s-login.service';
 import {SStore} from './main-client/student-portal/s-services/s-store';
+import {AdvisingFormService} from './main-client/student-portal/s-services/advising-form.service';
 
 
 @NgModule({
@@ -104,7 +105,8 @@ import {SStore} from './main-client/student-portal/s-services/s-store';
         SGradeUpService,
         IncomingSemService,
         SLoginService,
-        SStore
+        SStore,
+        AdvisingFormService
         // {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent]

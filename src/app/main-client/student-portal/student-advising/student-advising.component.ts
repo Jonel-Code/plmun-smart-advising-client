@@ -4,6 +4,7 @@ import {ISubject, LoginService, StudentStatusEnum} from '../../../login/login.se
 import {SelectionModel} from '@angular/cdk/collections';
 import {AdvisingFormComponent, IBasicStudentInformation} from '../main-components/advising-form/advising-form.component';
 import {IStudentStore, SStore} from '../s-services/s-store';
+import {AdvisingFormService, IAdvisingFormContext, ISaveAdvisingFormContext} from '../s-services/advising-form.service';
 
 @Component({
     selector: 'app-student-advising',
@@ -25,9 +26,12 @@ export class StudentAdvisingComponent implements OnInit {
 
     maxUnits: number;
 
+    @ViewChild('advisingPrint') advisingPrint;
+
     constructor(private loginService: LoginService,
                 public dialog: MatDialog,
-                private sStore: SStore) {
+                private sStore: SStore,
+                private advisingFormService: AdvisingFormService) {
         // const _tableData: ISubject[] = [];
         // const data_source: MatTableDataSource<IStudentInformation> = JSON.parse(atob(this.loginService.getStudentToken()));
         // const course_curriculum = data_source['course_curriculum'];
@@ -219,6 +223,55 @@ export class StudentAdvisingComponent implements OnInit {
                 incoming_semester: this.incoming_semester
             }
         });
+    }
+
+    submit_advising_form() {
+        const to_send_ids: number[] = [];
+        const selected_items = this.selection.selected.map(x => {
+            return x.code.toLowerCase();
+        });
+        const av_subs = this.sStore.student_data_values.incoming_semester.subjects_items;
+        for (const a of av_subs) {
+            if (selected_items.includes(a.code.toLowerCase())) {
+                to_send_ids.push(a.id);
+            }
+        }
+        const s_id = this.sStore.student_data_values.incoming_semester.semester_id;
+        const data_2_send: ISaveAdvisingFormContext = {
+            student_id: Number(this.sStore.student_data_values.id),
+            content: to_send_ids,
+            semester_id: s_id
+        };
+        console.log('data_2_send', data_2_send);
+        this.advisingFormService.saveAdvisingForm(data_2_send)
+            .then(x => {
+                console.log('submit_advising_form', x);
+                this.start_print_advising_form();
+            });
+    }
+
+    start_print_advising_form() {
+        const p = this.new_print_advising();
+    }
+
+    async new_print_advising() {
+        const sid = this.sStore.student_data_values.id;
+        const sem_id = this.sStore.student_data_values.incoming_semester.semester_id;
+        const print_data: IAdvisingFormContext[] = [];
+        for (const s of this.selection.selected) {
+            print_data.push({
+                subject: s.title,
+                units: s.total_units
+            });
+        }
+        const pdf = await this.advisingFormService.getAdvisingFormPDF(sid, sem_id, print_data);
+        const ur = window.URL.createObjectURL(pdf);
+        // window.open(ur);
+        const lk = this.advisingPrint.nativeElement;
+        lk.href = ur;
+        lk.download = 'advising_form.pdf';
+        lk.click();
+        window.URL.revokeObjectURL(ur);
     }
 
     ngOnInit() {

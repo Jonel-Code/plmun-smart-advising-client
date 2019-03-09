@@ -4,7 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 
 export interface IOpenSubjectContext {
-    year: number;
+    year: string;
     semester: string;
     subject_code: string[];
 }

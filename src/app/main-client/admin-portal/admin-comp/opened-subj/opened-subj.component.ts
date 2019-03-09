@@ -105,6 +105,9 @@ export class OpenedSubjComponent implements OnInit {
                 setTimeout(() => {
                     swal.close();
                 });
+                if (this.semester_data.length === 0) {
+                    this.latest_opened_sub = new MatTableDataSource([]);
+                }
             });
     }
 
@@ -166,7 +169,7 @@ export class OpenedSubjComponent implements OnInit {
                     const arr: string[] = content['data']['subjects'];
                     this.latest_opened_sub.data = arr.map(y => {
                         return {
-                            code: y
+                            code: y['code']
                         };
                     });
                     this.table_content = this.latest_opened_sub.data;
@@ -205,7 +208,7 @@ export class OpenedSubjComponent implements OnInit {
         console.log('this.excel_data.', this.excel_data);
         this.iNSS.post_available_subjects({
             semester: this.selected_semester.toLowerCase() + ' semester',
-            year: Number(this.selected_year),
+            year: this.selected_year,
             subject_code: this.excel_data
         }).then(x => {
             const content = x['body'];

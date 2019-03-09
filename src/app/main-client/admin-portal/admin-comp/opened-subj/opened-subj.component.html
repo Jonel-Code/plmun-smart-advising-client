@@ -1,4 +1,4 @@
-<div class="ui huge centered header" *ngIf="activated_semester_data">
+<div class="ui huge centered header" *ngIf="activated_semester_data && !(latest_opened_sub.data.length === 0)">
     Current Used Semester Data: ID: {{activated_semester_data.id}}
 </div>
 
@@ -42,15 +42,15 @@
     </div>
 </div>
 
-<div *ngIf="current_semester_data" style="margin-top: 10px;">
+<div *ngIf="latest_opened_sub.data.length > 0" style="margin-top: 10px;">
     <div class="ui medium header">
         Selected Semester: Id: {{current_semester_data.id}}
     </div>
 </div>
 
-<div *ngIf="table_content.length === 0" class="ui medium header">NO Uploaded Opened Semester</div>
+<div *ngIf="latest_opened_sub.data.length === 0" class="ui medium header">NO Uploaded Opened Semester</div>
 
-<div *ngIf="table_content.length > 0">
+<div *ngIf="latest_opened_sub.data.length > 0">
     <div class="ui medium header">Subjects List</div>
     <table mat-table
            [dataSource]="latest_opened_sub"
@@ -60,7 +60,7 @@
         <ng-container matColumnDef="code">
             <th mat-header-cell mat-sort-header *matHeaderCellDef>Subject Code</th>
             <td *matCellDef="let sub">
-                {{sub.code | uppercase}}
+                {{sub.code.toString().toUpperCase()}}
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
