@@ -53,7 +53,8 @@ export class StudentPortalComponent implements OnInit {
         // console.log('student_data_values', this.sStore.student_data_values);
         // this.student_name = this.sStore.student_data_values.name;
         // console.log('last value', this.student_name);
-        this.sStore.load_student_data('16118083', 'jonel pante');
+        const au = this.sStore.load_auth_vals();
+        this.sStore.load_student_data(au['u'], au['p']);
     }
 
 }

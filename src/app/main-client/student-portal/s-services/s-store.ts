@@ -120,7 +120,7 @@ export class SStore {
         localStorage.setItem('au', JSON.stringify({u: u, p: p}));
     }
 
-    private load_auth_vals() {
+    public load_auth_vals() {
         return JSON.parse(localStorage.getItem('au'));
     }
 
@@ -158,12 +158,12 @@ export class SStore {
     }
 
     is_authenticated(): Promise<boolean> {
-        if (this.load_auth_vals() === undefined) {
+        const au = this.load_auth_vals();
+        if (!au || !au.u || !au.p) {
             return new Promise((resolve, reject) => {
                 resolve(false);
             });
         }
-        const au = this.load_auth_vals();
         return this.sLoginService.login(au.u, au.p)
             .then(x => {
                 return x['body'] !== undefined;
@@ -376,8 +376,13 @@ export class SStore {
         console.log('incoming sem', si);
         const back_subjects = [];
         for (let x = 0; x <= yi; x++) {
+            let _si = semesters.length;
+            if (x === yi) {
+                _si = si;
+            }
             const ys = EYear[years[x]];
-            for (let y = 0; y < si; y++) {
+            console.log('ys', ys);
+            for (let y = 0; y < _si; y++) {
                 const ss = ESemester[semesters[y]];
                 sd.not_taken_subj.forEach((s: ICurriculumSubject) => {
                     if (s.year === ys && s.semester === ss) {

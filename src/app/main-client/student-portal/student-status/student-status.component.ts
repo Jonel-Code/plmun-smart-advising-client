@@ -80,7 +80,7 @@ export class StudentStatusComponent implements OnInit {
         // }
         // console.log('passed_subjects', this.passed_subjects);
         this.tableData = new MatTableDataSource([]);
-
+        this.tableData.paginator = this.paginator;
         // test function call for new algo implementation
         // this.test_new_algo();
     }
@@ -120,6 +120,7 @@ export class StudentStatusComponent implements OnInit {
                 }
                 console.log('_v2_tableData', _v2_tableData);
                 this.tableData = new MatTableDataSource(_v2_tableData.slice());
+                this.tableData.paginator = this.paginator;
                 if (val.subjects_taken) {
                     this.set_passed_subjects(val.subjects_taken);
                 }
