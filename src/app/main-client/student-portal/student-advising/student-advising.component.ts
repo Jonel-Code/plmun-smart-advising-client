@@ -3,7 +3,7 @@ import {MatDialog, MatSort, MatTableDataSource} from '@angular/material';
 import {ISubject, LoginService, StudentStatusEnum} from '../../../login/login.service';
 import {SelectionModel} from '@angular/cdk/collections';
 import {AdvisingFormComponent, IBasicStudentInformation} from '../main-components/advising-form/advising-form.component';
-import {IStudentStore, SStore} from '../s-services/s-store';
+import {EStudentStatus, IStudentStore, SStore} from '../s-services/s-store';
 import {AdvisingFormService, IAdvisingFormContext, ISaveAdvisingFormContext} from '../s-services/advising-form.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class StudentAdvisingComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     lockSelection = false;
     selection = new SelectionModel<ISubject>(true, []);
-    status: StudentStatusEnum;
+    status: EStudentStatus;
 
     student_info: IBasicStudentInformation;
     incoming_semester: string;
@@ -97,6 +97,7 @@ export class StudentAdvisingComponent implements OnInit {
                 } else {
                     this.load_irregular_subj(value);
                 }
+                console.log('this.student_info', this.student_info);
             });
     }
 
@@ -128,7 +129,10 @@ export class StudentAdvisingComponent implements OnInit {
             //     });
             // }
         }
+        console.log('regular_subj', _tableData);
         this.tableData.data = _tableData;
+        const rs = this.sStore.get_regular_subjecst();
+        console.log('reg subj', rs);
     }
 
     load_irregular_subj(value: IStudentStore) {
@@ -276,7 +280,7 @@ export class StudentAdvisingComponent implements OnInit {
 
     ngOnInit() {
         this.tableData.sort = this.sort;
-        this.lockSelection = (this.status === StudentStatusEnum.regular);
+        this.lockSelection = this.is_student_regular();
         this.maxUnits = 23;
         // this.lockSelection = true;
         if (this.lockSelection) {
@@ -285,6 +289,6 @@ export class StudentAdvisingComponent implements OnInit {
     }
 
     is_student_regular() {
-        return (this.status === StudentStatusEnum.regular);
+        return (this.student_info.status === StudentStatusEnum.regular);
     }
 }

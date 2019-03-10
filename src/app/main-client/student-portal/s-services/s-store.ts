@@ -116,6 +116,23 @@ export class SStore {
         return this._student_data.getValue();
     }
 
+    public get_regular_subjecst() {
+        const rv = [];
+        if (!this.student_data_values.incoming_semester || !this.student_data_values.year || !this.student_data_values.course_curriculum) {
+            return rv;
+        }
+        const is = this.student_data_values.incoming_semester.semester;
+        const subs = this.student_data_values.course_curriculum.subjects;
+        const sy = this.student_data_values.year;
+        for (const x of subs) {
+            if (sy === x.year && is === x.semester) {
+                rv.push(x);
+            }
+        }
+        return rv;
+
+    }
+
     private save_auth_vals(u, p) {
         localStorage.setItem('au', JSON.stringify({u: u, p: p}));
     }
