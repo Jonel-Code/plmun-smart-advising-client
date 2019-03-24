@@ -230,21 +230,32 @@ export class StudentAdvisingComponent implements OnInit {
     }
 
     submit_advising_form() {
-        const to_send_ids: number[] = [];
+        const is_section_block = this.sStore.student_data_values.status === EStudentStatus.REGULAR;
+        let to_send_ids: any[] = [];
         const selected_items = this.selection.selected.map(x => {
             return x.code.toLowerCase();
         });
+        console.log('selected_items', selected_items);
         const av_subs = this.sStore.student_data_values.incoming_semester.subjects_items;
-        for (const a of av_subs) {
-            if (selected_items.includes(a.code.toLowerCase())) {
-                to_send_ids.push(a.id);
+        if (is_section_block) {
+            to_send_ids = selected_items.slice().map(x => String(x).toLowerCase());
+        } else {
+            for (const a of av_subs) {
+                if (selected_items.includes(a.code.toLowerCase())) {
+                    const to_add: number = Number(a.id);
+                    to_send_ids.push(to_add);
+                }
             }
         }
+
+        console.log('to_send_ids', to_send_ids);
+        // return ;
         const s_id = this.sStore.student_data_values.incoming_semester.semester_id;
         const data_2_send: ISaveAdvisingFormContext = {
             student_id: Number(this.sStore.student_data_values.id),
             content: to_send_ids,
-            semester_id: s_id
+            semester_id: s_id,
+            is_block_section: is_section_block
         };
         console.log('data_2_send', data_2_send);
         this.advisingFormService.saveAdvisingForm(data_2_send)

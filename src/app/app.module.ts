@@ -47,6 +47,8 @@ import {IncomingSemService} from './main-client/student-portal/s-services/incomi
 import {SLoginService} from './main-client/student-portal/s-services/s-login.service';
 import {SStore} from './main-client/student-portal/s-services/s-store';
 import {AdvisingFormService} from './main-client/student-portal/s-services/advising-form.service';
+import {AdvisingStatsService} from './main-client/admin-portal/a-services/advising-stats.service';
+import {AdminStore} from './main-client/admin-portal/data-store/admin-store';
 
 
 @NgModule({
@@ -106,7 +108,9 @@ import {AdvisingFormService} from './main-client/student-portal/s-services/advis
         IncomingSemService,
         SLoginService,
         SStore,
-        AdvisingFormService
+        AdvisingFormService,
+        AdvisingStatsService,
+        AdminStore
         // {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent]

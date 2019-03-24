@@ -1,23 +1,21 @@
 <h1>Statistics</h1>
+<div>
+    <h2 class="ui center aligned icon header">
+        <i class="circular users icon"></i>
+        Student Count: {{student_count}}
+    </h2>
+</div>
 <table class="ui celled table">
     <thead>
     <tr>
         <th>Subject Code</th>
-        <th>Subject Title</th>
-        <th>Advised Student</th>
+        <th>Student Per Subject</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td data-label="Name">Prog-1</td>
-        <td data-label="Age">Programming 1</td>
-        <td data-label="Job">30</td>
+    <tr *ngFor="let s of subject_table">
+        <td data-label="Code">{{s.code}}</td>
+        <td data-label="Count">{{s.count}}</td>
     </tr>
-    <tr>
-        <td data-label="Name">Prog-2</td>
-        <td data-label="Age">Programming 2</td>
-        <td data-label="Job">40</td>
-    </tr>
-
     </tbody>
 </table>

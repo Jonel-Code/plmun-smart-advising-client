@@ -6,8 +6,9 @@ import {environment} from '../../../../environments/environment';
 
 export interface ISaveAdvisingFormContext {
     student_id: number;
-    content: number[];
+    content: number[] | string[];
     semester_id: number;
+    is_block_section: boolean;
 }
 
 export interface IAdvisingFormContext {
@@ -21,17 +22,19 @@ export interface IAdvisingFormContext {
 export class AdvisingFormService {
     protected _url = `${environment.base_api_url}`;
 
+
     constructor(private http: HttpClient) {
     }
 
     saveAdvisingForm(args: ISaveAdvisingFormContext) {
         // const {http_option, params} = this.http_options(args);
-        swal_load();
+        swal_load('Saving Advising Form');
         const url = this._url + '/save_advising_data';
         const params = new HttpParams()
             .set('student_id', String(args.student_id))
             .set('semester_id', String(args.semester_id))
-            .set('content', JSON.stringify(args.content));
+            .set('content', JSON.stringify(args.content))
+            .set('is_block_section', String(args.is_block_section));
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -58,7 +61,7 @@ export class AdvisingFormService {
     }
 
     async getAdvisingFormPDF(student_id, semester_id, args: IAdvisingFormContext[]) {
-        swal_load();
+        swal_load('Generating Advising Form');
         const url = this._url + '/advising_form';
         const httpOptions = {
             responseType: 'blob' as 'json',
