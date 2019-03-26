@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {DeptListingService, DepartmentItem} from '../../../a-services/dept-listing.service';
 import {NewFAccService} from '../../../a-services/new-f-acc.service';
 import {d} from '@angular/core/src/render3';
+import {swal_close, swal_load} from '../../../../../helper-scripts/swal-loading';
 
 
 @Component({
@@ -76,7 +77,7 @@ export class MakeAdminComponent implements OnInit {
         if (!this.isPasswordVerified() || this.selectedDeptTitle === '') {
             return null;
         }
-
+        swal_load();
         this.loading = true;
         this.newFAccService.newAdmin(this.f_id, this.pass, this.selectedDeptTitle)
             .then(data => {
@@ -86,16 +87,33 @@ export class MakeAdminComponent implements OnInit {
                 } else {
                     this.accountCreated();
                 }
+            })
+            .then(x => {
+                swal_close();
             });
     }
 
     accountNotCreated() {
-        this.loading = false;
+        swal({
+            title: 'Account not Created',
+            buttons: {
+                Return: true
+            }
+        }).then(x => {
+            this.loading = false;
+        });
+
     }
 
     accountCreated() {
-        alert('Account Created');
-        window.location.reload();
+        swal({
+            title: 'Account Created',
+            buttons: {
+                Return: true
+            }
+        }).then(x => {
+            window.location.reload();
+        });
     }
 
 

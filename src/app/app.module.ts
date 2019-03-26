@@ -49,6 +49,7 @@ import {SStore} from './main-client/student-portal/s-services/s-store';
 import {AdvisingFormService} from './main-client/student-portal/s-services/advising-form.service';
 import {AdvisingStatsService} from './main-client/admin-portal/a-services/advising-stats.service';
 import {AdminStore} from './main-client/admin-portal/data-store/admin-store';
+import {CanCreateAccountGuard} from './main-client/admin-portal/a-services/can-create-account.guard';
 
 
 @NgModule({
@@ -110,7 +111,8 @@ import {AdminStore} from './main-client/admin-portal/data-store/admin-store';
         SStore,
         AdvisingFormService,
         AdvisingStatsService,
-        AdminStore
+        AdminStore,
+        CanCreateAccountGuard
         // {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent]

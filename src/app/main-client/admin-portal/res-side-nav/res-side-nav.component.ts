@@ -2,10 +2,12 @@ import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angul
 import {MediaMatcher} from '@angular/cdk/layout';
 import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
 import {environment} from '../../../../environments/environment';
+import {CanCreateAccountGuard} from '../a-services/can-create-account.guard';
 
 export interface NavLink {
     title: string;
     link: string;
+    hidden?: boolean;
 }
 
 @Component({
@@ -24,7 +26,7 @@ export class ResSideNavComponent implements OnDestroy, OnInit {
 
     private _mobileQueryListener: () => void;
 
-    constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private router: Router) {
+    constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private router: Router, private can_create: CanCreateAccountGuard) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
@@ -64,8 +66,20 @@ export class ResSideNavComponent implements OnDestroy, OnInit {
         return this.router.url.split('/').slice(3);
     }
 
+    get to_render_links() {
+        const to_render = [];
+        for (const z of this.nav_options) {
+            if (z.link === 'faculty_accounts' && !this.can_create.can_create()) {
+                continue;
+            }
+            to_render.push(z);
+        }
+        return to_render;
+    }
+
     search_title_of_link(link: string): string {
         let x = null;
+
         this.nav_options.forEach(z => {
             if (z.link === link) {
                 x = z.title;
