@@ -6,6 +6,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {SStore} from '../main-client/student-portal/s-services/s-store';
 import swal from 'sweetalert';
+import {swal_close, swal_load} from '../helper-scripts/swal-loading';
 
 export interface ISubjectEdgesDataset {
     edges: ISubjectEdge[];
@@ -141,27 +142,32 @@ export class LoginService {
     }
 
     login(username: string, password: string) {
-        return this.sStore.load_student_data(username, password)
+        // return new Promise((resolve, reject) => {
+        //     this.sStore.save_auth_vals(username, password);
+        // });
+        // return this.sStore.load_student_data(username, password)
+        //     .then(x => {
+        //         return x;
+        //     }, x => {
+        //         // this.loginErrorMessage();
+        //         return x;
+        //     });
+        const params = new HttpParams()
+            .set('student_id', username)
+            .set('password', password);
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/x-www-form-urlencoded'
+            })
+        };
+        console.log(params);
+        console.log(httpOptions);
+        return this.http.post(this.login_url, params.toString(), httpOptions)
+            .toPromise()
             .then(x => {
-                return x;
-            }, x => {
-                // this.loginErrorMessage();
+                this.sStore.save_auth_vals(username, password);
                 return x;
             });
-        // const params = new HttpParams()
-        //     .set('student_id', username)
-        //     .set('password', password);
-        // const httpOptions = {
-        //     headers: new HttpHeaders({
-        //         'Content-Type': 'application/x-www-form-urlencoded'
-        //     })
-        // };
-        // console.log(params);
-        // console.log(httpOptions);
-        // return this.http.post(this.login_url, params.toString(), httpOptions)
-        //     .pipe(map(result => {
-        //         return result;
-        //     }));
     }
 
     isStudentLoggedIn() {

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../../../environments/environment';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import swal from 'sweetalert';
 import {swal_load, swal_close} from '../../../helper-scripts/swal-loading';
@@ -11,6 +11,7 @@ import {swal_load, swal_close} from '../../../helper-scripts/swal-loading';
 export class SLoginService {
 
     private _url = `${environment.base_api_url}/new-login`;
+    private login_url = `${environment.base_api_url}/login`;
 
     constructor(private http: HttpClient) {
     }
@@ -19,6 +20,24 @@ export class SLoginService {
         setTimeout(() => {
             swal.close();
         });
+    }
+
+    check_auth(u, p) {
+        const params = new HttpParams()
+            .set('student_id', u)
+            .set('password', p);
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/x-www-form-urlencoded'
+            })
+        };
+        console.log(params);
+        console.log(httpOptions);
+        return this.http.post(this.login_url, params.toString(), httpOptions)
+            .toPromise()
+            .then(x => {
+                return x;
+            });
     }
 
     login(u: string, p: string) {

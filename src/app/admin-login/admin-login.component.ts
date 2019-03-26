@@ -2,6 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {ALoginService} from '../main-client/admin-portal/a-services/a-login.service';
 import swal from 'sweetalert';
+import {swal_close, swal_load} from '../helper-scripts/swal-loading';
 
 @Component({
     selector: 'app-admin-login',
@@ -42,6 +43,7 @@ export class AdminLoginComponent implements OnInit {
                 Cancel: true,
             }
         }).then(x => {
+            swal_load();
             switch (x) {
                 case 'Yes':
                     return this.login_user();
@@ -50,7 +52,10 @@ export class AdminLoginComponent implements OnInit {
                 default:
 
             }
+        }).catch(x => {
+            swal_close();
         }).then(d => {
+            swal_close();
             const a_data = d['account_data'];
             if (typeof a_data !== 'undefined') {
                 this.redirect_to_dashboard();

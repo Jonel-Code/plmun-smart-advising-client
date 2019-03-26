@@ -2,5 +2,5 @@
     <app-curr-card *ngFor="let d of dataSet"
                    [curriculumData]="d"
                    (uponDelete)="reloadCurrListing($event)"></app-curr-card>
-    <app-add-curr-card></app-add-curr-card>
+    <app-add-curr-card (uponUploadFinish)="reloadCurrListing($event)"></app-add-curr-card>
 </div>

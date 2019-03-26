@@ -32,7 +32,8 @@ export class AdminAccessGuard implements CanActivate {
                     });
                 }
                 return r;
-            });
+            })
+            .catch(x => false);
     }
 
 

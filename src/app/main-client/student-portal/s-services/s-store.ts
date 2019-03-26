@@ -107,6 +107,8 @@ export class SStore {
 
     readonly student_data: Observable<IStudentStore> = this._student_data.asObservable();
 
+    is_loaded = false;
+
 
     constructor(private sLoginService: SLoginService,
                 private incomingSemService: IncomingSemService) {
@@ -133,7 +135,7 @@ export class SStore {
 
     }
 
-    private save_auth_vals(u, p) {
+    public save_auth_vals(u, p) {
         localStorage.setItem('au', JSON.stringify({u: u, p: p}));
     }
 
@@ -142,6 +144,7 @@ export class SStore {
     }
 
     load_student_data(u, p) {
+        this.is_loaded = true;
         this.save_auth_vals(u, p);
         return new Promise((resolve, reject) => {
             try {
@@ -170,6 +173,7 @@ export class SStore {
                     });
             } catch (e) {
                 // reject(e);
+                this.is_loaded = false;
             }
         });
     }
@@ -181,9 +185,12 @@ export class SStore {
                 resolve(false);
             });
         }
-        return this.sLoginService.login(au.u, au.p)
-            .then(x => {
-                return x['body'] !== undefined;
+        return this.sLoginService.check_auth(au.u, au.p)
+            .then((x) => {
+                console.log('x', x);
+                return x['access'] === 'allow';
+            }).catch(x => {
+                return false;
             });
     }
 

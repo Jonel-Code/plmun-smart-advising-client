@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {SuiModalService, TemplateModalConfig, ModalTemplate} from 'ng2-semantic-ui';
 import {ALoginService} from '../../../a-services/a-login.service';
 import * as XLSX from 'xlsx';
@@ -30,6 +30,8 @@ export class AddCurrCardComponent implements OnInit {
     public uploading_in_progress: boolean;
     public new_cur_data: ICurriculumInstance;
 
+    @Output() uponUploadFinish: EventEmitter<any> = new EventEmitter();
+
     get FILE_UPLOADING() {
         return this.file_process_progress < this.fp_progress_max;
     }
@@ -52,7 +54,8 @@ export class AddCurrCardComponent implements OnInit {
 
     addSubject() {
         const n = this.new_cur_data.department;
-        const config = new TemplateModalConfig<NewCurrData, string, string>(this.modalTemplate);
+        const config: TemplateModalConfig<NewCurrData, string, string> =
+            new TemplateModalConfig<NewCurrData, string, string>(this.modalTemplate);
         config.isFullScreen = true;
         config.transition = '0';
         config.transitionDuration = 0;
@@ -208,7 +211,18 @@ export class AddCurrCardComponent implements OnInit {
                                 Back: true
                             }
                         }).then((k) => {
-                            window.location.reload();
+                            // window.location.reload();
+                            this.uponUploadFinish.emit(k);
+                        });
+                    })
+                    .catch(x => {
+                        swal.close();
+                        swal({
+                            title: 'Uploading Failed',
+                            text: 'There is an error in uploading data',
+                            buttons: {
+                                Back: true
+                            }
                         });
                     });
             }

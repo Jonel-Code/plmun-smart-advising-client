@@ -175,7 +175,7 @@ export class StudentAdvisingComponent implements OnInit {
             this.haveSelected() ?
                 this.selection.clear() :
                 this.tableData.data.forEach(row => {
-                    if (!this.isUnitExceed()) {
+                    if (!this.isUnitExceed(row.total_units)) {
                         this.selection.toggle(row);
                     }
                 });

@@ -4,6 +4,7 @@ import {CurrListingService} from '../../../a-services/curr-listing.service';
 import swal from 'sweetalert';
 import {DelCurrService} from '../../../a-services/del-curr.service';
 import * as XLSX from 'xlsx';
+import {swal_close, swal_load} from '../../../../../helper-scripts/swal-loading';
 
 export interface CurriculumCardData {
     course: string;
@@ -56,6 +57,7 @@ export class CurrCardComponent implements OnInit {
     }
 
     viewSubjects() {
+        swal_load();
         this.cur_data = [];
         this.currListingService.getCurriculumData(this.curriculumData.id)
             .then(x => {
@@ -85,6 +87,9 @@ export class CurrCardComponent implements OnInit {
             console.log(this.modalTemplate.elementRef);
             config.context = {data: this.cur_data};
             this._modal = this.modalService.open(config);
+            swal_close();
+        }).catch(x => {
+            swal_close();
         });
     }
 
