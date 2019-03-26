@@ -8,18 +8,18 @@
         </div>
     </div>
     <div class="content">
-        <div class="ui form">
+        <form class="ui form">
             <div class="field">
                 <label>Username</label>
                 <input type="text" placeholder="Username" #uname>
             </div>
             <div class="field">
                 <label>Password</label>
-                <input type="text"
+                <input type="password"
                        placeholder="Password"
                        #pass>
             </div>
-            <div class="ui fluid animated primary button"
+            <div class="ui fluid animated primary button submit"
                  tabindex="0"
                  (click)="admin_login()">
                 <div class="visible content">LOGIN</div>
@@ -27,7 +27,7 @@
                     ADMIN LOGIN
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 

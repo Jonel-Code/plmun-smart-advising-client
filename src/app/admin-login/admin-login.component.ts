@@ -52,10 +52,11 @@ export class AdminLoginComponent implements OnInit {
                 default:
 
             }
-        }).catch(x => {
-            swal_close();
         }).then(d => {
             swal_close();
+            if (d === undefined) {
+                return;
+            }
             const a_data = d['account_data'];
             if (typeof a_data !== 'undefined') {
                 this.redirect_to_dashboard();
@@ -68,6 +69,8 @@ export class AdminLoginComponent implements OnInit {
                     }
                 });
             }
+        }).catch(x => {
+            swal_close();
         });
     }
 
