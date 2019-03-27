@@ -5,6 +5,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {AdvisingFormComponent, IBasicStudentInformation} from '../main-components/advising-form/advising-form.component';
 import {EStudentStatus, IStudentStore, SStore} from '../s-services/s-store';
 import {AdvisingFormService, IAdvisingFormContext, ISaveAdvisingFormContext} from '../s-services/advising-form.service';
+import {AdvisingSocketService} from '../../admin-portal/a-services/advising-socket.service';
 
 @Component({
     selector: 'app-student-advising',
@@ -26,12 +27,15 @@ export class StudentAdvisingComponent implements OnInit {
 
     maxUnits: number;
 
+    _data_2_send: any = null;
+
     @ViewChild('advisingPrint') advisingPrint;
 
     constructor(private loginService: LoginService,
                 public dialog: MatDialog,
                 private sStore: SStore,
-                private advisingFormService: AdvisingFormService) {
+                private advisingFormService: AdvisingFormService,
+                private advisingSocketService: AdvisingSocketService) {
         // const _tableData: ISubject[] = [];
         // const data_source: MatTableDataSource<IStudentInformation> = JSON.parse(atob(this.loginService.getStudentToken()));
         // const course_curriculum = data_source['course_curriculum'];
@@ -230,6 +234,7 @@ export class StudentAdvisingComponent implements OnInit {
     }
 
     submit_advising_form() {
+        this._data_2_send = null;
         const is_section_block = this.sStore.student_data_values.status === EStudentStatus.REGULAR;
         let to_send_ids: any[] = [];
         const selected_items = this.selection.selected.map(x => {
@@ -261,12 +266,22 @@ export class StudentAdvisingComponent implements OnInit {
         this.advisingFormService.saveAdvisingForm(data_2_send)
             .then(x => {
                 console.log('submit_advising_form', x);
+                if (x['body']['data'] !== undefined) {
+                    this._data_2_send = x['body']['data'];
+                    this.advisingSocketService.emit_advising_form(this._data_2_send)
+                        .then(y => {
+                            console.log('emit_advising_form', y);
+                        });
+                }
                 this.start_print_advising_form();
             });
     }
 
     start_print_advising_form() {
         const p = this.new_print_advising();
+        // p.then(x => {
+        //
+        // });
     }
 
     async new_print_advising() {

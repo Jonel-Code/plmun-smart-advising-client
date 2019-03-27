@@ -50,7 +50,7 @@ import {AdvisingFormService} from './main-client/student-portal/s-services/advis
 import {AdvisingStatsService} from './main-client/admin-portal/a-services/advising-stats.service';
 import {AdminStore} from './main-client/admin-portal/data-store/admin-store';
 import {CanCreateAccountGuard} from './main-client/admin-portal/a-services/can-create-account.guard';
-
+import {AdvisingSocketService} from './main-client/admin-portal/a-services/advising-socket.service';
 
 @NgModule({
     declarations: [
@@ -112,7 +112,8 @@ import {CanCreateAccountGuard} from './main-client/admin-portal/a-services/can-c
         AdvisingFormService,
         AdvisingStatsService,
         AdminStore,
-        CanCreateAccountGuard
+        CanCreateAccountGuard,
+        AdvisingSocketService
         // {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent]

@@ -3,6 +3,7 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
 import {environment} from '../../../../environments/environment';
 import {CanCreateAccountGuard} from '../a-services/can-create-account.guard';
+import {ALoginService} from '../a-services/a-login.service';
 
 export interface NavLink {
     title: string;
@@ -26,7 +27,10 @@ export class ResSideNavComponent implements OnDestroy, OnInit {
 
     private _mobileQueryListener: () => void;
 
-    constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private router: Router, private can_create: CanCreateAccountGuard) {
+    constructor(changeDetectorRef: ChangeDetectorRef,
+                media: MediaMatcher,
+                private router: Router,
+                private aLoginService: ALoginService) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
@@ -66,10 +70,15 @@ export class ResSideNavComponent implements OnDestroy, OnInit {
         return this.router.url.split('/').slice(3);
     }
 
+    can_account_create(): boolean {
+        const x = this.aLoginService.getUserData();
+        return x['account_type'] === 'Admin';
+    }
+
     get to_render_links() {
         const to_render = [];
         for (const z of this.nav_options) {
-            if (z.link === 'faculty_accounts' && !this.can_create.can_create()) {
+            if (z.link === 'faculty_accounts' && !this.can_account_create()) {
                 continue;
             }
             to_render.push(z);

@@ -14,6 +14,8 @@ export const environment = {
         {title: 'Student Data', link: 'student_data'},
         {title: 'Faculty Accounts', link: 'faculty_accounts'},
     ],
+
+    base_socket_uri: 'http://127.0.0.1:5000'
 };
 
 /*

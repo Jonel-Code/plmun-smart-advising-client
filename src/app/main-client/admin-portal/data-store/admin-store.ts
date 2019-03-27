@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {AdvisingStatsService} from '../a-services/advising-stats.service';
+import {swal_close, swal_load} from '../../../helper-scripts/swal-loading';
 
 export interface IAdminStore {
     statistics: IAdvisingStats;
@@ -36,6 +37,7 @@ export class AdminStore {
     }
 
     load_statistics() {
+        swal_load();
         this.advisingStatsService.fetch_statistics()
             .then(data => {
                 const sst: any[] = data['statistics'];
@@ -54,9 +56,11 @@ export class AdminStore {
                     student_this_sem_count: data['student_this_sem_count']
                 };
                 this._admin_data.next(st);
+                swal_close();
             })
             .catch(e => {
                 console.log('error', e);
+                swal_close();
             });
     }
 }
