@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 
 // Serve only the static files form the dist directory
-app.use(express.static(__dirname + '/dist/SMARTCClient'));
+app.use(express.static(__dirname + '/dist/SMARTCClient', { maxAge: '30 days' }));
 
 app.get('/*', function(req,res) {    
     res.sendFile(path.join(__dirname+'/dist/SMARTCClient/index.html'));
