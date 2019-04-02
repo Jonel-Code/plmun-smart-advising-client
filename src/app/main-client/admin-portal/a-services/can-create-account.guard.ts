@@ -13,7 +13,8 @@ export class CanCreateAccountGuard implements CanActivate {
     canActivate(
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        const rv = this.can_create();
+        const x = this.aLoginService.getUserData();
+        const rv = x['account_type'] === 'Admin';
         if (!rv) {
             this.router.navigate(['student-login']);
         }

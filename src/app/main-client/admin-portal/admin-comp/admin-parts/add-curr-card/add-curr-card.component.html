@@ -14,7 +14,11 @@
                     <div class="ui teal label">
                         COURSE
                     </div>
-                    <input type="text" placeholder="Course" [(ngModel)]="new_cur_data.course" name="course" required>
+                    <input type="text"
+                           placeholder="Course"
+                           [(ngModel)]="new_cur_data.course"
+                           name="course"
+                           required>
                 </div>
             </div>
             <div class="field">
@@ -22,9 +26,20 @@
                     <div class="ui teal label">
                         Year
                     </div>
-                    <input type="text" placeholder="Year" [(ngModel)]="new_cur_data.year" name="year" required>
+                    <input type="text"
+                           [pattern]="'/[0-9]{0,4}-[0-9]{0,4}/'"
+                           (change)="year_input_on_change($event)"
+                           placeholder="Year"
+                           [(ngModel)]="new_cur_data.year"
+                           name="year"
+                           required>
+                </div>
+                <div *ngIf="!is_year_verified()"
+                     class="ui pointing red basic label">
+                    Pattern Error ex: 2014-2015
                 </div>
             </div>
+
             <div class="field">
                 <div class="ui labeled fluid input">
                     <div class="ui teal label">

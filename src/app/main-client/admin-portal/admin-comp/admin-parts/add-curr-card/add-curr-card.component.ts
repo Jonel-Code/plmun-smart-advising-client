@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {SuiModalService, TemplateModalConfig, ModalTemplate} from 'ng2-semantic-ui';
 import {ALoginService} from '../../../a-services/a-login.service';
 import * as XLSX from 'xlsx';
@@ -20,6 +20,9 @@ export class AddCurrCardComponent implements OnInit {
 
     @ViewChild('modalTemplate')
     public modalTemplate: ModalTemplate<NewCurrData, string, string>;
+
+    @ViewChild('fileupload')
+    fileupload: ElementRef;
 
     private arrayBuffer: any;
     public data: any;
@@ -89,15 +92,30 @@ export class AddCurrCardComponent implements OnInit {
             this.new_cur_data.department.length === 0;
     }
 
+    is_year_verified() {
+        const year_patt = /[0-9]{4}-[0-9]{4}/;
+        // e.target.pattern = year_patt;
+        return this.new_cur_data.year.match(year_patt);
+    }
+
+    year_input_on_change(e) {
+        const year_patt = /[0-9]{4}-[0-9]{4}/;
+        // e.target.pattern = year_patt;
+        if (!this.new_cur_data.year.match(year_patt)) {
+            this.new_cur_data.year = '';
+        }
+        console.log('this.new_cur_data.year', this.new_cur_data.year);
+    }
+
     excelTemplateDownload() {
         const data = [
             {
-                'subject code': '',
-                'title': '',
-                'units': '',
-                'pre-requisite': '',
-                'semester': '',
-                'year': ''
+                'CODE': '',
+                'TITLE': '',
+                'UNITS': '',
+                'PRE-REQUISITE': '',
+                'SEMESTER': '',
+                'YEAR': ''
             }
         ];
 
@@ -145,25 +163,110 @@ export class AddCurrCardComponent implements OnInit {
                 }
             });
             read_promise.then((args: any[]) => {
-                this.data = args.map((x) => {
-                    // return {question: x['question'], choices: x['choices'], answer: x['answer']}
-                    const rv: IBasicSubjectData = {
-                        code: x['subject code'],
-                        title: x['title'],
-                        units: x['units'],
-                        year: (x['year'] + ' year').toLowerCase(),
-                        semester: (x['semester'] + ' semester').toLowerCase()
-                    };
-                    if (typeof x['pre-requisite'] !== 'undefined') {
-                        rv.pre_req = x['pre-requisite'];
+                const rows_with_errors = [];
+                const fine_rows = [];
+                this.data = [];
+                for (const row of args) {
+                    try {
+                        const c = String(row['CODE']).trim().toLowerCase();
+                        const t = String(row['TITLE']).trim().toLowerCase();
+                        const u = String(row['UNITS']).trim().toLowerCase();
+                        const y = String(row['YEAR']).trim().toLowerCase() + ' year';
+                        const s = String(row['SEMESTER']).trim().toLowerCase() + ' semester';
+                        // map required fields
+                        const rv: IBasicSubjectData = {
+                            code: c,
+                            title: t,
+                            units: u,
+                            year: y,
+                            semester: s
+                        };
+
+
+                        // check if required fields are filled
+                        for (const k of Object.keys(rv)) {
+                            if (String(rv[k]).length === 0 || String(rv[k]).toLowerCase() === 'undefined') {
+                                throw new Error('error in mapping');
+                            }
+                        }
+
+                        // map optional rows
+                        if (typeof row['PRE-REQUISITE'] !== 'undefined' && String(row['PRE-REQUISITE']).trim().toLowerCase() !== 'none') {
+                            rv.pre_req = String(row['PRE-REQUISITE']).trim().toLowerCase();
+                        }
+                        // add if there is no error in mapping
+                        fine_rows.push(rv);
+                    } catch (e) {
+                        // console.log('error in mapping', e);
+                        rows_with_errors.push(args.indexOf(row));
+                        // continue;
                     }
-                    return rv;
-                });
-            }).then(() => {
-                console.log('this.data', this.data);
+
+
+                    // do not add if the required field is not fulfilled
+                    // if (req_fields_not_met) {
+                    //     rows_with_errors.push(index);
+                    //     continue;
+                    // }
+
+                }
+                return {fine_rows, rows_with_errors};
+                // this.data = args.map((x) => {
+                //     // return {question: x['question'], choices: x['choices'], answer: x['answer']}
+                //
+                //     return rv;
+                // });
+            }).then(({fine_rows, rows_with_errors}) => {
+                console.log('rows_with_errors', rows_with_errors);
+                if (rows_with_errors.length > 0) {
+                    const error_rows = rows_with_errors.map(x => x + 2);
+                    swal({
+                        title: 'Warning',
+                        icon: 'warning',
+                        text: `
+                        There is an error in Mapping Data From Excel.
+                        Rows with Error: ${error_rows.join(',')}
+                        The system will ignore this rows
+                        Do you still want to continue using this data?.
+                        `,
+                        buttons: {
+                            YES: {
+                                text: 'YES',
+                                value: 'YES',
+                                className: 'negative ui button'
+                            },
+                            NO: {
+                                text: 'NO',
+                                value: 'NO',
+                                className: 'positive ui button'
+                            }
+                        }
+                    })
+                        .then(resp => {
+                            switch (resp) {
+                                case 'YES':
+                                    this.data = fine_rows;
+                                    break;
+                                case 'NO':
+                                    this.data = [];
+                                    this.reset_file_uploader();
+                                    break;
+                            }
+                        })
+                        .then(() => {
+                            console.log('this.data', this.data);
+                        });
+                } else {
+                    this.data = fine_rows;
+                }
             });
         };
         fileReader.readAsArrayBuffer(this.file);
+    }
+
+    reset_file_uploader() {
+        this.fileupload.nativeElement.value = '';
+        this.reset_file_progress();
     }
 
 

@@ -26,7 +26,11 @@ export class ResSideNavComponent implements OnDestroy, OnInit {
 
     private _mobileQueryListener: () => void;
 
-    constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private router: Router, private can_create: CanCreateAccountGuard) {
+    private can_create_new_account = false;
+
+    constructor(changeDetectorRef: ChangeDetectorRef,
+                media: MediaMatcher, private router: Router,
+                private can_create: CanCreateAccountGuard) {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
@@ -48,6 +52,7 @@ export class ResSideNavComponent implements OnDestroy, OnInit {
                 }
             }
         });
+        this.can_create_new_account = this.can_create.can_create();
     }
 
     ngOnDestroy(): void {
@@ -69,7 +74,7 @@ export class ResSideNavComponent implements OnDestroy, OnInit {
     get to_render_links() {
         const to_render = [];
         for (const z of this.nav_options) {
-            if (z.link === 'faculty_accounts' && !this.can_create.can_create()) {
+            if (z.link === 'faculty_accounts' && !this.can_create_new_account) {
                 continue;
             }
             to_render.push(z);

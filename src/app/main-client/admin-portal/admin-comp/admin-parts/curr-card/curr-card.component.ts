@@ -128,7 +128,22 @@ export class CurrCardComponent implements OnInit {
                 this._modal.deny();
                 this.uponDelete.emit(this.curriculumData);
             }, (z) => {
-            });
+            }).then(() => {
+            swal_close();
+        });
+    }
+
+    get_pre_req_val(pre_req: any[]) {
+        const years = ['first', 'second', 'third', 'fourth'];
+        let pre_req_val = 'NONE';
+        if (pre_req.length > 0) {
+            if (years.includes(String(pre_req[0]).toLowerCase().trim())) {
+                pre_req_val = String(pre_req[0]).toUpperCase() + ' Year Standing';
+            } else {
+                pre_req_val = pre_req.join(',');
+            }
+        }
+        return pre_req_val;
     }
 
     downloadCurriculum() {
@@ -141,7 +156,7 @@ export class CurrCardComponent implements OnInit {
                     'CODE': x.subject_code,
                     'TITLE': x.title,
                     'UNITS': x.units,
-                    'PRE-REQUISITE': x.pre_req.length > 0 ? x.pre_req : 'NONE',
+                    'PRE-REQUISITE': x.pre_req.length > 0 ? x.pre_req.join(',') : 'NONE',
                     'SEMESTER': x.semester,
                     'YEAR': x.year
                 };

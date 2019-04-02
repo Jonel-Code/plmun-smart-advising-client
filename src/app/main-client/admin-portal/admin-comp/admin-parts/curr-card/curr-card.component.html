@@ -25,20 +25,21 @@
         <table class="ui celled table">
             <thead>
             <tr>
-                <th>Subject ID</th>
+                <th>#</th>
                 <th>Subject Code</th>
                 <th>Title</th>
                 <th>Units</th>
                 <th>Pre-requisites</th>
                 <th>Semester</th>
                 <th>Year</th>
+                <th>Subject ID</th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let s of cur_data">
-                <td data-label="Subject ID">
-                    <app-mobile-label [mobileLabel]="'Subject ID: '"></app-mobile-label>
-                    {{s.subject_id}}
+                <td data-label="#">
+                    <app-mobile-label [mobileLabel]="'#: '"></app-mobile-label>
+                    {{cur_data.indexOf(s) + 1}}
                 </td>
                 <td data-label="Subject Code">
                     <app-mobile-label [mobileLabel]="'Subject Code: '"></app-mobile-label>
@@ -54,7 +55,7 @@
                 </td>
                 <td data-label="Pre-requisites">
                     <app-mobile-label [mobileLabel]="'Pre-requisites: '"></app-mobile-label>
-                    {{s.pre_req.length > 0 ? s.pre_req.join(',') : 'none' | uppercase}}
+                    {{get_pre_req_val(s.pre_req)}}
                 </td>
                 <td data-label="Semester">
                     <app-mobile-label [mobileLabel]="'Semester: '"></app-mobile-label>
@@ -63,6 +64,10 @@
                 <td data-label="Year">
                     <app-mobile-label [mobileLabel]="'Year: '"></app-mobile-label>
                     {{s.year | uppercase}}
+                </td>
+                <td data-label="Subject ID">
+                    <app-mobile-label [mobileLabel]="'Subject ID: '"></app-mobile-label>
+                    {{s.subject_id}}
                 </td>
             </tr>
             </tbody>
