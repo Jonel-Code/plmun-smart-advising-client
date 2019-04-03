@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {SLoginService} from './s-login.service';
 import {CustomDTree, Edges, Leaf} from '../../../core/algorithms/CustomDTree';
@@ -108,6 +108,9 @@ export class SStore {
     readonly student_data: Observable<IStudentStore> = this._student_data.asObservable();
 
     is_loaded = false;
+
+    public d3_algo: CustomDTree = null;
+    public d3_algo_finised: EventEmitter<CustomDTree> = new EventEmitter();
 
 
     constructor(private sLoginService: SLoginService,
@@ -375,6 +378,9 @@ export class SStore {
                 break;
             }
         }
+
+        this.d3_algo = null;
+
         console.log('yi', yi);
         console.log('d_setz', d_setz);
         const new_3 = new CustomDTree(d_setz);
@@ -388,6 +394,9 @@ export class SStore {
         }
         console.log('pruned_3', new_3);
         console.log('leaf_nodes()', new_3.leaf_nodes);
+
+        this.d3_algo = new_3;
+        this.d3_algo_finised.emit(this.d3_algo);
         return new_3.leaf_nodes;
     }
 

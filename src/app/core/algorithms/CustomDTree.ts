@@ -23,6 +23,11 @@ export interface Leaf {
 export class CustomDTree {
     private _trainingData: Edges[];
 
+
+    get training_data() {
+        return this._trainingData;
+    }
+
     /**
      * private helper property for linking all the topmost leaf
      */

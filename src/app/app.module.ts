@@ -50,6 +50,7 @@ import {AdvisingFormService} from './main-client/student-portal/s-services/advis
 import {AdvisingStatsService} from './main-client/admin-portal/a-services/advising-stats.service';
 import {AdminStore} from './main-client/admin-portal/data-store/admin-store';
 import {CanCreateAccountGuard} from './main-client/admin-portal/a-services/can-create-account.guard';
+import { VisTreeComponent } from './main-client/student-portal/main-components/vis-tree/vis-tree.component';
 
 
 @NgModule({
@@ -75,7 +76,8 @@ import {CanCreateAccountGuard} from './main-client/admin-portal/a-services/can-c
         CurrCardComponent,
         AddCurrCardComponent,
         StudDataComponent,
-        StudUploaderComponent
+        StudUploaderComponent,
+        VisTreeComponent
     ],
     entryComponents: [
         AdvisingFormComponent

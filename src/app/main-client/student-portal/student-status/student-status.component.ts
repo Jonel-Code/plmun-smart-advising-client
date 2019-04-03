@@ -9,6 +9,7 @@ import {
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {CustomDTree, Edges, Leaf} from '../../../core/algorithms/CustomDTree';
 import {SStore, StudentStoreData} from '../s-services/s-store';
+import {VisTreeComponent} from '../main-components/vis-tree/vis-tree.component';
 
 
 const curriculum_data: ISubject[] = [
@@ -47,8 +48,52 @@ export class StudentStatusComponent implements OnInit {
 
     resultsLength: number;
 
+    nodes: { id: string, label: string, color: string, title: string }[];
+    edges: { from: string, to: string }[];
+    @ViewChild('visTree') visTree: VisTreeComponent;
+
     constructor(private loginService: LoginService, private sStore: SStore) {
         this.load_main_data();
+    }
+
+    map_vis_tree() {
+        this.nodes = [];
+        this.edges = [];
+        const col = 'skyblue';
+        this.nodes = this.sStore.student_data_values.course_curriculum.subjects.map(x => {
+            return {
+                id: x.code.toUpperCase(),
+                label: x.code.toUpperCase(),
+                color: col,
+                title: x.title
+            };
+        });
+        const year_standing = ['first', 'second', 'third', 'fourth'];
+        // this.nodes.push({
+        //     id: '-',
+        //     label: 'End',
+        //     color: col,
+        //     title: 'End'
+        // });
+        for (const y of year_standing) {
+            this.nodes.push(
+                {
+                    id: y.toUpperCase(),
+                    label: y.toUpperCase(),
+                    color: col,
+                    title: y.toUpperCase() + ' Year Standing'
+                }
+            );
+        }
+        this.edges = this.sStore.d3_algo.training_data.map(x => {
+            return {
+                from: String(x.parent.identifier).toUpperCase(),
+                to: String(x.child.identifier).toUpperCase()
+            };
+        });
+        this.visTree.edges = this.edges;
+        this.visTree.nodes = this.nodes;
+        this.visTree.build_tree();
     }
 
     load_main_data() {
@@ -83,6 +128,9 @@ export class StudentStatusComponent implements OnInit {
         this.tableData.paginator = this.paginator;
         // test function call for new algo implementation
         // this.test_new_algo();
+        this.sStore.d3_algo_finised.subscribe(x => {
+            this.map_vis_tree();
+        });
     }
 
     set_passed_subjects(subject_taken: ISubjectGrade[]) {
@@ -124,7 +172,6 @@ export class StudentStatusComponent implements OnInit {
                 if (val.subjects_taken) {
                     this.set_passed_subjects(val.subjects_taken);
                 }
-
             });
     }
 
