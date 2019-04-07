@@ -33,6 +33,10 @@ export class CustomDTree {
      */
     private _Peak: Leaf = {identifier: '-'};
 
+    get Peak(): Leaf {
+        return this._Peak;
+    }
+
     /**
      * returns all the node as and array of Leaf Object currently present on the Training Data
      */

@@ -52,6 +52,9 @@ export class StudentStatusComponent implements OnInit {
     edges: { from: string, to: string }[];
     @ViewChild('visTree') visTree: VisTreeComponent;
 
+    stud_back_subjects: any[] = [];
+    stud_can_take_subjects: any[] = [];
+
     constructor(private loginService: LoginService, private sStore: SStore) {
         this.load_main_data();
     }
@@ -60,14 +63,21 @@ export class StudentStatusComponent implements OnInit {
         this.nodes = [];
         this.edges = [];
         const col = 'skyblue';
-        this.nodes = this.sStore.student_data_values.course_curriculum.subjects.map(x => {
-            return {
+        const all_nodes = this.sStore.d3_algo.all_nodes.map(x => x.identifier.toLowerCase());
+        for (const x of this.sStore.student_data_values.course_curriculum.subjects) {
+            if (!all_nodes.includes(x.code.toLowerCase())) {
+                continue;
+            }
+            this.nodes.push({
                 id: x.code.toUpperCase(),
                 label: x.code.toUpperCase(),
                 color: col,
                 title: x.title
-            };
-        });
+            });
+        }
+        // this.nodes = this.sStore.student_data_values.course_curriculum.subjects.map(x => {
+        //     return ;
+        // });
         const year_standing = ['first', 'second', 'third', 'fourth'];
         // this.nodes.push({
         //     id: '-',
@@ -76,6 +86,9 @@ export class StudentStatusComponent implements OnInit {
         //     title: 'End'
         // });
         for (const y of year_standing) {
+            if (!all_nodes.includes(y.toLowerCase())) {
+                continue;
+            }
             this.nodes.push(
                 {
                     id: y.toUpperCase(),
@@ -85,12 +98,22 @@ export class StudentStatusComponent implements OnInit {
                 }
             );
         }
-        this.edges = this.sStore.d3_algo.training_data.map(x => {
-            return {
+        const peak = this.sStore.d3_algo.Peak;
+        for (const x of this.sStore.d3_algo.training_data) {
+            if (x.parent.identifier === peak.identifier || x.child.identifier === peak.identifier) {
+                continue;
+            }
+            this.edges.push({
                 from: String(x.parent.identifier).toUpperCase(),
                 to: String(x.child.identifier).toUpperCase()
-            };
-        });
+            });
+        }
+        // this.edges = this.sStore.d3_algo.training_data.map(x => {
+        //     return {
+        //         from: String(x.parent.identifier).toUpperCase(),
+        //         to: String(x.child.identifier).toUpperCase()
+        //     };
+        // });
         this.visTree.edges = this.edges;
         this.visTree.nodes = this.nodes;
         this.visTree.build_tree();
@@ -128,9 +151,6 @@ export class StudentStatusComponent implements OnInit {
         this.tableData.paginator = this.paginator;
         // test function call for new algo implementation
         // this.test_new_algo();
-        this.sStore.d3_algo_finised.subscribe(x => {
-            this.map_vis_tree();
-        });
     }
 
     set_passed_subjects(subject_taken: ISubjectGrade[]) {
@@ -181,6 +201,20 @@ export class StudentStatusComponent implements OnInit {
         this.tableData.paginator = this.paginator;
         this.sort.sortChange.subscribe(() => this.reset_paginator_index());
         this.resultsLength = this.tableData.data.length;
+
+    }
+
+    load_vis_tree() {
+        if (this.sStore.d3_algo) {
+            this.map_vis_tree();
+        }
+        // this.sStore.d3_algo_finised.subscribe(x => {
+        //     this.map_vis_tree();
+        // });
+        this.stud_back_subjects = [];
+        this.stud_can_take_subjects = [];
+        this.stud_can_take_subjects = this.sStore.student_data_values.can_take;
+        this.stud_back_subjects = this.sStore.student_data_values.back_subjects;
     }
 
     isPassed(code: string) {

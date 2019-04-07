@@ -140,10 +140,35 @@
         </div>
     </div>
     <div class="ui divider" style="margin: 20px">Curriculum Visualization</div>
+    <div class="ui blue button centered"
+         (click)="load_vis_tree()">
+        Load Curriculum Visualization
+    </div>
     <app-vis-tree
             [nodes]="nodes"
             [edges]="edges"
             #visTree
     ></app-vis-tree>
+    <h3 *ngIf="stud_can_take_subjects.length > 0"
+        class="ui centered">
+        Leaf Nodes: {{stud_can_take_subjects.join(', ')}}
+    </h3>
+    <div *ngIf="stud_back_subjects.length > 0">
+        <h1 class="ui centered"> Back Subjects </h1>
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>Subject Code</th>
+                <th>Subject Title</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let s of stud_back_subjects">
+                <td data-label="Code">{{s.code}}</td>
+                <td data-label="Title">{{s.title}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
