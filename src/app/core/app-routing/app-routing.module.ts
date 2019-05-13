@@ -14,6 +14,7 @@ import {FacultyAccComponent} from '../../main-client/admin-portal/admin-comp/fac
 import {AdminAccessGuard} from '../../main-client/admin-portal/a-services/admin-access.guard';
 import {StudDataComponent} from '../../main-client/admin-portal/admin-comp/stud-data/stud-data.component';
 import {CanCreateAccountGuard} from '../../main-client/admin-portal/a-services/can-create-account.guard';
+import {SubjectClustersComponent} from '../../main-client/admin-portal/admin-comp/subject-clusters/subject-clusters.component';
 // import {HomeComponent} from '../../home/home.component';
 // import {UserComponent} from '../user/user.component';
 // import {HomeComponent} from '../../home/home.component';
@@ -50,7 +51,8 @@ const routes: Routes = [
             {path: 'opened_subjects', component: OpenedSubjComponent, canActivate: [AdminAccessGuard]},
             {path: 'admin_curriculum', component: AdminCurComponent, canActivate: [AdminAccessGuard]},
             {path: 'faculty_accounts', component: FacultyAccComponent, canActivate: [AdminAccessGuard, CanCreateAccountGuard]},
-            {path: 'student_data', component: StudDataComponent, canActivate: [AdminAccessGuard]}
+            {path: 'student_data', component: StudDataComponent, canActivate: [AdminAccessGuard]},
+            {path: 'subject_clusters', component: SubjectClustersComponent, canActivate: [AdminAccessGuard]}
         ]
     },
     {path: '**', redirectTo: RoutingPaths.login},

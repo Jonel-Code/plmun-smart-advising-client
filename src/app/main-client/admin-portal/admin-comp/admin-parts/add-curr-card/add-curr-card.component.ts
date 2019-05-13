@@ -316,6 +316,8 @@ export class AddCurrCardComponent implements OnInit {
                         }).then((k) => {
                             // window.location.reload();
                             this.uponUploadFinish.emit(k);
+                            this.reset_file_uploader();
+                            this.clear_fields();
                         });
                     })
                     .catch(x => {

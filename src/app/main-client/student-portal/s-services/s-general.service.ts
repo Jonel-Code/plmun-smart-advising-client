@@ -2,6 +2,7 @@ import {environment} from '../../../../environments/environment';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {swal_load, swal_close} from '../../../helper-scripts/swal-loading';
+import {CustomEncoder} from '../../../encode-http-params-interceptor';
 
 
 export class SGeneralService {
@@ -57,7 +58,7 @@ export class SGeneralService {
     doPost(args) {
         // const {http_option, params} = this.http_options(args);
         swal_load();
-        const params = new HttpParams()
+        const params = new HttpParams({encoder: new CustomEncoder()})
             .set('content', JSON.stringify(args));
         const httpOptions = {
             headers: new HttpHeaders({

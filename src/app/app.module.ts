@@ -51,6 +51,9 @@ import {AdvisingStatsService} from './main-client/admin-portal/a-services/advisi
 import {AdminStore} from './main-client/admin-portal/data-store/admin-store';
 import {CanCreateAccountGuard} from './main-client/admin-portal/a-services/can-create-account.guard';
 import { VisTreeComponent } from './main-client/student-portal/main-components/vis-tree/vis-tree.component';
+import { SubjectClustersComponent } from './main-client/admin-portal/admin-comp/subject-clusters/subject-clusters.component';
+import {ClusterPostService} from './main-client/admin-portal/admin-comp/subject-clusters/cluster-post.service';
+import {CustomEncoder} from './encode-http-params-interceptor';
 
 
 @NgModule({
@@ -77,7 +80,8 @@ import { VisTreeComponent } from './main-client/student-portal/main-components/v
         AddCurrCardComponent,
         StudDataComponent,
         StudUploaderComponent,
-        VisTreeComponent
+        VisTreeComponent,
+        SubjectClustersComponent
     ],
     entryComponents: [
         AdvisingFormComponent
@@ -114,7 +118,9 @@ import { VisTreeComponent } from './main-client/student-portal/main-components/v
         AdvisingFormService,
         AdvisingStatsService,
         AdminStore,
-        CanCreateAccountGuard
+        CanCreateAccountGuard,
+        ClusterPostService,
+        CustomEncoder
         // {provide: LocationStrategy, useClass: HashLocationStrategy}
     ],
     bootstrap: [AppComponent]

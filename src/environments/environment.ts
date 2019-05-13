@@ -12,6 +12,7 @@ export const environment = {
         {title: 'Opened Subjects', link: 'opened_subjects'},
         {title: 'Curriculum', link: 'admin_curriculum'},
         {title: 'Student Data', link: 'student_data'},
+        {title: 'Subject Cluster', link: 'subject_clusters'},
         {title: 'Faculty Accounts', link: 'faculty_accounts'},
     ],
 };

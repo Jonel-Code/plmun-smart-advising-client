@@ -3,6 +3,7 @@ import {environment} from '../../../../environments/environment';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import swal from 'sweetalert';
 import {swal_load} from '../../../helper-scripts/swal-loading';
+import {CustomEncoder} from '../../../encode-http-params-interceptor';
 
 export interface ICurriculumInstance {
     year: string;
@@ -69,7 +70,7 @@ export class NewCurrService {
     addSubjectToCurriculum(curriculum_id: string, content: IBasicSubjectData[]) {
         swal_load();
         const data = JSON.stringify(content);
-        const params = new HttpParams()
+        const params = new HttpParams({encoder: new CustomEncoder()})
             .set('curriculum_id', curriculum_id)
             .set('content', data);
         const httpOptions = {

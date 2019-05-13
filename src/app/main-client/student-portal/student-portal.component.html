@@ -4,7 +4,7 @@
 
 <div class="ui centered card student-portal-card content-card">
     <div align="center">
-        <h3><b>Student Pre-Advising Portal</b></h3>
+        <h1><b>Student Pre-Advising Portal</b></h1>
     </div>
 
     <!-- <mat-card-header class="row-blox"> -->
@@ -50,6 +50,10 @@
                         <p>{{data.course| uppercase}} - {{data.year + ' year'| uppercase}}</p>
                         <p *ngIf="data.status">{{data.status.toString().toUpperCase()}}</p>
                         <p *ngIf="data.incoming_semester">ENROLMENT FOR SEMESTER: <b>{{data.incoming_semester.semester | uppercase}} semester</b></p>
+                        <button mat-raised-button color="primary" (click)="logout()">
+                            <mat-icon>arrow_back</mat-icon>
+                            Logout
+                        </button>
                     </div>
                 </div>
             </div>

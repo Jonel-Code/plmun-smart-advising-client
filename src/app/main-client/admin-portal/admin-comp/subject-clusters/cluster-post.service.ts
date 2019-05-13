@@ -1,24 +1,36 @@
+import {Injectable} from '@angular/core';
+import {environment} from '../../../../../environments/environment';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {swal_load} from '../../../helper-scripts/swal-loading';
 import swal from 'sweetalert';
-import {CustomEncoder} from '../../../encode-http-params-interceptor';
+import {swal_load} from '../../../../helper-scripts/swal-loading';
+import {CustomEncoder} from '../../../../encode-http-params-interceptor';
+import {map} from 'rxjs/operators';
 
-export interface PostStudentData<T> {
-    _url: string;
-    // content: any[];
+@Injectable({
+    providedIn: 'root'
+})
+export class ClusterPostService {
 
-}
+    private _url = `${environment.base_api_url}/upload-subject-cluster`;
 
-export class PostStudentData<T> implements PostStudentData<T> {
-    _url: string;
-
-    // content: T[];
-
-    constructor(public http: HttpClient) {
+    constructor(private http: HttpClient, private customEncoder: CustomEncoder) {
     }
 
+    get_all() {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/x-www-form-urlencoded'
+            })
+        };
 
-    uploadData(data_content: T[]): Promise<any> {
+        return this.http.get(this._url, httpOptions)
+            .pipe(map(result => {
+                return result;
+            }))
+            .toPromise();
+    }
+
+    upload(data_content: any[]) {
         if (data_content.length === 0) {
             swal({
                 title: 'Data is Empty',
@@ -31,6 +43,8 @@ export class PostStudentData<T> implements PostStudentData<T> {
             });
         }
         swal_load();
+        // url = url;
+        console.log('JSON.stringify(data_content)', JSON.stringify(data_content));
         const params = new HttpParams({encoder: new CustomEncoder()})
             .set('content', JSON.stringify(data_content));
         const httpOptions = {
@@ -39,6 +53,7 @@ export class PostStudentData<T> implements PostStudentData<T> {
             }),
             observe: 'response' as 'body'
         };
+        console.log('params', params.toString());
         return new Promise((resolve, reject) => {
             this.http.post(this._url, params.toString(), httpOptions)
                 .subscribe((result) => {

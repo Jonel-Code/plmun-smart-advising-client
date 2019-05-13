@@ -3,6 +3,7 @@ import {swal_load, swal_close} from '../../../helper-scripts/swal-loading';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {environment} from '../../../../environments/environment';
+import {CustomEncoder} from '../../../encode-http-params-interceptor';
 
 export interface ISaveAdvisingFormContext {
     student_id: number;
@@ -30,7 +31,7 @@ export class AdvisingFormService {
         // const {http_option, params} = this.http_options(args);
         swal_load('Saving Advising Form');
         const url = this._url + '/save_advising_data';
-        const params = new HttpParams()
+        const params = new HttpParams({encoder: new CustomEncoder()})
             .set('student_id', String(args.student_id))
             .set('semester_id', String(args.semester_id))
             .set('content', JSON.stringify(args.content))

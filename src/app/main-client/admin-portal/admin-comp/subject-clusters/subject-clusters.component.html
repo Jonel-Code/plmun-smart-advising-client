@@ -1,0 +1,52 @@
+<div class="ui fluid left action input">
+    <button class="ui teal labeled icon button" (click)="fileupload.click()">
+        <i class="file excel icon"></i>
+        Upload Subject Cluster Excel File
+    </button>
+    <input type="text" value="{{fileupload.value}}" readonly (click)="fileupload.click()"
+           placeholder="Click To Upload File" required/>
+    <input #fileupload
+           type="file"
+           style="display:none"
+           (change)="load_excel_data($event)"
+           accept=".xlsx">
+</div>
+<sui-progress class="active" [value]="file_process_progress" [maximum]="fp_progress_max">
+    {{!file_is_ready() ? 'Readying File' : 'Finished'}}
+</sui-progress>
+
+<div class="ui grid" style="margin-bottom: 20px;">
+    <div class="row">
+        <div class="right floated column">
+            <button class="ui right floated positive button"
+                    type="submit"
+                    [disabled]="!file_is_ready()"
+                    (click)="upload_data()">
+                Upload
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="ui grid">
+    <div class="row" *ngIf="cluster_data !== null">
+        <sui-accordion class="styled fluid" [closeOthers]="false">
+            <sui-accordion-panel [isOpen]="true" *ngFor="let data of cluster_data">
+                <div title>
+                    <i class="dropdown icon"></i>
+                    Cluster Name: {{data.name}}
+                </div>
+                <div content>
+                    <ul>
+                        <li *ngFor="let subject of data.subjects">
+                            {{subject}}
+                        </li>
+                    </ul>
+                    <!--<p>Using <code>[isOpen]</code> sets the panel to be expanded.</p>-->
+                    <!--<p>Use <code>(isOpenChange)</code> to catch when the panel is toggled.</p>-->
+                    <!--<p>Supports <code>[(isOpen)]</code> syntax.</p>-->
+                </div>
+            </sui-accordion-panel>
+        </sui-accordion>
+    </div>
+</div>

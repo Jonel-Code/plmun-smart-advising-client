@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginService, StudentStatusEnum} from '../../login/login.service';
 import {SStore} from './s-services/s-store';
+import {Router} from '@angular/router';
+import {environment} from '../../../environments/environment';
 
 export enum StudentPortalMenuEnum {
     STATUS, ADVISING
@@ -23,7 +25,8 @@ export class StudentPortalComponent implements OnInit {
     student_name: string;
 
     constructor(private loginService: LoginService,
-                public sStore: SStore) {
+                public sStore: SStore,
+                private router: Router) {
     }
 
     changeMenu(selectMenu: number) {
@@ -55,6 +58,11 @@ export class StudentPortalComponent implements OnInit {
         // console.log('last value', this.student_name);
         const au = this.sStore.load_auth_vals();
         this.sStore.load_student_data(au['u'], au['p']);
+    }
+
+    logout() {
+        localStorage.clear();
+        this.router.navigate(['student-login']);
     }
 
 }
